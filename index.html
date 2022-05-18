@@ -4,9 +4,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="./fontawesome-pro/css/all.css" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
     <title>찬기의 포트폴리오</title>
 </head>
 <body>
-    working?
+    <section class="fst-pg df-c">
+        <div class="cont-wrapper df">
+            <!-- left -->
+            <div class="lt-cont df-c">
+                <div id="switch" class="txt-wrap df-alg-c">
+                    <div class="icon-bg df-c">
+                        <i class="fa-light fa-arrows-rotate"></i>
+                    </div>
+                    <span>이미지를 직접 업로드할 수 있습니다.</span>
+                </div>
+
+                <!-- no.1 -->
+                <div class="icon-wrap df default">
+                    <i class="fa-light fa-sparkles"></i>
+                    <span>Set default image<br>to enter</span>
+                </div>
+
+                <!-- no.2 -->
+                <div class="icon-wrap df cstm dspl-n">
+                    <i class="fa-light fa-arrow-up-from-bracket"></i>
+                    <span>Drag and Drop file<br>or</span>
+                    <button id="btn-img-upload" class="btn-img-upload" type="button">Browse</button>
+                </div>
+            </div>
+            <!-- right -->
+            <div class="rt-cont df-c">
+
+                <!-- process-waiting -->
+                <div class="icon-wrap df">
+                    <i class="fa-light fa-image"></i>
+                    <span>Waiting</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- script -->
+    <script src="/fontawesome-pro/js/all.js" data-auto-replace-svg="false"></script>
+    <script src="/js/script.js"></script>
 </body>
 </html>

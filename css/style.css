@@ -1,0 +1,46 @@
+:root {
+    /* colors */
+    --white-1: #ffffff;
+    --white-2: #F8F9FF;
+    --white-3: #F9F9F9;
+
+    --grey-1: #787878;
+    --grey-2: #B1B1B1;
+
+    --blue-1: #3AB8FF;
+
+    --yellow-1: #F3C41C;
+}
+
+.dspl-n { display: none !important; }
+.dspl-b { display: block !important; }
+.dspl-f { display: flex !important; }
+.hide { visibility: hidden !important; }
+.show { visibility: visible !important; }
+
+/* layout */
+.df { display: flex; }
+.df-c { display: flex;justify-content: center;align-items: center; }
+.ps-c { position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%); }
+
+/* style */
+.fst-pg { width: 100vw;height: 100vh; background-color: var(--white-3); }
+.cont-wrapper { width: 800px;height: 500px;position: relative; }
+.cont-wrapper > div { width: calc(100% / 2); }
+
+.lt-cont { background-color: var(--white-1);height: 100%;border-top-left-radius: 10px;border-bottom-left-radius: 10px; }
+.lt-cont .txt-wrap { display: flex;align-items: center;position: absolute;top: 20px;left: 25px; cursor: pointer; }
+.lt-cont .icon-bg { width: 32px;height: 32px;background: var(--grey-1);border-radius: 50%; }
+.lt-cont .icon-bg > i { font-size: 20px;color: var(--white-1);transform: rotate(220deg); }
+.lt-cont .icon-bg + span { font-size: 12px;font-weight: 500;margin-left: 8px; }
+.lt-cont .icon-wrap { flex-direction: column;cursor: pointer;position: relative;align-items: center; }
+.lt-cont .icon-wrap > i { text-align: center;font-size: 80px;color: var(--blue-1); }
+.lt-cont .icon-wrap.default > i + span { display: block;width: 230px;font-family: "Montserrat";text-align: center;font-size: 24px;color: var(--blue-1);position: absolute;bottom: -80px;left: 50%;transform: translate(-50%, 0); }
+.lt-cont .icon-wrap.cstm > i + span { display: block;width: 230px;font-family: "Montserrat";text-align: center;font-size: 24px; }
+.lt-cont button.btn-img-upload { width: 248px;height: 62px;background-color: var(--blue-1);font-size: 24px;color: var(--white-1);border-radius: 10px; }
+.lt-cont .icon-wrap.cstm > *:not(.btn-img-upload) { margin-bottom: 30px; }
+
+.rt-cont { background-color: var(--white-2);height: 100%;border-top-right-radius: 10px;border-bottom-right-radius: 10px; }
+.rt-cont .icon-wrap { flex-direction: column;position: relative; }
+.rt-cont .icon-wrap > i { text-align: center;font-size: 100px;color: var(--grey-2); }
+.rt-cont .icon-wrap > i + span { display: block;font-family: "Montserrat";text-align: center;font-size: 24px;color: var(--grey-2);position: absolute;bottom: -40px;left: 50%;transform: translate(-50%, 0); }
