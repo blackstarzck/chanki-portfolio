@@ -11,6 +11,7 @@ address,cite,code,em,i{font-style:normal;font-weight:normal;}
 label,img,input,select,textarea,button,a {vertical-align:middle;}
 u,ins,a{text-decoration:none;}
 button { cursor: pointer;}
+img {vertical-align: top;}
 
 /* Normalize */
 body { font-family: 'Noto Sans KR', sans-serif; }

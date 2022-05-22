@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="./fontawesome-pro/css/all.css" ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
     <title>찬기의 포트폴리오</title>
 </head>
@@ -17,32 +18,75 @@
             <div class="lt-cont df-c">
                 <div id="switch" class="txt-wrap df-alg-c">
                     <div class="icon-bg df-c">
-                        <i class="fa-light fa-arrows-rotate"></i>
+                        <i class="icon fa-light fa-arrows-rotate"></i>
                     </div>
-                    <span>이미지를 직접 업로드할 수 있습니다.</span>
+                    <span class="info">이미지를 직접 업로드할 수 있습니다.</span>
                 </div>
 
-                <!-- no.1 -->
-                <div class="icon-wrap df default">
-                    <i class="fa-light fa-sparkles"></i>
+                <!-- layout-1 -->
+                <div class="icon-wrap default " id="setDefImg">
+                    <i class="icon fa-light fa-sparkles"></i>
                     <span>Set default image<br>to enter</span>
                 </div>
 
-                <!-- no.2 -->
-                <div class="icon-wrap df cstm dspl-n">
-                    <i class="fa-light fa-arrow-up-from-bracket"></i>
-                    <span>Drag and Drop file<br>or</span>
-                    <button id="btn-img-upload" class="btn-img-upload" type="button">Browse</button>
+                <!-- layout-2 -->
+                <div class="icon-wrap cstm dspl-n">
+                    <div class="drop-zone">
+                        <i class="icon fa-light fa-arrow-up-from-bracket drop-inner"></i>
+                        <span class="drop-inner">Drag and Drop file<br>or</span>
+                    </div>
+                    <label for="file" class="btn-img-upload">Browse</label>
+                    <input type="file" name="" id="file" accept="image/*" required="true" multiple="false" hidden="true">
                 </div>
+
+                <!-- layout-3 -->
+                <div class="icon-wrap df wait dspl-n">
+                    <i class="icon fa-light fa-ban"></i>
+                    <span class="info">Please wait</span>
+                </div>
+
             </div>
             <!-- right -->
             <div class="rt-cont df-c">
 
-                <!-- process-waiting -->
-                <div class="icon-wrap df">
-                    <i class="fa-light fa-image"></i>
-                    <span>Waiting</span>
+                <!-- process-state: waiting -->
+                <div class="prc-wrap df wait">
+                    <i class="icon fa-light fa-image"></i>
+                    <span class="info">Waiting</span>
                 </div>
+
+                <div class="prc-wrap df show-img dspl-n">
+                    <div class="cont img-box img-01">
+                        <img id="selected-img" src="" alt="">
+                        <!-- <img id="selected-img" src="/img/def-img.jpg" alt=""> -->
+                        <div class="loding-box dspl-n">
+                            <svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg>
+                            <svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg>
+                            <span>Detecting...</span>
+                        </div>
+                        
+                    </div>
+
+                    <div class="cont img-box img-02 dspl-n">
+                        <img id="selected-img" src="" alt="">
+                        <div class="loding-box dspl-n">
+                            <svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg>
+                            <svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg>
+                            <span class="info">Detecting...</span>
+                        </div>
+                        
+                    </div>
+                    
+                    <ul class="cont results-wrap">
+                        <!-- <li title="item">item#1item#1item#1item#1item#1item#1item#1item#1item#1</li>
+                        <li title="item">item#2</li>
+                        <li title="item">item#3</li>
+                        <li title="item">item#3</li>
+                        <li title="item">item#3</li>
+                        <li title="item">item#3</li> -->
+                    </ul>
+                </div>
+
 
             </div>
         </div>
