@@ -1,5 +1,5 @@
 window.onload = () => {
-    verifyLength("/img/def-img.jpg");
+    verifyLength("./img/def-img.jpg");
 }
 
 $(function(){
@@ -31,7 +31,7 @@ document.getElementById("switch").addEventListener("click", function(){
 });
 
 document.getElementById("setDefImg").addEventListener("click", function(){
-    const def_img = { src: "/img/def-img.jpg", location: document.querySelector(".img-01 #selected-img") };
+    const def_img = { src: "./img/def-img.jpg", location: document.querySelector(".img-01 #selected-img") };
     let prc = animationProcessCheck();
     if(prc === true) return;
 
@@ -420,7 +420,10 @@ function verifyLength(source){
         item.classList.remove("vrt");
         item.classList.remove("hrz");
 
-        if(!item.classList.contains("dspl-n")) item.classList.add(alg);
+        if(!item.classList.contains("dspl-n")){
+            // alert(1);
+            item.classList.add(alg);
+        }
     });
 
     // alert(`[2] width: ${width} | height: ${height} | alg: ${alg}`);
