@@ -1,6 +1,5 @@
-window.onload = () => {
-    verifyLength("./img/def-img.jpg");
-}
+
+verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
 
 $(function(){
     console.log("제이쿼리 작동됨");
@@ -36,9 +35,14 @@ document.getElementById("setDefImg").addEventListener("click", function(){
     if(prc === true) return;
 
     handleImgUpload({ select_type: "default" }, { src: def_img.src })
-    .then(function(src){
-        handleState({ stage: "init", layout: "default", option: src });
+    .then(function(result){
+        handleState({ stage: "init", layout: "default", option: result });
     });
+
+    // handleImgUpload({ select_type: "default" }, { src: def_img.src })
+    // .then(function(result){
+    //     handleState({ stage: "init", layout: "default", option: result });
+    // });
 });
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ EVENTS END ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
@@ -57,6 +61,7 @@ function varifyLayout(){
 }
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ANIMATION FUNCTIONS START ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+
 function animationProcessCheck(){
     let prc;
     if(animation_state === "processing" && animation_stack !== 0) prc = true;
@@ -66,7 +71,6 @@ function animationProcessCheck(){
 }
 function fadeIn(obj){
     const target = document.querySelector(obj.target);
-
     target.classList.remove("dspl-n");
     target.classList.add("dspl-b");
 
@@ -84,7 +88,12 @@ function fadeIn(obj){
                 onComplete: function(){
                     console.log("===================== 1. fadeIn target: "+target.className+" =====================");
 
-                    if(obj.func !== undefined) obj.func(obj.param);
+                    try{
+                        if(obj.func !== undefined) obj.func(obj.param);
+                    }catch{
+                        alert("콜백함수를 실행할 수 없습니다.");
+                    }
+                    
 
                     setTimeout(() => { 
                         animation_stack--;
@@ -95,8 +104,7 @@ function fadeIn(obj){
             });
         }else{
             // alert(`[2] fadeIn target: ${target.className}`);
-
-            if(obj.func !== undefined) obj.func(obj.param);
+            // if(obj.func !== undefined) obj.func(obj.param);
 
             gsap.fromTo(target, { opacity: 0, y: -10 }, {
                 opacity: 1,
@@ -107,6 +115,13 @@ function fadeIn(obj){
                 onUpdate: function(){ animation_state = "processing" },
                 onComplete: function(){
                     console.log("===================== 2. fadeIn target: "+target.className+" =====================");                   
+                    // alert(1)
+
+                    try{
+                        if(obj.func !== undefined) obj.func(obj.param);
+                    }catch(error){
+                        alert(`error: ${error} \n콜백함수를 실행할 수 없습니다.`);
+                    }
 
                     setTimeout(() => { 
                         animation_stack--;
@@ -137,11 +152,11 @@ function fadeOut(obj){
                 onComplete: function(){
                     console.log("===================== 1. fadeOut target: "+target.className+" =====================");
     
+                    gsap.set(target.children, { y: 0 }); // 초기화
+
                     target.classList.remove("dspl-b");
                     target.classList.remove("dspl-f");
                     target.classList.add("dspl-n");
-                    
-                    gsap.set(target.children, { y: 0 }); // 초기화
     
                     setTimeout(() => { 
                         animation_stack--;
@@ -153,6 +168,7 @@ function fadeOut(obj){
         }else{
             // 애니메이션이 하나일 경우
             // console.log(`[2] fadeOut target: ${obj.target}`);
+            // alert(`[2] fadeOut target: ${target.className}`);
             gsap.to(target, {
                 duration: .5, 
                 opacity: 0, 
@@ -165,11 +181,11 @@ function fadeOut(obj){
                     // console.log(target.children);
                     console.log("===================== 2. fadeOut target: "+target.className+" =====================");
     
+                    gsap.set(target.children, { y: 0 }); // 초기화
+
                     target.classList.remove("dspl-b");
                     target.classList.remove("dspl-f");
                     target.classList.add("dspl-n");
-                    
-                    gsap.set(target.children, { y: 0 }); // 초기화
     
                     setTimeout(() => { 
                         animation_stack--;
@@ -194,6 +210,7 @@ input.addEventListener("change", function(){
 
     handleImgUpload({ select_type: "cstm" }, files)
     .then(function(result){
+        verifyLength(result);
         handleState({ stage: "init", layout: "cstm", option: result });
     });
 });
@@ -225,9 +242,7 @@ let flag = true;
 function handleImgUpload(type, file){
     return new Promise((resolve) => {
         const img_boxes = document.querySelectorAll(".prc-wrap.show-img .img-box");
-        let preview;
-        let visible;
-        let src;
+        let preview, visible, src;
 
         if(flag === true){
             visible = ".img-01";
@@ -241,33 +256,29 @@ function handleImgUpload(type, file){
             });
         }
 
-        preview = document.querySelector(visible + " img");
+        preview = document.querySelector(visible + " #selected-img");
 
         if(type.select_type === "default"){
             // console.log(file.src);
-            console.log("================================= [1] handleImgUpload | visible: "+visible+" =================================");
             src = file.src;
 
             preview.setAttribute("src", src);
-            console.log(src);
-            resolve(src);
+            resolve({ source: src, target:  visible});
         }
         if(type.select_type === "cstm"){
             const reader = new FileReader();
-            console.log("================================= [2] handleImgUpload | visible: "+visible+" =================================");
             // console.log(file);
     
             reader.readAsDataURL(file[0]);
             reader.onload = function(event){
                 src = event.target.result;
-    
                 preview.src = "";
                 preview.src = src;
 
                 // console.log(preview);
                 // console.log(src);
                 console.log("[함수] handleImgUpload");
-                resolve(src);
+                resolve({ source: src, target:  visible});
             }
         }
     });
@@ -282,13 +293,12 @@ let state = { stage: "standby", layout: "default" };
 function handleState(data){
     const stage = data.stage || state.stage;
     const layout = data.layout || state.layout;
+    const option = data.option;
 
     state.stage = stage;
     state.layout = layout;
 
     return new Promise (function(resolve){
-        // console.log(`[2] stage: ${state.stage} | layout: ${state.layout}`);
-
         if(state.stage === "standby" && state.layout === "default"){
             console.log("[[1]] handleState");
 
@@ -300,7 +310,6 @@ function handleState(data){
             });
         }
         if(state.stage === "standby" && state.layout === "cstm"){ 
-            // console.log("layout: cstm");
             console.log("[[2]] handleState");
 
             fadeOut({ target: ".lt-cont .icon-bg + span", stagger: false });
@@ -310,82 +319,40 @@ function handleState(data){
                 fadeIn({ target: ".icon-wrap.cstm", stagger: true });
             });
         }
-        if(state.stage === "init" && state.layout === "default"){
+        if(state.stage === "init"){
             const prc_wait = document.querySelector(".prc-wrap.wait");
-            const img_boxes = document.querySelectorAll(".prc-wrap.show-img .img-box");
             let fade_out, fade_in;
             let src = data.option;
-            const callBackFunc1 = (src) => verifyLength(src);
-            const callBackFunc2 = function(src){
-                if(src) verifyLength(src);
-
-                fadeOut({ target: ".lt-cont .icon-bg + span", stagger: false });
-                fadeOut({ target: ".icon-wrap.default", stagger: true })
-                .then(function(){
-                    animation_state = "processing";
-                    fadeIn({ target: ".icon-wrap.cstm", stagger: true });
-                });
+            const callBackFunc = function(src){
+                if(state.layout === "default"){
+                    fadeOut({ target: ".lt-cont .icon-bg + span", stagger: false });
+                    fadeOut({ target: ".icon-wrap.default", stagger: true })
+                    .then(function(){
+                        animation_state = "processing";
+                        fadeIn({ target: ".icon-wrap.cstm", stagger: true });
+                    });
+                }
             }
+            
+            verifyLength(option);
 
             if(!prc_wait.classList.contains("dspl-n")){
                 fade_out = ".prc-wrap.wait";
                 fade_in = ".prc-wrap.show-img";
                 stagger_state = true;
             }else{
-                img_boxes.forEach(function(item){
-                    if(item.classList.contains("dspl-n")){
-                        fade_in = item.classList.contains("img-01") ? ".img-01" : ".img-02";
-                    }else{
-                        fade_out = item.classList.contains("img-01") ? ".img-01" : ".img-02";
-                    }
-                });
+                console.log(data);
+                fade_out = option.target === ".img-01" ? ".img-02" : ".img-01";
+                fade_in = option.target;
                 stagger_state = false;
             }
+
             console.log("[[2]] handleState");
             // alert(`fade_out: ${fade_out}\nfade_in: ${fade_in}\nstagger_state: ${stagger_state}`);
             
             fadeOut({ target: fade_out })
             .then(function(){
                 animation_state = "processing";
-                fadeIn({ 
-                    target: fade_in,
-                    stagger: stagger_state,
-                    func: callBackFunc2,
-                    param: src
-                });
-            });
-        }
-        if(state.stage === "init" && state.layout === "cstm"){
-            const prc_wait = document.querySelector(".prc-wrap.wait");
-            const img_boxes = document.querySelectorAll(".prc-wrap.show-img .img-box");
-            let fade_out, fade_in;
-            let src = data.option;
-            const callBackFunc = (src) => verifyLength(src);
-
-
-            if(!prc_wait.classList.contains("dspl-n")){
-                fade_out = ".prc-wrap.wait";
-                fade_in = ".prc-wrap.show-img";
-                stagger_state = true;
-                verifyLength(src)
-            }else{
-                img_boxes.forEach(function(item){
-                    if(item.classList.contains("dspl-n")){
-                        fade_in = item.classList.contains("img-01") ? ".img-01" : ".img-02";
-                    }else{
-                        fade_out = item.classList.contains("img-01") ? ".img-01" : ".img-02";
-                    }
-                });
-                stagger_state = false;
-            }
-
-            console.log("[[3]] handleState");
-            // alert(`fade_out: ${fade_out}\nfade_in: ${fade_in}\nstagger_state: ${stagger_state}`);
-
-            fadeOut({ target: fade_out })
-            .then(function(){
-                animation_state = "processing";
-                state.stage = "standby";
                 fadeIn({ 
                     target: fade_in,
                     stagger: stagger_state,
@@ -402,33 +369,27 @@ function handleState(data){
     });
 }
 
-function verifyLength(source){
-    let img_def = document.getElementById("selected-img");
-    let img_boxes = document.querySelectorAll(".cont.img-box");
+function verifyLength(obj){
+    const target = obj.target;
     let img = new Image();
     let width, height, alg;
 
-    // console.log(source);
-
-    img.src = source;
-    width = img.width;
-    height = img.height;
-
-    alg = (width > height) ? "hrz" : "vrt";
-
-    img_boxes.forEach(function(item){
-        item.classList.remove("vrt");
-        item.classList.remove("hrz");
-
-        if(!item.classList.contains("dspl-n")){
-            // alert(1);
-            item.classList.add(alg);
-        }
-    });
-
-    // alert(`[2] width: ${width} | height: ${height} | alg: ${alg}`);
-    console.log(`[함수] verifyLength`);
-    return;
+    img.src = obj.source;
+    img.onload = function(){
+        width = img.width;
+        height = img.height;
+    
+        alg = (width > height) ? "hrz" : "vrt";
+    
+        document.querySelector(target).classList.remove("vrt");
+        document.querySelector(target).classList.remove("hrz");
+        document.querySelector(target).classList.add(alg);
+    
+        // alert(obj.source);
+        // alert(`[2] 길이계산 대상: ${obj.target} | width: ${width} | height: ${height} | alg: ${alg}`);
+        // console.log(`[함수] verifyLength`);
+        return;
+    }
 }
 
 function showImg(){
