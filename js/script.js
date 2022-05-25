@@ -100,6 +100,7 @@ function handleState(data){
                     const callBackFunc = function(data){
                         classifyImg({ target: data.target })
                         .then(function(result){
+                            setLoadingAnimation({ target: data.target, state: "finish" });
                             createDot({ target: data.target, result });
                             // createIcon(result);
                         });
@@ -124,15 +125,7 @@ function handleState(data){
             if(results.length !== 0){
                 document.getElementById("results-wrap").innerHTML = "";
                 document.getElementById("results-wrap").style.height = 0;
-
-                // fadeOut({ target: "#results-wrap", stagger: false })
-                // .then(function(){
-                //     setTimeout(() => {
-                //         document.getElementById("results-wrap").innerHTML = "";
-                //     }, 300)
-                // });
             }
-
 
             if(!prc_wait.classList.contains("dspl-n")){
                 fade_out = ".prc-wrap.wait";
@@ -159,10 +152,10 @@ function handleState(data){
                     param: { target: img_target, source: src }
                 });
 
-                setLoadingAnimation({ target: fade_in }); // 로딩 시작
+                setLoadingAnimation({ target: fade_in, state: "pending" }); // 로딩 시작
             });
         }
-        if(state.stage === "pending"){ 
+        if(state.stage === "finished"){ 
             
         }
         console.log("[함수] handleState");
@@ -428,14 +421,41 @@ function setLoadingAnimation(obj){
         fade_in = obj.target;
     }
 
-    document.querySelector(fade_out + " .loading-box").classList.remove("dspl-b");
-    document.querySelector(fade_out + " .loading-box").classList.add("dspl-n");
-
     // alert(`fade_out: ${fade_out} | fade_in: ${fade_in} | 숨길녀석: ${fade_out + " .loading-box"}`);
-    fadeIn({ target: fade_in + " .loading-box", stagger_state: false });
-    setTimeout(() => {
+
+    if(obj.state === "pending"){
         fadeIn({ target: fade_in + " .loading-box", stagger_state: false });
-    }, 400);
+        setTimeout(() => {
+            document.querySelector(fade_in + " svg.pending").classList.remove("dspl-n");
+            document.querySelector(fade_in + " svg.pending").classList.add("dspl-b");
+            document.querySelector(fade_in + " svg.finish").classList.remove("dspl-b");
+            document.querySelector(fade_in + " svg.finish").classList.add("dspl-n");
+            document.querySelector(fade_in + " svg.retry").classList.remove("dspl-b");
+            document.querySelector(fade_in + " svg.retry").classList.add("dspl-n");
+
+            document.querySelector(fade_in + " .info").innerText = "Detecting";
+            fadeIn({ target: fade_in + " .loading-box", stagger_state: false });
+        }, 400);
+    }
+    if(obj.state === "finish"){
+        document.querySelector(fade_in + " svg.pending").classList.remove("dspl-b");
+        document.querySelector(fade_in + " svg.pending").classList.add("dspl-n");
+        document.querySelector(fade_in + " svg.finish").classList.remove("dspl-n");
+        document.querySelector(fade_in + " svg.finish").classList.add("dspl-b");
+        document.querySelector(fade_in + " svg.retry").classList.remove("dspl-b");
+        document.querySelector(fade_in + " svg.retry").classList.add("dspl-n");
+        document.querySelector(fade_in + " .info").innerText = "Finished";
+    }
+    if(obj.state === "retry"){
+        document.querySelector(fade_in + " svg.pending").classList.remove("dspl-b");
+        document.querySelector(fade_in + " svg.pending").classList.add("dspl-n");
+        document.querySelector(fade_in + " svg.finish").classList.remove("dspl-b");
+        document.querySelector(fade_in + " svg.finish").classList.add("dspl-n");
+        document.querySelector(fade_in + " svg.retry").classList.remove("dspl-n");
+        document.querySelector(fade_in + " svg.retry").classList.add("dspl-b");
+        document.querySelector(fade_in + " .info").innerText = "Please Retry";
+    }
+
 }
 
 function verifyLength(obj){
@@ -562,7 +582,7 @@ function classifyImg(obj){
                     }
                     resolve(detect_result);
                 }else{
-                    alert("사진 속 물체를 감지하는데 실패했습니다.\n다른 사진으로 다시 시도해주세요.");
+                    setLoadingAnimation({ target: obj.target, state: "retry" });
 
                     fadeOut({ target: ".icon-wrap.wait", stagger: true })
                     .then(function(){
@@ -595,6 +615,7 @@ class Dot {
         dot.style.position = "absolute";
         dot.style.left = this.x + "px";
         dot.style.top = this.y + "px";
+        dot.style.visibility = "hidden";
         dot.setAttribute("data-idx", this.idx);
         dot.setAttribute("name", this.name);
 
@@ -603,6 +624,7 @@ class Dot {
 }
 
 function createDot(obj){
+    
     obj.result.forEach(function(item){
         let dot = new Dot(
             item.x, 
@@ -615,18 +637,25 @@ function createDot(obj){
         dot.create(".img-box"+obj.target);
     });
 
-    gsap.from(obj.target +" .dot", {
-        duration: 1,
-        scale: 0.5, 
-        opacity: 0, 
-        delay: 0.5, 
-        stagger: 0.2,
-        ease: "elastic", 
-        force3D: true,
-        onComplete: function(){
-            createList(obj);
-        }
-    });
+    const dots = document.querySelectorAll(obj.target + " .dot");
+
+    setTimeout(() => {
+        dots.forEach(function(item){
+            item.style.visibility = "visible";
+        })
+        gsap.from(obj.target +" .dot", {
+            duration: 1,
+            scale: 0.5, 
+            opacity: 0, 
+            delay: 0.5, 
+            stagger: 0.2,
+            ease: "elastic", 
+            force3D: true,
+            onComplete: function(){
+                createList(obj);
+            }
+        });
+    }, 300);
 }
 
 function createList(obj){

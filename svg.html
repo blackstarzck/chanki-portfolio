@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>svg</title>
+</head>
+<style>
+    svg.retry {
+        width: 12px;
+        height: 12px;
+    }
+    svg.retry .p1 {
+        stroke-width: 2;
+        stroke:#FF0000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        /* stroke-dasharray: 12;
+        stroke-dashoffset: 12; */
+        animation: stroke1 .5s ease forwards;
+    }
+    svg.retry .p2 {
+        fill: red;
+        stroke-width: 2;
+        stroke:#FF0000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        /* stroke-dasharray: 12;
+        stroke-dashoffset: 12; */
+        animation: stroke2 .5s ease forwards;
+        animation-delay: 1s;
+    }
+    @keyframes stroke1 {
+        0%{ stroke-dashoffset: 12; }
+        100% { stroke-dashoffset: 0; }
+    }
+    @keyframes stroke2 {
+        0%{ stroke-dashoffset: 12; }
+        100% { stroke-dashoffset: 0; }
+    }
+</style>
+<body>
+    <svg class="retry" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+        <path class="p1" d="M76 40C76 59.8823 59.8823 76 40 76C20.1177 76 4 59.8823 4 40C4 20.1177 20.1177 4 40 4C59.8823 4 76 20.1177 76 40Z"/>
+        <path class="p2" d="M14 15L65 66" stroke-width="8"/>
+    </svg>
+</body>
+</html>
