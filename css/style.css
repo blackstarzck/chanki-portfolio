@@ -47,7 +47,10 @@ i.icon + span { transition: all .1s ease-in }
 .lt-cont .icon-bg + span { font-family: "Noto Sans KR", sans-serif;font-size: 12px;font-weight: 500;margin-left: 8px; }
 .lt-cont .icon-wrap.wait { cursor: inherit; }
 .lt-cont .icon-wrap i { text-align: center;font-size: 80px; }
-.lt-cont .icon-wrap.default { cursor: pointer;position: relative; }
+.lt-cont .icon-wrap { position: relative; }
+.lt-cont .icon-wrap.wait i,
+.lt-cont .icon-wrap.wait i + span { opacity: 0; }
+.lt-cont .icon-wrap.default { cursor: pointer; }
 .lt-cont .icon-wrap.default > i { color: var(--blue-1); }
 .lt-cont .drop-zone { }
 .lt-cont .drop-zone i { display: block;color: var(--blue-1); }
@@ -59,7 +62,7 @@ i.icon + span { transition: all .1s ease-in }
 .lt-cont .icon-wrap i + span { text-align: center;font-size: 24px;font-weight: 500; }
 .lt-cont .icon-wrap.default > i + span { width: 240px;color: var(--blue-1);position: absolute;bottom: -80px;left: 50%;transform: translate(-50%, 0); }
 
-.lt-cont .icon-wrap.wait > i + span { color: var(--yellow-1);position: absolute;bottom: -48px;left: 50%;transform: translate(-50%, 0); }
+.lt-cont .icon-wrap.wait > i + span { width: 140px;color: var(--yellow-1);position: absolute;bottom: -48px;left: 50%;transform: translate(-50%, 0); }
 .lt-cont label.btn-img-upload { display: block;width: 248px;height: 62px;text-align: center;font-size: 24px;line-height: 62px;color: var(--white-1);background-color: var(--blue-1);border-radius: 10px;cursor: pointer }
 .lt-cont label:active { background-color: var(--blue-3); }
 
@@ -69,17 +72,18 @@ i.icon + span { transition: all .1s ease-in }
 .rt-cont .prc-wrap > i { text-align: center;font-size: 100px;color: var(--grey-2); }
 .rt-cont .prc-wrap > i + span { display: block;text-align: center;font-size: 24px;color: var(--grey-2);position: absolute;bottom: -40px;left: 50%;transform: translate(-50%, 0); }
 .rt-cont .prc-wrap.show-img { flex-direction: column; }
-.rt-cont .prc-wrap.show-img .img-box { position: relative;text-align: center; }
+.rt-cont .prc-wrap.show-img .img-box { position: relative;text-align: center;overflow: hidden; }
 .rt-cont .prc-wrap.show-img .img-box.hrz #selected-img { width: 330px;opacity: 1; }
 .rt-cont .prc-wrap.show-img .img-box.vrt #selected-img { height: 315px;opacity: 1; }
-.rt-cont .prc-wrap.show-img .img-box.hrz + ul.results-wrap { width: 330px; }
-.rt-cont .prc-wrap.show-img .img-box.vrt + ul.results-wrap { width: 236px; }
+.rt-cont .prc-wrap.show-img .img-box.hrz ~ #results-wrap { width: 330px; }
+.rt-cont .prc-wrap.show-img .img-box.vrt ~ #results-wrap { width: 236px; }
 .rt-cont .prc-wrap.show-img .img-box img { border-radius: 10px; }
-.rt-cont .prc-wrap.show-img .loding-box { position: absolute;bottom: 10px;left: 20px;padding: 3px 15px 5px;border-radius: 50px;background-color: rgba(0,0,0,.6); }
-.rt-cont .prc-wrap.show-img .loding-box span { font-size: 14px;color: var(--white-1);margin-left: 8px; }
+.rt-cont .loading-box { width: 27px;height: 27px;z-index: 1;position: absolute;bottom: 10px;left: 20px;/*padding: 3px 0 5px;*/border-radius: 50px;background-color: rgba(0,0,0,.6);transition: width .1s ease; }
+.rt-cont .loading-box.dspl-b span { opacity: 0;display: block;font-size: 14px;line-height: 27px;color: var(--white-1);margin-left: 8px;transition: all .4s ease-in;transform: translateX(-3px);animation: text .3s ease both;animation-delay: 1.8s; }
+.rt-cont .loading-box.dspl-b { animation: width .8s ease both;animation-delay: 1s; }
 #selected-img { transition: all .3s ease; }
+svg { position: absolute;top: 0;left: 7px;bottom: 0;margin: auto; }
 svg.pending {
-    position: relative;
     width: 12px;
     height: 12px;
     animation: rotate 2s linear infinite;
@@ -94,6 +98,14 @@ svg.pending circle {
     stroke-dasharray: 32;
     stroke-dashoffset: 32;
     animation: animte 3s linear infinite;
+}
+@keyframes width {
+    0% { width: 27px; }
+    100% { width: 137px; }
+}
+@keyframes text {
+    0% { opacity: 0;transform: translateX(-3px); }
+    100% { opacity: 1;transform: translateX(0); }
 }
 @keyframes rotate {
     0% { transform: rotate(0deg) }
@@ -123,10 +135,17 @@ svg.finish path {
     100% { stroke-dashoffset: 0; }
 }
 
-.rt-cont ul.results-wrap { margin-top: 20px;max-height: 118px;overflow-y: auto;padding-bottom: 20px; }
-.rt-cont ul.results-wrap::-webkit-scrollbar { width: 6px; }
-.rt-cont ul.results-wrap::-webkit-scrollbar-thumb { height: 15%;border-radius: 50px;background-color: var(--grey-1); }
-.rt-cont ul.results-wrap::-webkit-scrollbar-track { background-color: var(--white-1); }
-.rt-cont ul.results-wrap li { padding-left: 15px;position: relative;overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.rt-cont ul.results-wrap li:not(:last-child) { margin-bottom: 15px; }
-.rt-cont ul.results-wrap li::before { content: "";display: block;width: 5px;height: 5px;border-radius: 50%;background-color: var(--black-1);position: absolute;left: 2px;top: 0;bottom: 0;margin: auto; }
+#results-wrap { margin-top: 20px;height: 0;overflow-y: auto;padding-bottom: 20px;transition: .4s; }
+#results-wrap::-webkit-scrollbar { width: 6px; }
+#results-wrap::-webkit-scrollbar-thumb { height: 15%;border-radius: 50px;background-color: var(--grey-1); }
+#results-wrap::-webkit-scrollbar-track { background-color: var(--white-1); }
+#results-wrap .list { padding-left: 15px;position: relative;overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+#results-wrap .list:not(:last-child) { margin-bottom: 15px; }
+#results-wrap .list::after { content: "";display: block;width: 5px;height: 5px;border-radius: 50%;background-color: var(--black-1);position: absolute;left: 2px;top: 0;bottom: 0;margin: auto; }
+#results-wrap .list { position: relative;overflow: hidden;color: black;text-indent: 15px; }
+#results-wrap .list::before { content: attr(data-text);transition: .4s ease-in;position: absolute;top: 0;left: 0;width: 0%;color: #3AB8FF;white-space: nowrap;overflow: hidden;background-color: #E4F5FF; }
+#results-wrap .list.show::before { width: 100%; }
+
+.dot { width: 15px;height: 15px;border-radius: 50% ;background-color: #3AB8FF; }
+.dot.show { background-color: var(--white-1); }
+.dot:hover { transition: .3s;background-color: var(--white-1); }
