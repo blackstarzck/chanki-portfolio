@@ -58,8 +58,6 @@ function handleState(data){
 
     return new Promise (function(resolve){
         if(state.stage === "standby" && state.layout === "default"){
-            console.log("[[1]] handleState");
-
             fadeIn({ target: ".lt-cont .icon-bg + span", stagger: false });
             fadeOut({ target: ".icon-wrap.cstm", stagger: true })
             .then(function(){
@@ -68,8 +66,6 @@ function handleState(data){
             });
         }
         if(state.stage === "standby" && state.layout === "cstm"){ 
-            console.log("[[2]] handleState");
-
             fadeOut({ target: ".lt-cont .icon-bg + span", stagger: false });
             fadeOut({ target: ".icon-wrap.default", stagger: true })
             .then(function(){
@@ -91,8 +87,6 @@ function handleState(data){
                         if(item.classList.contains("cstm")) hide = ".cstm";
                     }
                 });
-
-                console.log(data)
 
                 fadeOut({ target: "#switch", stagger: false });
                 fadeOut({ target: hide, stagger: true })
@@ -139,7 +133,6 @@ function handleState(data){
                 img_target = fade_in;
             }
 
-            console.log("[[2]] handleState");
             // alert(`fade_out: ${fade_out}\nfade_in: ${fade_in}\nstagger_state: ${stagger_state}`);
             
             fadeOut({ target: fade_out })
@@ -156,9 +149,13 @@ function handleState(data){
             });
         }
         if(state.stage === "finished"){ 
-            
+            fadeOut({ target: ".icon-wrap.wait", stagger: true })
+            .then(function(){
+                animation_state = "processing";
+                fadeIn({ target: "#switch", stagger: false });
+                fadeIn({ target: ".icon-wrap.cstm", stagger: true });
+            });
         }
-        console.log("[함수] handleState");
         resolve("");
     });
 }
@@ -374,7 +371,6 @@ function handleImgUpload(type, file){
             img_boxes.forEach(function(item){
                 if(item.classList.contains("dspl-n")){
                     visible = item.classList.contains("img-01") ? ".img-01" : ".img-02";
-                    console.log("visible: " + visible);
                 }
             });
         }
@@ -398,9 +394,6 @@ function handleImgUpload(type, file){
                 preview.src = "";
                 preview.src = src;
 
-                // console.log(preview);
-                // console.log(src);
-                console.log("[함수] handleImgUpload");
                 resolve({ source: src, target:  visible});
             }
         }
@@ -423,39 +416,28 @@ function setLoadingAnimation(obj){
 
     // alert(`fade_out: ${fade_out} | fade_in: ${fade_in} | 숨길녀석: ${fade_out + " .loading-box"}`);
 
-    if(obj.state === "pending"){
-        fadeIn({ target: fade_in + " .loading-box", stagger_state: false });
-        setTimeout(() => {
-            document.querySelector(fade_in + " svg.pending").classList.remove("dspl-n");
-            document.querySelector(fade_in + " svg.pending").classList.add("dspl-b");
-            document.querySelector(fade_in + " svg.finish").classList.remove("dspl-b");
-            document.querySelector(fade_in + " svg.finish").classList.add("dspl-n");
-            document.querySelector(fade_in + " svg.retry").classList.remove("dspl-b");
-            document.querySelector(fade_in + " svg.retry").classList.add("dspl-n");
+    const svg = document.querySelectorAll(fade_in + " svg");
+    svg.forEach((item) => {
+        item.classList.remove("dspl-b");
+        item.classList.add("dspl-n");
 
-            document.querySelector(fade_in + " .info").innerText = "Detecting";
+        if(obj.state === "pending" && item.classList.contains("pending")){
             fadeIn({ target: fade_in + " .loading-box", stagger_state: false });
-        }, 400);
-    }
-    if(obj.state === "finish"){
-        document.querySelector(fade_in + " svg.pending").classList.remove("dspl-b");
-        document.querySelector(fade_in + " svg.pending").classList.add("dspl-n");
-        document.querySelector(fade_in + " svg.finish").classList.remove("dspl-n");
-        document.querySelector(fade_in + " svg.finish").classList.add("dspl-b");
-        document.querySelector(fade_in + " svg.retry").classList.remove("dspl-b");
-        document.querySelector(fade_in + " svg.retry").classList.add("dspl-n");
-        document.querySelector(fade_in + " .info").innerText = "Finished";
-    }
-    if(obj.state === "retry"){
-        document.querySelector(fade_in + " svg.pending").classList.remove("dspl-b");
-        document.querySelector(fade_in + " svg.pending").classList.add("dspl-n");
-        document.querySelector(fade_in + " svg.finish").classList.remove("dspl-b");
-        document.querySelector(fade_in + " svg.finish").classList.add("dspl-n");
-        document.querySelector(fade_in + " svg.retry").classList.remove("dspl-n");
-        document.querySelector(fade_in + " svg.retry").classList.add("dspl-b");
-        document.querySelector(fade_in + " .info").innerText = "Please Retry";
-    }
+            item.classList.add("dspl-b");
+        }
 
+        if(obj.state === "finish" && item.classList.contains("finish")){
+            item.classList.add("dspl-b");
+            document.querySelector(fade_in + " .info").innerText = "Finished";
+        }
+
+        if(obj.state === "retry" && item.classList.contains("retry")){
+            setTimeout(() => {
+                item.classList.add("dspl-b");
+                document.querySelector(fade_in + " .info").innerText = "Please Retry";
+            }, 300);
+        }
+    });
 }
 
 function verifyLength(obj){
@@ -491,68 +473,68 @@ function verifyLength(obj){
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ DETECT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
-const list_area = document.getElementById("list-wrap");
-const dot_area = document.getElementById("img-box");
+const list_area = document.getElementById("results-wrap");
+const dot_area = document.querySelectorAll(".img-box");
 
 // 리스트 hover on
-// list_area.addEventListener("mouseover", function(e){
-//     if(e.target.classList.contains("list")){
-//         handleHoverAnimation({
-//             target: e.target,
-//             state: "active"
-//         });
-//     }
-// });
+list_area.addEventListener("mouseover", function(e){
+    if(e.target.classList.contains("list")){
+        handleHoverAnimation({
+            target: e.target,
+            state: "active"
+        });
+    }
+});
 
-// // 리스트 hover off
-// list_area.addEventListener("mouseleave", function(e){
-//     handleHoverAnimation({
-//         target: e.target,
-//         state: "inactive"
-//     });
-// });
+// 리스트 hover off
+list_area.addEventListener("mouseleave", function(e){
+    handleHoverAnimation({
+        target: e.target,
+        state: "inactive"
+    });
+});
 
-// // 점 hover on
-// dot_area.addEventListener("mouseover", function(e){
-//     let str = e.target.classList.contains("dot") ? "active" : "inactive";
-//     handleHoverAnimation({
-//         target: e.target,
-//         state: str
-//     });
-// });
+// 점 hover on
+dot_area.forEach(function(item){
+    item.addEventListener("mouseover", function(e){
+        let str = e.target.classList.contains("dot") ? "active" : "inactive";
 
-// function handleHoverAnimation(obj){
-//     const verify = obj.target.classList.contains("dot") || obj.target.getAttribute("id") == "img" ? "list" : "dot";
-//     const target = document.querySelectorAll("."+verify);
-//     const current_idx = obj.target.getAttribute("data-idx");
+        handleHoverAnimation({
+            target: e.target,
+            state: str
+        });
+    });
+});
 
-//     console.log(obj.target.getAttribute("id"))
-//     console.log(`handleHoverAnimation\nverify: ${verify}\nobj.state: ${obj.state}`);
+function handleHoverAnimation(obj){
+    const verify = obj.target.classList.contains("dot") || obj.target.getAttribute("id") == "selected-img" ? "list" : "dot";
+    const target = document.querySelectorAll("."+verify);
+    const current_idx = obj.target.getAttribute("data-idx");
 
-//     target.forEach((item, other_idx) => {
-//         item.classList.remove("show");
-//         if(current_idx == (other_idx + 1)){
+    target.forEach((item, other_idx) => {
+        item.classList.remove("show");
+        if(current_idx == (other_idx + 1)){
 
-//             if(obj.state === "active") item.classList.add("show");
-//             if(verify === "dot"){
-//                 // dot animation
-//                 gsap.from(item, {
-//                     duration: 1,
-//                     scale: 0.5, 
-//                     opacity: 0, 
-//                     stagger: 0.2,
-//                     ease: "elastic", 
-//                     force3D: true,
-//                     onComplete: function(){
-//                         gsap.set(item, { scale: 1, opacity: 1 });
-//                     }
-//                 });
-//             }
-//         }else{
-//             if(obj.state === "inactive") item.classList.remove("show");
-//         }
-//     });
-// }
+            if(obj.state === "active") item.classList.add("show");
+            if(verify === "dot"){
+                // dot animation
+                gsap.from(item, {
+                    duration: 1,
+                    scale: 0.5, 
+                    opacity: 0, 
+                    stagger: 0.2,
+                    ease: "elastic", 
+                    force3D: true,
+                    onComplete: function(){
+                        gsap.set(item, { scale: 1, opacity: 1 });
+                    }
+                });
+            }
+        }else{
+            if(obj.state === "inactive") item.classList.remove("show");
+        }
+    });
+}
 
 let detect_result = [];
 function classifyImg(obj){
@@ -583,13 +565,7 @@ function classifyImg(obj){
                     resolve(detect_result);
                 }else{
                     setLoadingAnimation({ target: obj.target, state: "retry" });
-
-                    fadeOut({ target: ".icon-wrap.wait", stagger: true })
-                    .then(function(){
-                        animation_state = "processing";
-                        fadeIn({ target: "#switch", stagger: false });
-                        fadeIn({ target: ".icon-wrap.cstm", stagger: true });
-                    });
+                    handleState({ stage: "finished" });
                 }
             });
         });
@@ -686,12 +662,7 @@ function createList(obj){
         stagger: 0.3,
         ease: "back.in",
         onComplete: function(){
-            fadeOut({ target: ".icon-wrap.wait", stagger: true })
-            .then(function(){
-                animation_state = "processing";
-                fadeIn({ target: "#switch", stagger: false });
-                fadeIn({ target: ".icon-wrap.cstm", stagger: true });
-            });
+            handleState({ stage: "finished" });
         }
     });
 }

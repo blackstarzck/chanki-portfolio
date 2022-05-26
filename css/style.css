@@ -143,11 +143,9 @@ svg.retry.dspl-b + span.info { color: #FF0000;transition: none }
 #results-wrap::-webkit-scrollbar { width: 6px; }
 #results-wrap::-webkit-scrollbar-thumb { height: 15%;border-radius: 50px;background-color: var(--grey-1); }
 #results-wrap::-webkit-scrollbar-track { background-color: var(--white-1); }
-#results-wrap .list { padding-left: 15px;position: relative;overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-#results-wrap .list:not(:last-child) { margin-bottom: 15px; }
-#results-wrap .list::after { content: "";display: block;width: 5px;height: 5px;border-radius: 50%;background-color: var(--black-1);position: absolute;left: 2px;top: 0;bottom: 0;margin: auto; }
-#results-wrap .list { position: relative;overflow: hidden;color: black;text-indent: 15px; }
-#results-wrap .list::before { content: attr(data-text);transition: .4s ease-in;position: absolute;top: 0;left: 0;width: 0%;color: #3AB8FF;white-space: nowrap;overflow: hidden;background-color: #E4F5FF; }
+#results-wrap .list { padding-left: 15px;height: 30px;line-height: 30px;position: relative;overflow: hidden;white-space: nowrap; text-overflow: ellipsis; }
+#results-wrap .list { position: relative;overflow: hidden;color: black; }
+#results-wrap .list::before { content: attr(data-text);transition: .3s ease-out;position: absolute;top: 0;left: 0;width: 0%;color: #3AB8FF;white-space: nowrap;overflow: hidden;background-color: #E4F5FF;text-indent: 15px; }
 #results-wrap .list.show::before { width: 100%; }
 
 .dot { width: 15px;height: 15px;border-radius: 50% ;background-color: #3AB8FF; }
