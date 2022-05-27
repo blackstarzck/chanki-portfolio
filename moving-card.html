@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        outline: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    canvas {
+        width: 100%;
+        height: 100%;
+        background-color: #eeeeee;
+    }
+    .box {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        border-radius: 50%;
+    }
+    /* .box::after {
+        content: "";
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border-radius: 50%;
+    } */
+    .box1 {
+        background-color: red;
+        top: 50%;
+        left: 10%;
+    }
+    .box2 {
+        background-color: blue;
+        top: 60%;
+        right: 30%;
+    }
+    .box3 {
+        background-color: green;
+        top: 20%;
+        left: 40%;
+    }
+    #container {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        margin: 50px;
+        margin: 0 auto;
+    }
+</style>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div class="box box1"></div>
+        <div class="box box2"></div>
+        <div class="box box3"></div>
+    </div>
+
+    <script>
+        getPos(".box");
+        function getPos(elem){
+            let target = document.querySelectorAll(elem);
+            target.forEach((item, idx) => {
+                const data = item.getBoundingClientRect();
+                createRect({ data, elem: item });
+            });
+        }
+
+        function createRect(param){
+            const radius = 120;
+            const PI2 = Math.PI * 2;
+            const points = 30;
+            const angle = PI2 / points;
+            const width = 150;
+            const height = 150;
+            const random = Math.floor(Math.random() * points) + 1;
+
+            for(let i = 0; i < points; i++){
+                const centerX = radius * Math.cos(angle * i);
+                const centerY = radius * Math.sin(angle * i);
+                let left = centerX + (param.data.width / 2) - (width / 2) 
+                let top = centerY + (param.data.height / 2) - (height / 2) 
+
+                const box = document.createElement("div");
+                box.setAttribute("class", `inner inner-${i+1}`);
+                box.style.width = `${width}px`;
+                box.style.height = `${height}px`;
+                box.style.lineHeight = `${height}px`;
+                box.style.textAlign = "center";
+                box.style.backgroundColor = "yellow";
+                box.style.position = "absolute";
+                box.style.left = `${left}px`;
+                box.style.top = `${top}px`;
+                box.style.fontSize = `18x`;
+                box.style.fontWeight = "bold";
+                box.style.outline = "1px solid red";
+                box.innerText = i + 1;
+
+                if(random === (i+1) && param.elem.children.length === 0){
+                    // console.log(`○○○○○○○○○○○○○○○○○○○○○○○○○○○ random: ${random} ○○○○○○○○○○○○○○○○○○○○○○○○○○○`);
+                    param.elem.appendChild(box);
+                    checkCollision(box);
+                }
+            }
+        }
+
+        function checkCollision(target){
+            console.log(`■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ [1] INPUT: ${target.className} ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■`);
+            console.log(`■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ [2] INPUT: ${target.parentElement.className} ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■`);
+            
+            const container = document.getElementById("container");
+            const cont_data = container.getBoundingClientRect();
+            const cards = document.querySelectorAll(".inner");
+            const box = document.querySelectorAll(".box");
+            const data = target.getBoundingClientRect();
+            const x1 = Math.round(data.x);
+            const y1 =  Math.round(data.y);
+            const x2 = x1 + data.width;
+            const y2 = y1 + data.height;
+            const stage_x1 = cont_data.x;
+            const stage_y1 = cont_data.y;
+            const stage_x2 = cont_data.x + cont_data.width;
+            const stage_y2 = cont_data.y + cont_data.height;
+
+            console.log(`MAIN: ${target.className} | x1: ${x1} | y1: ${y1} | x2: ${x2} | y2: ${y2}`);
+            console.log(data)
+
+            box.forEach((item) => {
+                const center_data = item.getBoundingClientRect();
+                const centerX = Math.round((center_data.width) / 2 + center_data.x);
+                const centerY = Math.round((center_data.height) / 2 + center_data.y);
+                console.log(center_data)
+
+                if(item.children[0]){
+                    const inner = item.children[0];
+                    const parent_elem = item;
+                    const parent_data = parent_elem.getBoundingClientRect()
+                    const data_compare = inner.getBoundingClientRect();
+                    const x1_compare =  Math.round(data_compare.x);
+                    const y1_compare =  Math.round(data_compare.y);
+                    const x2_compare = x1_compare + data_compare.width;
+                    const y2_compare = y1_compare + data_compare.height;
+                    if(
+                        (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
+                        (stage_y1 > y1_compare || stage_y2 < y2_compare)
+                    ){
+                        console.log(`화면 밖으로 넘치는 대상: ${inner.className}`);
+
+                        inner.remove();
+                        createRect({ data: parent_data , elem: parent_elem });
+                    }
+
+                    if(
+                        (x1 < x1_compare && x1_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
+                        (x1 < x1_compare && x1_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
+                        (x1 < x2_compare && x2_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
+                        (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2)
+                    ){
+                        console.log(`곂치는 대상: ${inner.className} & ${target.className}`);
+                        console.log(`제거대상: ${inner.className}`);
+
+                        inner.remove();
+                        createRect({ data: parent_data , elem: parent_elem });
+                    }
+
+                    console.log(`[${item.className}] 점의 가운데 좌표: ${centerX}, ${centerY}`);
+
+                    let corners = [
+                        { width: centerX - x1_compare, height: centerY - y1_compare, x: x1_compare, y: y1_compare },
+                        { width: centerX - x1_compare, height: centerY - y2_compare, x: x1_compare, y: y2_compare },
+                        { width: centerX - x2_compare, height: centerY - y2_compare, x: x2_compare, y: y2_compare },
+                        { width: centerX - x2_compare, height: centerY - y1_compare, x: x2_compare, y: y1_compare }
+                    ]
+                    corners.forEach((item, idx) => {
+                        let length = Math.round(Math.sqrt((item.width) * (item.width) + (item.height) * (item.height)));
+                        corners[idx].length = length;
+
+                        console.log(`${inner.className} | ${idx+1} | width: ${item.width} | height: ${item.height} | 대각선: ${length} | x: ${item.x}, y: ${item.y}`);
+                    });
+                    corners.sort(function(a, b) {
+                        return a.length < b.length  ? -1 : a.length  > b.length  ? 1 : 0;
+                    });
+
+                    let nearest_x = corners[0].x;
+                    let nearest_y = corners[0].y;
+                    console.log(nearest_x, nearest_y);
+                }
+            });
+        }
+    </script>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        let stage_width, stage_height;
+        x = 100;
+        y = 100;
+        radius = 20;
+
+        // resize();
+        // window.addEventListener("resize", resize);
+        
+        // resize();
+        function resize(){
+            stage_width = document.body.clientWidth;
+            stage_height = document.body.clientHeight;
+
+            const px_ratio = window.pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
+
+            canvas.width = stage_width * px_ratio;
+            canvas.height = stage_height * px_ratio;
+
+            console.log(`canvas.width: ${canvas.width} | canvas.height: ${canvas.height}`);
+
+            window.requestAnimationFrame(create);
+            getPos();
+        }
+
+        function create(){
+            console.log(x)
+            ctx.clearRect(0, 0, stage_width, this.stage_height);
+            ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+            ctx.fill();
+        }
+
+        function getPos(){
+            let boxes = document.querySelectorAll(".box");
+            boxes.forEach((item) => {
+                let pos = item.getBoundingClientRect();
+                console.log(pos)
+            })
+        }
+    </script>
+</body>
+</html>
