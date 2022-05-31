@@ -24,39 +24,30 @@
     }
 
     canvas {
+        display: block;
         width: 100%;
         height: 100%;
         background-color: #eeeeee;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
     .dot {
         width: 10px;
         height: 10px;
         position: absolute;
         border-radius: 50%;
-    }
-    /* .dot::after {
-        content: "";
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        border-radius: 50%;
-    } */
-    .dot1 {
         background-color: red;
+    }
+    .dot1 {
         top: 50%;
         left: 10%;
     }
     .dot2 {
-        background-color: blue;
         top: 60%;
         right: 30%;
     }
     .dot3 {
-        background-color: green;
         top: 20%;
         left: 40%;
     }
@@ -68,6 +59,10 @@
         margin: 0 auto;
         background-color: transparent;
     }
+    .card {
+        border-radius: 5px;
+        z-index: 5;
+    }
 </style>
 <body>
     <div id="container">
@@ -78,197 +73,254 @@
     </div>
 
     <script>
-        getPos(".dot");
-        function getPos(elem){
-            let target = document.querySelectorAll(elem);
-            target.forEach((item, idx) => {
-                const data = item.getBoundingClientRect();
-                createRect({ data, elem: item });
-            });
-        }
-
-        function createRect(param){
-            const radius = 120;
-            const PI2 = Math.PI * 2;
-            const points = 30;
-            const angle = PI2 / points;
-            const width = 150;
-            const height = 150;
-            const random = Math.floor(Math.random() * points) + 1;
-
-            for(let i = 0; i < points; i++){
-                const centerX = radius * Math.cos(angle * i);
-                const centerY = radius * Math.sin(angle * i);
-                let left = centerX + (param.data.width / 2) - (width / 2) 
-                let top = centerY + (param.data.height / 2) - (height / 2) 
-
-                const dot = document.createElement("div");
-                dot.setAttribute("class", `inner inner-${i+1}`);
-                dot.style.width = `${width}px`;
-                dot.style.height = `${height}px`;
-                dot.style.lineHeight = `${height}px`;
-                dot.style.textAlign = "center";
-                dot.style.backgroundColor = "yellow";
-                dot.style.position = "absolute";
-                dot.style.left = `${left}px`;
-                dot.style.top = `${top}px`;
-                dot.style.fontSize = `18x`;
-                dot.style.fontWeight = "bold";
-                dot.style.outline = "1px solid red";
-                dot.innerText = i + 1;
-
-                if(random === (i+1) && param.elem.children.length === 0){
-                    // console.log(`○○○○○○○○○○○○○○○○○○○○○○○○○○○ random: ${random} ○○○○○○○○○○○○○○○○○○○○○○○○○○○`);
-                    param.elem.appendChild(dot);
-                    checkCollision(dot);
-                }
-            }
-        }
-
-        function checkCollision(target){
-            console.log(`■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ [1] INPUT: ${target.className} ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■`);
-            console.log(`■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ [2] INPUT: ${target.parentElement.className} ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■`);
-            
-            const container = document.getElementById("container");
-            const cont_data = container.getBoundingClientRect();
-            const cards = document.querySelectorAll(".inner");
-            const dot = document.querySelectorAll(".dot");
-            const data = target.getBoundingClientRect();
-            const x1 = Math.round(data.x);
-            const y1 =  Math.round(data.y);
-            const x2 = x1 + data.width;
-            const y2 = y1 + data.height;
-            const stage_x1 = cont_data.x;
-            const stage_y1 = cont_data.y;
-            const stage_x2 = cont_data.x + cont_data.width;
-            const stage_y2 = cont_data.y + cont_data.height;
-
-            console.log(`MAIN: ${target.className} | x1: ${x1} | y1: ${y1} | x2: ${x2} | y2: ${y2}`);
-            console.log(data)
-
-            dot.forEach((item) => {
-                const center_data = item.getBoundingClientRect();
-                const centerX = Math.round((center_data.width) / 2 + center_data.x);
-                const centerY = Math.round((center_data.height) / 2 + center_data.y);
-                console.log(center_data)
-
-                if(item.children[0]){
-                    const inner = item.children[0];
-                    const parent_elem = item;
-                    const parent_data = parent_elem.getBoundingClientRect()
-                    const data_compare = inner.getBoundingClientRect();
-                    const x1_compare =  Math.round(data_compare.x);
-                    const y1_compare =  Math.round(data_compare.y);
-                    const x2_compare = x1_compare + data_compare.width;
-                    const y2_compare = y1_compare + data_compare.height;
-                    if(
-                        (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
-                        (stage_y1 > y1_compare || stage_y2 < y2_compare)
-                    ){
-                        console.log(`화면 밖으로 넘치는 대상: ${inner.className}`);
-
-                        inner.remove();
-                        createRect({ data: parent_data , elem: parent_elem });
-                    }
-
-                    if(
-                        (x1 < x1_compare && x1_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
-                        (x1 < x1_compare && x1_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
-                        (x1 < x2_compare && x2_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
-                        (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2)
-                    ){
-                        console.log(`곂치는 대상: ${inner.className} & ${target.className}`);
-                        console.log(`제거대상: ${inner.className}`);
-
-                        inner.remove();
-                        createRect({ data: parent_data , elem: parent_elem });
-                    }
-                    
-                    // 중심점과 제일 가까운 모서리
-                    console.log(`[${item.className}] 점의 가운데 좌표: ${centerX}, ${centerY}`);
-
-                    const corners = [
-                        { width: centerX - x1_compare, height: centerY - y1_compare, x: x1_compare, y: y1_compare, pos: "left-top" },
-                        { width: centerX - x1_compare, height: centerY - y2_compare, x: x1_compare, y: y2_compare, pos: "left-bottom" },
-                        { width: centerX - x2_compare, height: centerY - y2_compare, x: x2_compare, y: y2_compare, pos: "right-bottom" },
-                        { width: centerX - x2_compare, height: centerY - y1_compare, x: x2_compare, y: y1_compare, pos: "right-top" }
-                    ]
-                    corners.forEach((item, idx) => {
-                        const length = Math.round(Math.sqrt((item.width) * (item.width) + (item.height) * (item.height)));
-                        corners[idx].length = length;
-
-                        console.log(`${inner.className} | ${idx+1} | width: ${item.width} | height: ${item.height} | 대각선: ${length} | x: ${item.x}, y: ${item.y}`);
-                    });
-                    corners.sort(function(a, b) {
-                        return a.length < b.length  ? -1 : a.length  > b.length  ? 1 : 0;
-                    });
-
-                    createCorner({ pos: corners[0].pos, elem: inner });
-                }
-            });
-        }
-
-        function createCorner(data){
-            const elem = document.createElement("div");
-
-            elem.classList.add("corner");
-            // elem.style.width = "5px";
-            // elem.style.height = "5px";
-            elem.style.position = "absolute";
-            elem.style.backgroundColor = "pink";
-
-            if(data.pos.split("-")[0] === "left") elem.style.left = 0;
-            if(data.pos.split("-")[0] === "right") elem.style.right = 0;
-            if(data.pos.split("-")[1] === "top") elem.style.top = 0;
-            if(data.pos.split("-")[1] === "bottom") elem.style.bottom = 0;
-
-            if(data.elem.children.length === 0){
-                console.log(data.elem.className,);
-                console.log(`a: ${data.pos.split("-")[0]} | b: ${data.pos.split("-")[1]}`);
-                data.elem.appendChild(elem);
-            }
-        }
-    </script>
-    <script>
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
-        let stage_width, stage_height;
-        x = 100;
-        y = 100;
-        radius = 20;
-
-        resize();
-        window.addEventListener("resize", resize);
-        
-        // resize();
-        function resize(){
-            stage_width = document.body.clientWidth;
-            stage_height = document.body.clientHeight;
-
-            const px_ratio = window.pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
-
-            canvas.width = stage_width * px_ratio;
-            canvas.height = stage_height * px_ratio;
-
-            console.log(`canvas.width: ${canvas.width} | canvas.height: ${canvas.height}`);
-
-            // window.requestAnimationFrame(create);
+        window.onload = () => {
             getPos();
-        }
 
-        function create(){
-            console.log(x)
-            ctx.clearRect(0, 0, stage_width, this.stage_height);
-            ctx.arc(x, y, radius, 0, Math.PI * 2, false);
-            ctx.fill();
-        }
+
+            document.querySelectorAll(".card").forEach((item, idx) => {
+                const { transform } = item.style;
+                console.log(`${idx+1} | ${transform}`);
+
+                item.addEventListener("mousemove", function(e){
+                    const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = item.parentElement;
+                    const left = e.pageX - offsetLeft;
+                    const top = e.pageY - offsetTop;
+                    const centerX = left - offsetWidth / 2;
+                    const centerY = top - offsetHeight / 2;
+
+                    // item.style.transition = "";
+                    item.style.transform = `translate3d(${centerX / 4}px, ${centerY / 4}px, 0)`;
+                });
+
+                item.addEventListener("mouseleave", function(e){
+                    let target_idx = Number(item.parentElement.getAttribute("data-idx"));
+
+                    console.log(`idx: ${idx+1} | target_idx: ${target_idx}`);
+
+                    if((idx+1) === target_idx){
+                        console.log(transform)
+                        // item.style.transition = "all .3s ease-out"
+                        item.style.transform = transform;
+                    }
+                });
+            });
+        };
 
         function getPos(){
-            let boxes = document.querySelectorAll(".dot");
-            boxes.forEach((item) => {
-                let pos = item.getBoundingClientRect();
-                console.log(pos)
-            })
+            const dot = document.querySelectorAll(".dot");
+
+            dot.forEach((item, idx) => {
+                const data = item.getBoundingClientRect();
+                const card = new Card({ data, target: item });
+                card.createCard();
+
+                item.setAttribute("data-idx", idx+1);
+            });
+            drawLine();
+        }
+
+        class Card {
+            constructor(obj){
+                this.dot_width = obj.data.width;
+                this.dot_height = obj.data.height;
+                this.target = obj.target;
+                this.dot_data = this.target.getBoundingClientRect();
+                this.corner_pos = [];
+                this.centerX = Math.round((this.dot_data.width) / 2 + this.dot_data.x);
+                this.centerY = Math.round((this.dot_data.height) / 2 + this.dot_data.y);
+                this.cornerX = 0;
+                this.cornerY = 0;
+                this.canvas = document.getElementById("canvas");
+                this.ctx = canvas.getContext("2d");
+                this.stage_width = document.body.clientWidth;
+                this.stage_height = document.body.clientHeight;
+            }
+
+            createCard(){
+                const radius = 120;
+                const PI2 = Math.PI * 2;
+                const points = 30;
+                const angle = PI2 / points;
+                const width = 150;
+                const height = 150;
+                const random = Math.floor(Math.random() * points) + 1;
+                let centerX, centerY, left, top;
+
+                for(let i = 0; i < points; i++){
+                    centerX = radius * Math.cos(angle * i);
+                    centerY = radius * Math.sin(angle * i);
+                    left = centerX + (this.dot_width / 2) - (width / 2) 
+                    top = centerY + (this.dot_height / 2) - (height / 2) 
+
+                    const card = document.createElement("div");
+                    card.setAttribute("class", `card card-${i+1}`);
+                    card.style.width = `${width}px`;
+                    card.style.height = `${height}px`;
+                    card.style.lineHeight = `${height}px`;
+                    card.style.textAlign = "center";
+                    card.style.backgroundColor = "yellow";
+                    card.style.position = "absolute";
+                    // card.style.left = `${left}px`;
+                    // card.style.top = `${top}px`;
+                    card.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+                    card.style.fontSize = `18x`;
+                    card.style.fontWeight = "bold";
+                    card.style.outline = "1px solid red";
+                    card.innerText = i + 1;
+
+                    if(random === (i+1) && this.target.children.length === 0){
+                        // console.log(`○○○○○○○○○○○○○○○○○○○○○○○○○○○ random: ${random} ○○○○○○○○○○○○○○○○○○○○○○○○○○○`);
+                        this.target.appendChild(card);
+                        this.checkCollision(card);
+                    }
+                }
+                this.createCorner();
+            }
+
+            checkCollision(card_target){
+                const container = document.getElementById("container");
+                const cont_data = container.getBoundingClientRect();
+                const dots = document.querySelectorAll(".dot");
+                const target_data = card_target.getBoundingClientRect();
+                const x1 = Math.round(target_data.x);
+                const y1 =  Math.round(target_data.y);
+                const x2 = x1 + target_data.width;
+                const y2 = y1 + target_data.height;
+                const stage_x1 = cont_data.x;
+                const stage_y1 = cont_data.y;
+                const stage_x2 = cont_data.x + cont_data.width;
+                const stage_y2 = cont_data.y + cont_data.height;
+                let x1_compare, y1_compare, x2_compare, y2_compare;
+
+                dots.forEach((dot) => {
+                    if(dot.children[0]){
+                        const card = dot.children[0];
+                        const card_data = card.getBoundingClientRect();
+                        const parent_data = dot.getBoundingClientRect();
+                        x1_compare =  Math.round(card_data.x);
+                        y1_compare =  Math.round(card_data.y);
+                        x2_compare = x1_compare + card_data.width;
+                        y2_compare = y1_compare + card_data.height;
+
+                        if(
+                            (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
+                            (stage_y1 > y1_compare || stage_y2 < y2_compare)
+                        ){
+                            card.remove();
+                            this.createCard({ data: parent_data , target: dot });
+                        }
+
+                        if(
+                            (x1 < x1_compare && x1_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
+                            (x1 < x1_compare && x1_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
+                            (x1 < x2_compare && x2_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
+                            (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2)
+                        ){
+                            card_target.remove();
+                            this.createCard({ data: parent_data , target: card_target.parentElem });
+                        }
+                    }
+                });
+
+                const corners = [
+                    { width: this.centerX - x1_compare, height: this.centerY - y1_compare, x: x1_compare, y: y1_compare, pos: "left-top" },
+                    { width: this.centerX - x1_compare, height: this.centerY - y2_compare, x: x1_compare, y: y2_compare, pos: "left-bottom" },
+                    { width: this.centerX - x2_compare, height: this.centerY - y2_compare, x: x2_compare, y: y2_compare, pos: "right-bottom" },
+                    { width: this.centerX - x2_compare, height: this.centerY - y1_compare, x: x2_compare, y: y1_compare, pos: "right-top" }
+                ]
+                this.corner_pos = corners;
+            }
+
+            createCorner(){
+                const corner = document.createElement("div");
+
+                this.corner_pos.forEach((item, idx) => {
+                    const length = Math.round(Math.sqrt((item.width) * (item.width) + (item.height) * (item.height)));
+                    this.corner_pos[idx].length = length;
+                });
+                this.corner_pos.sort(function(a, b) {
+                    return a.length < b.length  ? -1 : a.length  > b.length  ? 1 : 0;
+                });
+
+                corner.classList.add("corner");
+                // corner.style.width = "5px";
+                // corner.style.height = "5px";
+                corner.style.position = "absolute";
+                corner.style.backgroundColor = "pink";
+
+                if(this.corner_pos[0].pos === "left-top"){
+                    corner.style.left = "2px";
+                    corner.style.top = "2px";
+                }
+                if(this.corner_pos[0].pos === "right-top"){
+                    corner.style.right = "2px";
+                    corner.style.top = "2px";
+                }
+                if(this.corner_pos[0].pos === "left-bottom"){
+                    corner.style.left = "2px";
+                    corner.style.bottom = "2px";
+                }
+                if(this.corner_pos[0].pos === "right-bottom"){
+                    corner.style.right = "2px";
+                    corner.style.bottom = "2px";
+                }
+
+                if(this.target.children[0].children.length === 0) this.target.children[0].appendChild(corner);
+            }
+        }
+
+        window.addEventListener("resize", function(e){
+            resize();
+            drawLine(); 
+        });
+
+
+
+        resize();
+        function resize(){
+            const canvas = document.getElementById("canvas");
+            const container = document.getElementById("container");
+            const px_ratio = window.pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
+            let stage_width = container.clientWidth;
+            let stage_height = container.clientHeight;
+
+            canvas.width = stage_width;
+            canvas.height = stage_height;
+        }
+
+        function drawLine(){
+            const dots = document.querySelectorAll(".dot");
+            const corners = document.querySelectorAll(".corner");
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d"); 
+            let pos = [];
+            let obj;
+
+            dots.forEach((item, idx) => {
+                let data = item.getBoundingClientRect();
+                let x = (data.width / 2) + data.x;
+                let y = (data.height / 2) + data.y;
+
+                obj = { centerX: x, centerY: y };
+                pos.push(obj);
+            });
+
+            corners.forEach((item, idx) => {
+                let data = item.getBoundingClientRect();
+                let x = data.x;
+                let y = data.y;
+
+                pos[idx]["cornerX"] = x;
+                pos[idx]["cornerY"] = y;
+            });
+
+            pos.forEach((item) => {
+                ctx.beginPath();
+                ctx.moveTo(item.centerX, item.centerY);
+                ctx.lineTo(item.cornerX, item.cornerY);
+                ctx.strokeStyle = '#ff0000';
+                ctx.stroke();
+            });
         }
     </script>
 </body>
