@@ -62,9 +62,7 @@
     }
     .card {
         border-radius: 5px;
-        background-color: yellow;
-        outline: 1px solid red;
-        position: absolute;
+        z-index: 5;
     }
 </style>
 <body>
@@ -79,16 +77,34 @@
         window.onload = () => {
             getPos();
 
-            document.querySelectorAll(".card").forEach((card, idx) => {
+
+            document.querySelectorAll(".card").forEach((item, idx) => {
                 document.addEventListener("mousemove", function(e){
-                    magnetize(card, e);
+                    magnetize(item, e);
                 });
 
-                document.addEventListener("mouseleave", function(e){
-                    gsap.to(card, 0.6, { y: 0,x: 0 });
-                    card.style.zIndex = 0;
-                    drawLine({ stage: "restore" });
-                });
+                // item.addEventListener("mousemove", function(e){
+                //     const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = item.parentElement;
+                //     const left = e.pageX - offsetLeft;
+                //     const top = e.pageY - offsetTop;
+                //     const centerX = left - offsetWidth / 2;
+                //     const centerY = top - offsetHeight / 2;
+
+                //     // item.style.transition = "";
+                //     item.style.transform = `translate3d(${centerX / 4}px, ${centerY / 4}px, 0)`;
+                // });
+
+                // item.addEventListener("mouseleave", function(e){
+                //     let target_idx = Number(item.parentElement.getAttribute("data-idx"));
+
+                //     console.log(`idx: ${idx+1} | target_idx: ${target_idx}`);
+
+                //     if((idx+1) === target_idx){
+                //         console.log(transform)
+                //         // item.style.transition = "all .3s ease-out"
+                //         item.style.transform = transform;
+                //     }
+                // });
             });
         };
 
@@ -102,19 +118,16 @@
             const deltaY = Math.floor((centerY - mY)) * -0.45;
             const distance = calculateDistance(el, mX, mY);
 
+            console.log(el.offsetLeft)
 
-
-            if(distance < customDist){
-                el.style.zIndex = 5;
-                gsap.to(el, 0.5, { y: deltaY, x: deltaX });
-            }else{
-                el.style.zIndex = 0;
-                gsap.to(el, 0.6, { y: 0,x: 0 });
-            }
+            if(distance < customDist) gsap.to(el, 0.5, { y: deltaY, x: deltaX });
+            else gsap.to(el, 0.6, { y: 0,x: 0 });
+            
             drawLine({ stage: "init" });
         }
 
         function calculateDistance(elem, mouseX, mouseY) {
+
             return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offsetLeft + (elem.offsetWidth / 2)), 2) + Math.pow(
                 mouseY - (elem.offsetTop + (elem.offsetHeight / 2)), 2)));
         }
@@ -123,27 +136,30 @@
             const dot = document.querySelectorAll(".dot");
 
             dot.forEach((item, idx) => {
-                item.setAttribute("data-idx", idx+1);
-
                 const data = item.getBoundingClientRect();
                 const card = new Card({ data, target: item });
                 card.createCard();
 
+                item.setAttribute("data-idx", idx+1);
             });
-            drawLine({ stage: "init" });
+            drawLine();
         }
 
         class Card {
             constructor(obj){
                 this.dot_width = obj.data.width;
                 this.dot_height = obj.data.height;
-                this.dot_data = obj.target.getBoundingClientRect();
+                this.target = obj.target;
+                this.dot_data = this.target.getBoundingClientRect();
                 this.corner_pos = [];
                 this.centerX = Math.round((this.dot_data.width) / 2 + this.dot_data.x);
                 this.centerY = Math.round((this.dot_data.height) / 2 + this.dot_data.y);
-                this.container = document.getElementById("container");
-                this.stage_width = container.clientWidth;
-                this.stage_height = container.clientHeight;
+                this.cornerX = 0;
+                this.cornerY = 0;
+                this.canvas = document.getElementById("canvas");
+                this.ctx = canvas.getContext("2d");
+                this.stage_width = document.body.clientWidth;
+                this.stage_height = document.body.clientHeight;
             }
 
             createCard(){
@@ -157,34 +173,40 @@
                 let centerX, centerY, left, top;
 
                 for(let i = 0; i < points; i++){
-                    centerX = radius * Math.cos(angle * i) + this.centerX;
-                    centerY = radius * Math.sin(angle * i) + this.centerY;
-                    left = Math.round(centerX + (this.dot_width / 2) - (width / 2));
-                    top = Math.round(centerY + (this.dot_height / 2) - (height / 2));
+                    centerX = radius * Math.cos(angle * i);
+                    centerY = radius * Math.sin(angle * i);
+                    left = centerX + (this.dot_width / 2) - (width / 2) 
+                    top = centerY + (this.dot_height / 2) - (height / 2) 
 
                     const card = document.createElement("div");
                     card.setAttribute("class", `card card-${i+1}`);
-                    card.style.left = `${left}px`;
-                    card.style.top = `${top}px`;
                     card.style.width = `${width}px`;
                     card.style.height = `${height}px`;
+                    card.style.lineHeight = `${height}px`;
+                    card.style.textAlign = "center";
+                    card.style.backgroundColor = "yellow";
+                    card.style.position = "absolute";
+                    card.style.left = `${left}px`;
+                    card.style.top = `${top}px`;
+                    // card.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+                    card.style.fontSize = `18x`;
+                    card.style.fontWeight = "bold";
+                    card.style.outline = "1px solid red";
+                    card.innerText = i + 1;
 
-                    if(random === (i+1)){
+                    if(random === (i+1) && this.target.children.length === 0){
                         // console.log(`○○○○○○○○○○○○○○○○○○○○○○○○○○○ random: ${random} ○○○○○○○○○○○○○○○○○○○○○○○○○○○`);
-                        this.container.appendChild(card);
-                        document.querySelectorAll(".card").forEach((item, idx) => {
-                            item.setAttribute("center-target", `dot${idx+1}`);
-                        });
-
+                        this.target.appendChild(card);
                         this.checkCollision(card);
-                        this.createCorner(card);
                     }
                 }
+                this.createCorner();
             }
 
             checkCollision(card_target){
-                const cont_data = this.container.getBoundingClientRect();
-                const cards = document.querySelectorAll(".card");
+                const container = document.getElementById("container");
+                const cont_data = container.getBoundingClientRect();
+                const dots = document.querySelectorAll(".dot");
                 const target_data = card_target.getBoundingClientRect();
                 const x1 = Math.round(target_data.x);
                 const y1 =  Math.round(target_data.y);
@@ -196,34 +218,33 @@
                 const stage_y2 = cont_data.y + cont_data.height;
                 let x1_compare, y1_compare, x2_compare, y2_compare;
 
-                cards.forEach((card) => {
-                    const card_data = card.getBoundingClientRect();
-                    const dot = document.querySelector(`.${card.getAttribute("center-target")}`);
-                    const dot_data = dot.getBoundingClientRect();
-                    x1_compare =  Math.round(card_data.x);
-                    y1_compare =  Math.round(card_data.y);
-                    x2_compare = x1_compare + card_data.width;
-                    y2_compare = y1_compare + card_data.height;
+                dots.forEach((dot) => {
+                    if(dot.children[0]){
+                        const card = dot.children[0];
+                        const card_data = card.getBoundingClientRect();
+                        const parent_data = dot.getBoundingClientRect();
+                        x1_compare =  Math.round(card_data.x);
+                        y1_compare =  Math.round(card_data.y);
+                        x2_compare = x1_compare + card_data.width;
+                        y2_compare = y1_compare + card_data.height;
 
-                    if(
-                        (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
-                        (stage_y1 > y1_compare || stage_y2 < y2_compare)
-                    ){
-                        card.remove();
-                        this.createCard({ data: dot_data , target: dot });
-                    }
+                        if(
+                            (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
+                            (stage_y1 > y1_compare || stage_y2 < y2_compare)
+                        ){
+                            card.remove();
+                            this.createCard({ data: parent_data , target: dot });
+                        }
 
-                    if(
-                        (x1 < x1_compare && x1_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
-                        (x1 < x1_compare && x1_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
-                        (x1 < x2_compare && x2_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
-                        (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2)
-                    ){
-                        card_target.remove();
-                        this.createCard({ 
-                            data: dot_data, 
-                            target: document.querySelector(`.${card_target.getAttribute("center-target")}`) 
-                        });
+                        if(
+                            (x1 < x1_compare && x1_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
+                            (x1 < x1_compare && x1_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
+                            (x1 < x2_compare && x2_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
+                            (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2)
+                        ){
+                            card_target.remove();
+                            this.createCard({ data: parent_data , target: card_target.parentElem });
+                        }
                     }
                 });
 
@@ -236,7 +257,7 @@
                 this.corner_pos = corners;
             }
 
-            createCorner(card){
+            createCorner(){
                 const corner = document.createElement("div");
 
                 this.corner_pos.forEach((item, idx) => {
@@ -248,6 +269,8 @@
                 });
 
                 corner.classList.add("corner");
+                // corner.style.width = "5px";
+                // corner.style.height = "5px";
                 corner.style.position = "absolute";
                 corner.style.backgroundColor = "pink";
 
@@ -268,90 +291,62 @@
                     corner.style.bottom = "2px";
                 }
 
-                card.appendChild(corner);
+                if(this.target.children[0].children.length === 0) this.target.children[0].appendChild(corner);
             }
         }
 
         window.addEventListener("resize", function(e){
             resize();
-            drawLine({ stage: "init" });
+            drawLine(); 
         });
 
 
 
         resize();
-        function resize(obj){
+        function resize(){
             const canvas = document.getElementById("canvas");
             const container = document.getElementById("container");
             const px_ratio = window.pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
-            const stage_width = container.clientWidth;
-            const stage_height = container.clientHeight;
+            let stage_width = container.clientWidth;
+            let stage_height = container.clientHeight;
 
             canvas.width = stage_width;
             canvas.height = stage_height;
         }
 
-        let flag_a = true;
-        let flag_b = true;
-        let org_pos = [];
-        function drawLine(obj){
+        function drawLine(){
             const dots = document.querySelectorAll(".dot");
             const corners = document.querySelectorAll(".corner");
-            const container = document.getElementById("container");
-            const stage_width = container.clientWidth;
-            const stage_height = container.clientHeight;
             const canvas = document.getElementById("canvas");
             const ctx = canvas.getContext("2d"); 
-            const pos = [];
+            let pos = [];
+            let obj;
 
             dots.forEach((item, idx) => {
-                const data = item.getBoundingClientRect();
-                const x = (data.width / 2) + data.x;
-                const y = (data.height / 2) + data.y;
+                let data = item.getBoundingClientRect();
+                let x = (data.width / 2) + data.x;
+                let y = (data.height / 2) + data.y;
 
-                pos.push({ centerX: x, centerY: y });
-
-                if(flag_a === true && (pos.length === dots.length)){
-                    org_pos = pos;
-                    flag_a = false;
-                }
+                obj = { centerX: x, centerY: y };
+                pos.push(obj);
             });
 
             corners.forEach((item, idx) => {
-                const data = item.getBoundingClientRect();
-                const x = data.x;
-                const y = data.y;
+                let data = item.getBoundingClientRect();
+                let x = data.x;
+                let y = data.y;
 
                 pos[idx]["cornerX"] = x;
                 pos[idx]["cornerY"] = y;
-
-                if(flag_b === true && pos.length === dots.length){
-                    org_pos[idx]["cornerX"] = x;
-                    org_pos[idx]["cornerY"] = y;
-                    flag_b = false;
-                }
             });
 
-            ctx.clearRect(0, 0, stage_width, stage_height);
-
-            if(obj.stage === "init"){
-                pos.forEach((item) => {
-                    ctx.beginPath();
-                    ctx.moveTo(item.centerX, item.centerY);
-                    ctx.lineTo(item.cornerX, item.cornerY);
-                    ctx.strokeStyle = '#ff0000';
-                    ctx.stroke();
-                });
-            }
-            if(obj.stage === "restore"){
-                org_pos.forEach((item) => {
-                    ctx.beginPath();
-                    ctx.moveTo(item.centerX, item.centerY);
-                    ctx.lineTo(item.cornerX, item.cornerY);
-                    ctx.strokeStyle = '#ff0000';
-                    ctx.stroke();
-                });
-            }
+            pos.forEach((item) => {
+                ctx.beginPath();
+                ctx.moveTo(item.centerX, item.centerY);
+                ctx.lineTo(item.cornerX, item.cornerY);
+                ctx.strokeStyle = '#ff0000';
+                ctx.stroke();
+            });
         }
     </script>
 </body>
