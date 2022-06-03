@@ -102,8 +102,6 @@
             const deltaY = Math.floor((centerY - mY)) * -0.45;
             const distance = calculateDistance(el, mX, mY);
 
-
-
             if(distance < customDist){
                 el.style.zIndex = 5;
                 gsap.to(el, 0.5, { y: deltaY, x: deltaX });
