@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>카드 테스트</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
 </head>
 <style>
     * {
@@ -40,16 +41,19 @@
         background-color: red;
     }
     .dot1 {
-        top: 50%;
-        left: 10%;
+        top: 200px;
+        left: 150px;
+        /* transform: translate(200px, 150px); */
     }
     .dot2 {
-        top: 60%;
-        right: 30%;
+        top: 100px;
+        right: 341px;
+        /* transform: translate(341px, 100px); */
     }
     .dot3 {
-        top: 20%;
-        left: 40%;
+        top: 300px;
+        left: 586px;
+        /* transform: translate(586px, 300px); */
     }
     #container {
         position: relative;
@@ -62,6 +66,7 @@
     .card {
         border-radius: 5px;
         z-index: 5;
+        /* transition: transform 100ms ease-out; */
     }
 </style>
 <body>
@@ -76,35 +81,83 @@
         window.onload = () => {
             getPos();
 
-
             document.querySelectorAll(".card").forEach((item, idx) => {
-                const { transform } = item.style;
-                console.log(`${idx+1} | ${transform}`);
+                const x = item.getAttribute("x");
+                const y = item.getAttribute("y");
+                item.addEventListener("mouseenter", function(e){
+                    mouseMove({ target: item, pageX: e.pageX, pageY: e.pageY });
+                });
 
-                item.addEventListener("mousemove", function(e){
-                    const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = item.parentElement;
+                // item.addEventListener("mousemove", function(e){
+                //     const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = item.parentElement;
+                //     const left = e.pageX - offsetLeft;
+                //     const top = e.pageY - offsetTop;
+                //     const centerX = (left) - offsetWidth / 2;
+                //     const centerY = (top) - offsetHeight / 2;
+
+                //     gsap.to(item, 0.5, {
+                //         x: centerX / 1.5,
+                //         y: centerY / 1.5,
+                //         ease: "power4.out"
+                //     })
+                //     // item.style.transform = `translate3d(${centerX}px,c ${centerY}px, 0)`;
+                //     // mouseMove({ target: item, pageX: e.pageX, pageY: e.pageY });
+                //     drawLine();
+
+                //     // console.log("마우스 move~!");
+                // });
+
+                item.addEventListener("mouseleave", function(e){
+                    let target_idx = Number(item.parentElement.getAttribute("data-idx"));
+
+                    const { offsetLeft, offsetTop, offsetWidth, offsetHeight, offsetParent } = item.parentElement;
                     const left = e.pageX - offsetLeft;
                     const top = e.pageY - offsetTop;
                     const centerX = left - offsetWidth / 2;
                     const centerY = top - offsetHeight / 2;
 
-                    // item.style.transition = "";
-                    item.style.transform = `translate3d(${centerX / 4}px, ${centerY / 4}px, 0)`;
-                });
 
-                item.addEventListener("mouseleave", function(e){
-                    let target_idx = Number(item.parentElement.getAttribute("data-idx"));
 
-                    console.log(`idx: ${idx+1} | target_idx: ${target_idx}`);
-
-                    if((idx+1) === target_idx){
-                        console.log(transform)
-                        // item.style.transition = "all .3s ease-out"
-                        item.style.transform = transform;
+                    if((idx+1) === target_idx){ // 초기상태로 복귀
+                        console.log("◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ 마우스 leave~! ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆");
+                        // item.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+                        // gsap.to(item, 1.2, { x, y, ease: "power4.out" });
+                        // drawLine();
+                        console.log(`[dot] offsetLeft: ${offsetLeft} | offsetTop: ${offsetTop}`);
+                        console.log(offsetParent)
+                        console.log(`[card] offsetLeft; ${item.offsetLeft} | offsetTop: ${item.offsetTop}`);
+                        console.log(`pageX: ${e.pageX} | pageY: ${e.pageY}\ncenterX: ${centerX} | centerY: ${centerY}`);
                     }
                 });
             });
         };
+
+        function mouseMove(obj){
+            const data = obj.target.getBoundingClientRect();
+            const { offsetLeft, offsetTop, offsetWidth, offsetHeight, offsetParent } = obj.target.parentElement;
+            const left = obj.pageX - data.x;
+            const top = obj.pageY - data.y;
+            const centerX = left - obj.target.offsetWidth / 2;
+            const centerY = top - obj.target.offsetHeight / 2;
+
+            console.log("○○○○○○○○○○○○○○○○○○○○○○○○○○○○ 마우스 move~! ○○○○○○○○○○○○○○○○○○○○○○○○○○○○");
+            console.log(`[dot] offsetLeft: ${offsetLeft} | offsetTop: ${offsetTop}`);
+            console.log(offsetParent)
+            console.log(`[card] offsetLeft; ${obj.target.offsetLeft}(${data.x}) | offsetTop: ${obj.target.offsetTop}(${data.y})`)
+            console.log(`pageX: ${obj.pageX} | pageY: ${obj.pageY}\ncenterX: ${centerX} | centerY: ${centerY}`);
+
+            // gsap.to(obj.target, 0.5, {
+            //     x: centerX,
+            //     y: centerY,
+            //     ease: "power4.out"
+            // })
+            obj.target.style.left = `${centerX}px`;
+            obj.target.style.top = `${centerY}px`;
+            // item.style.transform = `translate3d(${centerX}px,c ${centerY}px, 0)`;
+            drawLine();
+
+
+        }
 
         function getPos(){
             const dot = document.querySelectorAll(".dot");
@@ -154,19 +207,21 @@
 
                     const card = document.createElement("div");
                     card.setAttribute("class", `card card-${i+1}`);
+                    card.setAttribute("x", `${left}`);
+                    card.setAttribute("y", `${top}`);
                     card.style.width = `${width}px`;
                     card.style.height = `${height}px`;
-                    card.style.lineHeight = `${height}px`;
+                    // card.style.lineHeight = `${height}px`;
                     card.style.textAlign = "center";
                     card.style.backgroundColor = "yellow";
                     card.style.position = "absolute";
-                    // card.style.left = `${left}px`;
-                    // card.style.top = `${top}px`;
-                    card.style.transform = `translate3d(${left}px, ${top}px, 0)`;
-                    card.style.fontSize = `18x`;
+                    card.style.left = `${left}px`;
+                    card.style.top = `${top}px`;
+                    // card.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+                    card.style.fontSize = `12px`;
                     card.style.fontWeight = "bold";
                     card.style.outline = "1px solid red";
-                    card.innerText = i + 1;
+                    card.innerText= `${i + 1} | left: ${Math.round(left)} | top: ${Math.round(top)}`;
 
                     if(random === (i+1) && this.target.children.length === 0){
                         // console.log(`○○○○○○○○○○○○○○○○○○○○○○○○○○○ random: ${random} ○○○○○○○○○○○○○○○○○○○○○○○○○○○`);
@@ -292,7 +347,10 @@
             const dots = document.querySelectorAll(".dot");
             const corners = document.querySelectorAll(".corner");
             const canvas = document.getElementById("canvas");
-            const ctx = canvas.getContext("2d"); 
+            const ctx = canvas.getContext("2d");
+            const container = document.getElementById("container");
+            const stage_width = container.clientWidth;
+            const stage_height = container.clientHeight;
             let pos = [];
             let obj;
 
@@ -313,6 +371,9 @@
                 pos[idx]["cornerX"] = x;
                 pos[idx]["cornerY"] = y;
             });
+            
+            // console.log(pos);
+            ctx.clearRect(0, 0,stage_width, stage_height);
 
             pos.forEach((item) => {
                 ctx.beginPath();
