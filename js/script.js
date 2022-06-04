@@ -104,12 +104,13 @@ function handleState(data){
                                 result.forEach((item) => {
                                     results.push(item);
                                 });
+                                setLoadingAnimation({ target: data.target, state: "finish" });
                                 return getMaxData(temp, results, { target: data.target });
                             })
                             .then(function(results){
                                 if(results){
                                     createDot({ target: data.target, result: results.result });
-                                    setLoadingAnimation({ target: data.target, state: "finish" });
+                                    
                                 }
                             });
                         });
@@ -568,25 +569,16 @@ function verifyLength(obj){
     
         align = (width > height) ? "hrz" : "vrt";
 
-        console.log(obj.target)
-
         imges.forEach(function(item){
             if(item.classList.contains(target.replace(".", ""))){
-                console.log(1)
                 document.querySelector(target).classList.add(align);
             }else{
-                console.log(2)
                 setTimeout(() => {
                     item.classList.remove("vrt");
                     item.classList.remove("hrz");
                 }, 500);
             }
         });
-    
-        // alert(obj.source);
-        // alert(`[2] 길이계산 대상: ${obj.target} | width: ${width} | height: ${height} | alg: ${alg}`);
-        // console.log(`[함수] verifyLength`);
-        return;
     }
 }
 
@@ -701,7 +693,7 @@ class Dot {
         this.name = name;
         this.idx = idx;
 
-        console.log(`ratio: ${ratio}\nwidth: ${width} | height: ${height}\nx: ${x} | y: ${y}\ncenterX: ${(width / 2) + x} | centerY: ${(height / 2) + y}\nnew centerX: ${this.x} | new centerY: ${this.y}`)
+        // console.log(`ratio: ${ratio}\nwidth: ${width} | height: ${height}\nx: ${x} | y: ${y}\ncenterX: ${(width / 2) + x} | centerY: ${(height / 2) + y}\nnew centerX: ${this.x} | new centerY: ${this.y}`)
     }
 
     create(location){
@@ -724,10 +716,7 @@ function createDot(obj){
     const width = document.querySelector(obj.target + " #selected-img").width;
     let ratio;
 
-    console.log(obj)
-    
     obj.result.forEach(function(item){
-        console.log(item)
         ratio = Number((width / item.img_width).toFixed(2));
         let dot = new Dot(
             item.x, 
@@ -756,7 +745,9 @@ function createDot(obj){
             ease: "elastic", 
             force3D: true,
             onComplete: function(){
-                createList(obj);
+                setTimeout(() => {
+                    createList(obj);
+                }, 850);
             }
         });
     }, 300);

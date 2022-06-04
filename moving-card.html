@@ -20,6 +20,9 @@
     }
 
     body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: 100%;
     }
@@ -54,8 +57,8 @@
     }
     #container {
         position: relative;
-        width: 100%;
-        height: 500px;
+        width: 800px;
+        height: 800px;
         margin: 50px;
         margin: 0 auto;
         background-color: transparent;
@@ -65,6 +68,7 @@
         background-color: yellow;
         outline: 1px solid #ff0000;
         position: absolute;
+        /* transition: 100ms; */
     }
 </style>
 <body>
@@ -78,43 +82,56 @@
     <script>
         window.onload = () => {
             getPos();
+            let card = document.querySelectorAll(".card");
 
             document.querySelectorAll(".card").forEach((card, idx) => {
                 document.addEventListener("mousemove", function(e){
+                    let target = e.target.classList.contains("card") ?  e.target : "";
+
                     magnetize(card, e);
                 });
 
                 document.addEventListener("mouseleave", function(e){
-                    gsap.to(card, 0.6, { y: 0,x: 0 });
+                    gsap.to(card, 0.6, { y: 0, x: 0, onComplete: function(){
+                            rebderState = false;
+                        }
+                    });
                     card.style.zIndex = 0;
                     drawLine({ stage: "restore" });
                 });
             });
         };
 
-        function magnetize(el, e) {
+        const { offsetLeft, offsetTop } = document.getElementById("container");
+
+        function magnetize(el, e){
             const mX = e.pageX,
                 mY = e.pageY;
-            const customDist = 100;
-            const centerX = el.offsetLeft + (el.offsetWidth / 2);
-            const centerY = el.offsetTop + (el.offsetHeight / 2);
+            const customDist = 120;
+            const centerX = el.offsetLeft + (el.offsetWidth / 2) + offsetLeft;
+            const centerY = el.offsetTop + (el.offsetHeight / 2) + offsetTop;
             const deltaX = Math.floor((centerX - mX)) * -0.45;
             const deltaY = Math.floor((centerY - mY)) * -0.45;
             const distance = calculateDistance(el, mX, mY);
 
             if(distance < customDist){
                 el.style.zIndex = 5;
-                gsap.to(el, 0.5, { y: deltaY, x: deltaX });
+                gsap.to(el, 0.5, { y: deltaY, x: deltaX, onUpdate: function(){
+                    drawLine({ stage: "init" });
+                    }
+                });
             }else{
                 el.style.zIndex = 0;
-                gsap.to(el, 0.6, { y: 0,x: 0 });
+                gsap.to(el, 0.6, { y: 0, x: 0, onUpdate: function(){
+                    drawLine({ stage: "init" });
+                    }
+                });
             }
-            drawLine({ stage: "init" });
         }
 
         function calculateDistance(elem, mouseX, mouseY) {
-            return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offsetLeft + (elem.offsetWidth / 2)), 2) + Math.pow(
-                mouseY - (elem.offsetTop + (elem.offsetHeight / 2)), 2)));
+            return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offsetLeft + offsetLeft + (elem.offsetWidth / 2)), 2) + Math.pow(
+                mouseY - (elem.offsetTop + offsetTop + (elem.offsetHeight / 2)), 2)));
         }
 
         function getPos(){
@@ -128,6 +145,7 @@
                 card.createCard();
 
             });
+
             drawLine({ stage: "init" });
         }
 
@@ -155,8 +173,8 @@
                 let centerX, centerY, left, top;
 
                 for(let i = 0; i < points; i++){
-                    centerX = radius * Math.cos(angle * i) + this.centerX;
-                    centerY = radius * Math.sin(angle * i) + this.centerY;
+                    centerX = radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
+                    centerY = radius * Math.sin(angle * i) + (this.centerY - this.container.offsetTop);
                     left = Math.round(centerX + (this.dot_width / 2) - (width / 2));
                     top = Math.round(centerY + (this.dot_height / 2) - (height / 2));
 
@@ -166,9 +184,12 @@
                     card.style.top = `${top}px`;
                     card.style.width = `${width}px`;
                     card.style.height = `${height}px`;
+                    card.innerText = `centerX: ${Math.round(centerX)} | centerY: ${Math.round(centerY)}\n\nleft: ${left} | top: ${top}`;
 
                     if(random === (i+1)){
                         // console.log(`○○○○○○○○○○○○○○○○○○○○○○○○○○○ random: ${random} ○○○○○○○○○○○○○○○○○○○○○○○○○○○`);
+                        // console.log(`this.centerX: ${this.centerX} | this.centerY: ${this.centerY}`)
+                        
                         this.container.appendChild(card);
                         document.querySelectorAll(".card").forEach((item, idx) => {
                             item.setAttribute("center-target", `dot${idx+1}`);
@@ -181,17 +202,19 @@
             }
 
             checkCollision(card_target){
-                const cont_data = this.container.getBoundingClientRect();
+                // const cont_data = this.container.getBoundingClientRect();
+                const window_w = window.innerWidth;
+                const window_h = window.innerHeight;
                 const cards = document.querySelectorAll(".card");
                 const target_data = card_target.getBoundingClientRect();
                 const x1 = Math.round(target_data.x);
                 const y1 =  Math.round(target_data.y);
                 const x2 = x1 + target_data.width;
                 const y2 = y1 + target_data.height;
-                const stage_x1 = cont_data.x;
-                const stage_y1 = cont_data.y;
-                const stage_x2 = cont_data.x + cont_data.width;
-                const stage_y2 = cont_data.y + cont_data.height;
+                const stage_x1 = 0;
+                const stage_y1 = 0;
+                const stage_x2 = window_w;
+                const stage_y2 = window_h;
                 let x1_compare, y1_compare, x2_compare, y2_compare;
 
                 cards.forEach((card) => {
@@ -292,6 +315,7 @@
         let flag_a = true;
         let flag_b = true;
         let org_pos = [];
+
         function drawLine(obj){
             const dots = document.querySelectorAll(".dot");
             const corners = document.querySelectorAll(".corner");
@@ -304,8 +328,8 @@
 
             dots.forEach((item, idx) => {
                 const data = item.getBoundingClientRect();
-                const x = (data.width / 2) + data.x;
-                const y = (data.height / 2) + data.y;
+                const x = (data.width / 2) + (data.x - offsetLeft);
+                const y = (data.height / 2) + (data.y - offsetTop);
 
                 pos.push({ centerX: x, centerY: y });
 
@@ -317,15 +341,16 @@
 
             corners.forEach((item, idx) => {
                 const data = item.getBoundingClientRect();
-                const x = data.x;
-                const y = data.y;
+                const x = data.x - offsetLeft;
+                const y = data.y - offsetTop;
 
                 pos[idx]["cornerX"] = x;
                 pos[idx]["cornerY"] = y;
+                org_pos[idx]["card"] = item.parentElement;
 
                 if(flag_b === true && pos.length === dots.length){
-                    org_pos[idx]["cornerX"] = x;
-                    org_pos[idx]["cornerY"] = y;
+                    org_pos[idx]["cornerX2"] = Math.round(data.x);
+                    org_pos[idx]["cornerY2"] = Math.round(data.y);
                     flag_b = false;
                 }
             });
