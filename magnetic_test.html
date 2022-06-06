@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<style>
+    body {
+        font-family: 'Helvetica', sans-serif;
+        background: black;
+    }
+
+    .cerchio {
+        position: relative;
+        top: calc(50vh - 30px);
+        left: calc(50vw - 330px);
+        width: 60px;
+        height: 60px;
+        border: 1px solid rgba(255, 231, 0, 0.75);
+        background: transparent;
+        border-radius: 50%;
+        cursor: pointer;
+        outline: 0;
+        color: rgba(255, 231, 0, 0.75);
+        transition: background 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+        margin: 0 150px;
+    }
+
+    .cerchio:hover {
+        background: #FFE700;
+    }
+
+    .cerchio.magnet {
+        border: 2px solid #FFE700;
+    }
+
+    .cursor-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+
+    .cursor {
+        position: fixed;
+        top: -30px;
+        left: -30px;
+    }
+
+    .circle {
+        transform: scale(.8);
+        transition: all .2s ease-in-out;
+    }
+</style>
+
+<body>
+    <button class="cerchio trigger-audio" data-dist="3">Hover</button>
+    <button class="cerchio trigger-audio" data-dist="3">Hover</button>
+
+    <audio id="sound-hover" style="display:none;" controls="controls" preload="auto">
+        <source src="https://gnrm.se/norman/dist/upload/hover-sound.ogg">
+        </source>
+    </audio>
+
+    <div class="cursor-wrap js-cursor-wrap">
+        <div class="cursor js-cursor">
+            <svg height="60" width="60" class="circle">
+                <circle cx="30" cy="30" r="26" stroke="#fff" stroke-width=".8" fill="transparent" />
+            </svg>
+        </div>
+    </div>
+
+    
+    <!-- <script scr="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script> -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script>
+        var cerchio = document.querySelectorAll('.cerchio');
+
+        cerchio.forEach(function (elem) {
+            // $(document).on('mousemove', function (e) {
+            //     magnetize(elem, e);
+            // });
+
+            document.addEventListener('mousemove', function (e) {
+                magnetize(elem, e);
+            });
+        })
+
+        // $(document).on('mousemove touch', function(e){
+        //   magnetize('.cerchio', e);
+        // });
+
+        function magnetize(el, e) {
+            var mX = e.pageX,
+                mY = e.pageY;
+            const item = $(el);
+            const customDist = item.data('dist') * 20 || 120;
+            const centerX = item.offset().left + (item.width() / 2);
+            const centerY = item.offset().top + (item.height() / 2);
+
+            var deltaX = Math.floor((centerX - mX)) * -0.45;
+            var deltaY = Math.floor((centerY - mY)) * -0.45;
+
+            var distance = calculateDistance(item, mX, mY);
+
+            if (distance < customDist) {
+                TweenMax.to(item, 0.5, {
+                    y: deltaY,
+                    x: deltaX,
+                    scale: 1.1
+                });
+                item.addClass('magnet');
+            } else {
+                TweenMax.to(item, 0.6, {
+                    y: 0,
+                    x: 0,
+                    scale: 1
+                });
+                item.removeClass('magnet');
+            }
+        }
+
+        function calculateDistance(elem, mouseX, mouseY) {
+            return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left + (elem.width() / 2)), 2) + Math.pow(
+                mouseY - (elem.offset().top + (elem.height() / 2)), 2)));
+        }
+
+        /*- MOUSE STICKY -*/
+        // function lerp(a, b, n) {
+        //     return (1 - n) * a + n * b
+        // }
+
+        // // Inizio Cursor
+        // class Cursor {
+        //     constructor() {
+        //         this.bind()
+        //         //seleziono la classe del cursore
+        //         this.cursor = document.querySelector('.js-cursor')
+
+        //         this.mouseCurrent = {
+        //             x: 0,
+        //             y: 0
+        //         }
+
+        //         this.mouseLast = {
+        //             x: this.mouseCurrent.x,
+        //             y: this.mouseCurrent.y
+        //         }
+
+        //         this.rAF = undefined
+        //     }
+
+        //     bind() {
+        //         ['getMousePosition', 'run'].forEach((fn) => this[fn] = this[fn].bind(this))
+        //     }
+
+        //     getMousePosition(e) {
+        //         this.mouseCurrent = {
+        //             x: e.clientX,
+        //             y: e.clientY
+        //         }
+        //     }
+
+        //     run() {
+        //         this.mouseLast.x = lerp(this.mouseLast.x, this.mouseCurrent.x, 0.2)
+        //         this.mouseLast.y = lerp(this.mouseLast.y, this.mouseCurrent.y, 0.2)
+
+        //         this.mouseLast.x = Math.floor(this.mouseLast.x * 100) / 100
+        //         this.mouseLast.y = Math.floor(this.mouseLast.y * 100) / 100
+
+        //         this.cursor.style.transform = `translate3d(${this.mouseLast.x}px, ${this.mouseLast.y}px, 0)`
+
+        //         this.rAF = requestAnimationFrame(this.run)
+        //     }
+
+        //     requestAnimationFrame() {
+        //         this.rAF = requestAnimationFrame(this.run)
+        //     }
+
+        //     addEvents() {
+        //         window.addEventListener('mousemove', this.getMousePosition, false)
+        //     }
+
+        //     on() {
+        //         this.addEvents()
+
+        //         this.requestAnimationFrame()
+        //     }
+
+        //     init() {
+        //         this.on()
+        //     }
+        // }
+
+        // const cursor = new Cursor()
+
+        // cursor.init();
+
+        //play sound on hover
+        // var SoundHover = $("#sound-hover")[0];
+        // $(".trigger-audio").on('mouseenter', function () {
+        //     SoundHover.play();
+        // });
+        // $(".trigger-audio").on('mouseout', function() {
+        //   SoundHover.pause();
+        //   // SoundHover.volume = .2;
+        //   SoundHover.currentTime = 0;
+        // });
+    </script>
+</body>
+
+</html>
