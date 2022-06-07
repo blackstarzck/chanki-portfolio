@@ -77,6 +77,7 @@ function handleState(data){
             const prc_wait = document.querySelector(".prc-wrap.wait");
             const lt_layouts = document.querySelectorAll(".lt-cont .icon-wrap");
             const results = document.querySelectorAll("#results-wrap li");
+
             let hide, fade_out, fade_in;
             let src = data.option;
             let img_target;
@@ -92,11 +93,26 @@ function handleState(data){
                 fadeOut({ target: hide, stagger: true })
                 .then(function(){
                     const callBackFunc = function(data){
-                        classifyImg({ target: data.target })
-                        .then(function(result){
-                            setLoadingAnimation({ target: data.target, state: "finish" });
-                            createDot({ target: data.target, result });
-                            // createIcon(result);
+                        const images = document.querySelectorAll(".test-zone #img");
+                        const temp = [];
+                        const results = [];
+
+                        images.forEach((img) => {
+                            classifyImg({ img, target: data.target })
+                            .then(function(result){
+                                temp.push({ width: img.width, img, result, total: result.length });
+                                result.forEach((item) => {
+                                    results.push(item);
+                                });
+                                setLoadingAnimation({ target: data.target, state: "finish" });
+                                return getMaxData(temp, results, { target: data.target });
+                            })
+                            .then(function(results){
+                                if(results){
+                                    createDot({ target: data.target, result: results.result });
+                                    
+                                }
+                            });
                         });
                     }
                     animation_state = "processing";
@@ -211,7 +227,7 @@ function fadeIn(obj){
                     try{
                         if(obj.func !== undefined) obj.func(obj.param);
                     }catch{
-                        alert("콜백함수를 실행할 수 없습니다.");
+                        alert("콜백함수를 실행할 수 없습니다. fadeIn");
                     }
                     
                     setTimeout(() => { 
@@ -239,7 +255,7 @@ function fadeIn(obj){
                     try{
                         if(obj.func !== undefined) obj.func(obj.param);
                     }catch(error){
-                        alert(`error: ${error} \n콜백함수를 실행할 수 없습니다.`);
+                        alert(`error: ${error} \n콜백함수를 실행할 수 없습니다. fadeIn`);
                     }
 
                     setTimeout(() => { 
@@ -320,6 +336,97 @@ function fadeOut(obj){
 }
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ IMAGE UPLOAD, DRAG ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+function getMaxData(data1, data2, obj){
+    const images = document.querySelectorAll(".test-zone #img");
+
+
+    if(images.length == data1.length){
+        
+        console.log(data2)
+
+        data1.sort((a, b) => {
+            return (a.total > b.total) ? 
+                -1 : ((a.total  < b.total) ? 
+                1 : 0
+            );
+        });
+
+        const temp_array = [];
+        const width = document.querySelector(obj.target + " #selected-img").width;
+        let ratio, centerX, centerY;
+        
+        data2.forEach((item, idx) => {
+            temp_array.push(item);
+
+            ratio = Number((width / item.img_width).toFixed(2));
+            centerX = Math.round(((item.width / 2) + item.x) * ratio);
+            centerY = Math.round(((item.height / 2) + item.y) * ratio);
+
+            temp_array[idx].centerX = centerX;
+            temp_array[idx].centerY = centerY;
+            temp_array[idx].x1 = centerX - 7.5;
+            temp_array[idx].y1 = centerY - 7.5;
+            temp_array[idx].x2 = centerX + 7.5;
+            temp_array[idx].y2 = centerY + 7.5;
+        });
+
+        // console.log("최대결과:", data1[0]);
+        // console.log(unique_array);
+
+        for(let i = 0; i < temp_array.length; i++){
+            for(let n = 0; n < data1[0].result.length; n++){
+                let width = 15 - Math.abs(temp_array[i].x1 - data1[0].result[n].x1);
+                let height = 15 - Math.abs(temp_array[i].y1 - data1[0].result[n].y1);
+                let area = 15 * 15;
+                let accuracy = Math.round(((width * height) / area) * 100);
+
+                if(
+                    (temp_array[i].centerX == data1[0].result[n].centerX && temp_array[i].centerY == data1[0].result[n].centerY) ||
+                    (temp_array[i].img_width === data1[0].result[n].img_width) ||
+                    (
+                        (temp_array[i].centerX >= (data1[0].result[n].centerX - 3) && temp_array[i].centerX <= (data1[0].result[n].centerX + 3)) ||
+                        (temp_array[i].centerY >= (data1[0].result[n].centerY - 3) && temp_array[i].centerY <= (data1[0].result[n].centerY + 3))
+                    ) ||
+                    (
+                        (data1[0].result[n].centerX >= (temp_array[i].centerX - 3) && data1[0].result[n].centerX <= (temp_array[i].centerX + 3)) ||
+                        (data1[0].result[n].centerY >= (temp_array[i].centerY - 3) && data1[0].result[n].centerY <= (temp_array[i].centerY + 3))
+                    ) ||
+
+                    ((width > -1 && height > -1) && (70 <= accuracy && accuracy <= 100))
+                ){
+                    temp_array[i].delete = true;
+                }
+            }
+            if(temp_array[i].delete === true){
+                temp_array.splice(i, 1);
+                i--;
+            }
+        }
+
+        const unique_array = removeDuplicates(temp_array, "name");
+        console.log(data1[0].result);
+        console.log(temp_array);
+        console.log(unique_array);
+        console.log(data1[0].result.concat(unique_array));
+
+        data1[0].result = data1[0].result.concat(unique_array);
+        return data1[0];
+    }
+}
+
+function removeDuplicates(originalArray, prop) {
+    const newArray = [];
+    const lookupObject  = {};
+
+    for(const i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for(i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
+}
 
 const drag_zone = document.querySelector(".drop-zone");
 const input = document.getElementById("file");
@@ -360,6 +467,13 @@ drag_zone.addEventListener("drop", function(event){
 
 let flag = true;
 function handleImgUpload(type, file){
+    const images = document.querySelectorAll(".test-zone #img");
+    const upload = function(data){
+        images.forEach((img) => {
+            img.src = data.source;
+        });
+    }
+
     return new Promise((resolve) => {
         const img_boxes = document.querySelectorAll(".prc-wrap.show-img .img-box");
         let preview, visible, src;
@@ -381,8 +495,9 @@ function handleImgUpload(type, file){
             // console.log(file.src);
             src = file.src;
 
+            upload({ source: src });
             preview.setAttribute("src", src);
-            resolve({ source: src, target:  visible});
+            resolve({ source: src, target:  visible });
         }
         if(type.select_type === "cstm"){
             const reader = new FileReader();
@@ -394,7 +509,8 @@ function handleImgUpload(type, file){
                 preview.src = "";
                 preview.src = src;
 
-                resolve({ source: src, target:  visible});
+                upload({ source: src });
+                resolve({ source: src, target:  visible });
             }
         }
     });
@@ -444,18 +560,18 @@ function verifyLength(obj){
     const target = obj.target;
     const imges = document.querySelectorAll(".img-box");
     let img = new Image();
-    let width, height, alg;
+    let width, height, align;
 
     img.src = obj.source;
     img.onload = function(){
         width = img.width;
         height = img.height;
     
-        alg = (width > height) ? "hrz" : "vrt";
+        align = (width > height) ? "hrz" : "vrt";
 
         imges.forEach(function(item){
             if(item.classList.contains(target.replace(".", ""))){
-                document.querySelector(target).classList.add(alg);
+                document.querySelector(target).classList.add(align);
             }else{
                 setTimeout(() => {
                     item.classList.remove("vrt");
@@ -463,11 +579,6 @@ function verifyLength(obj){
                 }, 500);
             }
         });
-    
-        // alert(obj.source);
-        // alert(`[2] 길이계산 대상: ${obj.target} | width: ${width} | height: ${height} | alg: ${alg}`);
-        // console.log(`[함수] verifyLength`);
-        return;
     }
 }
 
@@ -536,15 +647,15 @@ function handleHoverAnimation(obj){
     });
 }
 
-let detect_result = [];
 function classifyImg(obj){
-    const img = document.querySelector(obj.target + " #selected-img");
-    detect_result = []; // 초기화
+    // const img = document.querySelector(obj.target + " #selected-img");
+    const img_width = obj.img.width;
+    let detect_result = []; // 초기화
     console.log(`□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ obj.target: ${obj.target} □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□`);
-    
+
     return new Promise(function(resolve){
         cocoSsd.load().then(model => {
-            model.detect(img).then(predictions => {
+            model.detect(obj.img).then(predictions => {
                 console.log("predictions:", predictions);
 
                 if(predictions.length !== 0){
@@ -558,7 +669,7 @@ function classifyImg(obj){
                             let width = Math.ceil(predictions[i].bbox[2]);
                             let height = Math.ceil(predictions[i].bbox[3]);
 
-                            detect_result.push({ name, className, x, y, width, height, idx: i+1 });
+                            detect_result.push({ img_width, name, className, x, y, width, height, idx: i+1 });
                             // console.log(`name: ${name}\nclassName: ${className}\nx: ${x}\ny: ${y}\nwidth: ${width}\nheight: ${height}`);
                         }
                     }
@@ -573,14 +684,16 @@ function classifyImg(obj){
 }
 
 class Dot {
-    constructor(x, y, width, height, name, idx){
-        this.x = (width / 2) + x; 
-        this.y = (height / 2) + y;
+    constructor(x, y, width, height, name, idx, ratio){
+        this.x = Math.round(((width / 2) + x) * ratio);
+        this.y = Math.round(((height / 2) + y) * ratio);
         this.width = 15;
         this.height = 15;
         this.color = "#3AB8FF";
         this.name = name;
         this.idx = idx;
+
+        // console.log(`ratio: ${ratio}\nwidth: ${width} | height: ${height}\nx: ${x} | y: ${y}\ncenterX: ${(width / 2) + x} | centerY: ${(height / 2) + y}\nnew centerX: ${this.x} | new centerY: ${this.y}`)
     }
 
     create(location){
@@ -600,17 +713,21 @@ class Dot {
 }
 
 function createDot(obj){
-    
+    const width = document.querySelector(obj.target + " #selected-img").width;
+    let ratio;
+
     obj.result.forEach(function(item){
+        ratio = Number((width / item.img_width).toFixed(2));
         let dot = new Dot(
             item.x, 
             item.y, 
             item.width, 
             item.height, 
             item.name, 
-            item.idx
+            item.idx,
+            ratio
         );
-        dot.create(".img-box"+obj.target);
+        dot.create(".img-box" + obj.target);
     });
 
     const dots = document.querySelectorAll(obj.target + " .dot");
@@ -628,7 +745,9 @@ function createDot(obj){
             ease: "elastic", 
             force3D: true,
             onComplete: function(){
-                createList(obj);
+                setTimeout(() => {
+                    createList(obj);
+                }, 850);
             }
         });
     }, 300);
