@@ -78,7 +78,7 @@ function getIconClassName(name){
     }
     if(cnt === 0) className = undefined;
 
-    console.log(`■■■■■■■■■■■■■■■■■■■■■■■■■■■ RESULT: ${className} ■■■■■■■■■■■■■■■■■■■■■■■■■■■`);
+    // console.log(`■■■■■■■■■■■■■■■■■■■■■■■■■■■ RESULT: ${className} ■■■■■■■■■■■■■■■■■■■■■■■■■■■`);
     return className;
 }
 
