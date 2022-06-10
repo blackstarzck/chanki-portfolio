@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>자석효과1</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
 </head>
 <style>
@@ -44,19 +44,16 @@
         background-color: #ff0000;
     }
     .dot1 {
-        top: 200px;
-        left: 150px;
-        /* transform: translate(200px, 150px); */
+        top: 50%;
+        left: 10%;
     }
     .dot2 {
-        top: 100px;
-        right: 341px;
-        /* transform: translate(341px, 100px); */
+        top: 60%;
+        right: 30%;
     }
     .dot3 {
-        top: 300px;
-        left: 586px;
-        /* transform: translate(586px, 300px); */
+        top: 20%;
+        left: 40%;
     }
     #container {
         position: relative;
@@ -102,12 +99,17 @@
                     card.style.zIndex = 0;
                     drawLine({ stage: "restore" });
                 });
+
+                document.addEventListener("scroll", function(e){
+                    drawLine({ stage: "scroll" });
+                });
             });
         };
 
-        const { offsetLeft, offsetTop } = document.getElementById("container");
+
 
         function magnetize(el, e){
+            const { offsetLeft, offsetTop } = document.getElementById("container");
             const mX = e.pageX,
                 mY = e.pageY;
             const customDist = 120;
@@ -133,6 +135,8 @@
         }
 
         function calculateDistance(elem, mouseX, mouseY) {
+            const { offsetLeft, offsetTop } = document.getElementById("container");
+
             return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offsetLeft + offsetLeft + (elem.offsetWidth / 2)), 2) + Math.pow(
                 mouseY - (elem.offsetTop + offsetTop + (elem.offsetHeight / 2)), 2)));
         }
@@ -206,8 +210,9 @@
 
             checkCollision(card_target){
                 // const cont_data = this.container.getBoundingClientRect();
-                const window_w = window.innerWidth;
-                const window_h = window.innerHeight;
+                const { offsetLeft, offsetTop } = document.getElementById("container");
+                const window_w = window.outerWidth;
+                const window_h = window.outerHeight;
                 const cards = document.querySelectorAll(".card");
                 const target_data = card_target.getBoundingClientRect();
                 const x1 = Math.round(target_data.x);
@@ -307,12 +312,13 @@
         function resize(obj){
             const canvas = document.getElementById("canvas");
             const container = document.getElementById("container");
-            const px_ratio = window.pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
             const stage_width = container.clientWidth;
             const stage_height = container.clientHeight;
 
             canvas.width = stage_width;
             canvas.height = stage_height;
+
+            // console.log(`resize! ${stage_width} | ${stage_height}`)
         }
 
         let flag_a = true;
@@ -331,8 +337,10 @@
 
             dots.forEach((item, idx) => {
                 const data = item.getBoundingClientRect();
-                const x = (data.width / 2) + (data.x - offsetLeft);
-                const y = (data.height / 2) + (data.y - offsetTop);
+                // const x = (data.width / 2) + (data.x - offsetLeft);
+                // const y = (data.height / 2) + (data.y - offsetTop);
+                const x = (item.clientWidth / 2) + item.offsetLeft;
+                const y = (item.clientHeight / 2) + item.offsetTop;
 
                 pos.push({ centerX: x, centerY: y });
 
@@ -340,31 +348,30 @@
                     org_pos = pos;
                     flag_a = false;
                 }
-            });
+            }); 
 
             corners.forEach((item, idx) => {
                 const data = item.getBoundingClientRect();
-                const x = data.x - offsetLeft;
-                const y = data.y - offsetTop;
+                const x = data.x - container.offsetLeft;
+                const y = data.y - container.offsetTop + window.pageYOffset;
+                // const x = item.offsetLeft;
+                // const y = item.offsetTop;
 
                 pos[idx]["cornerX"] = x;
                 pos[idx]["cornerY"] = y;
                 org_pos[idx]["card"] = item.parentElement;
 
                 if(flag_b === true && pos.length === dots.length){
-                    org_pos[idx]["cornerX2"] = Math.round(data.x);
-                    org_pos[idx]["cornerY2"] = Math.round(data.y);
+                    org_pos[idx]["cornerX2"] = Math.round(x);
+                    org_pos[idx]["cornerY2"] = Math.round(y);
                     flag_b = false;
                 }
             });
-            
-            // console.log(pos);
-            ctx.clearRect(0, 0,stage_width, stage_height);
 
             ctx.clearRect(0, 0, stage_width, stage_height);
 
-            if(obj.stage === "init"){
-                pos.forEach((item) => {
+            if(obj.stage === "restore" || obj.stage === "scroll"){
+                org_pos.forEach((item) => {
                     ctx.beginPath();
                     ctx.moveTo(item.centerX, item.centerY);
                     ctx.lineTo(item.cornerX, item.cornerY);
@@ -372,8 +379,9 @@
                     ctx.stroke();
                 });
             }
-            if(obj.stage === "restore"){
-                org_pos.forEach((item) => {
+
+            if(obj.stage === "init"){
+                pos.forEach((item) => {
                     ctx.beginPath();
                     ctx.moveTo(item.centerX, item.centerY);
                     ctx.lineTo(item.cornerX, item.cornerY);
