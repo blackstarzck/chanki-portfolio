@@ -77,15 +77,10 @@
     }
     .card {
         border-radius: 5px;
-        background-color: rgba(0, 0, 0, .5);
+        background-color: yellow;
         outline: 1px solid #ff0000;
         position: absolute;
         /* transition: 100ms; */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 30px;
-        color: white;
     }
 </style>
 <body>
@@ -100,15 +95,6 @@
     </div>
 
     <script>
-        let array = [
-            { img_width:700, name: "tv", className: "fa-thin fa-tv", x: 55, y:114, width: 240, height: 240, idx: 1, centerX: 82, centerY: 110, x1: 74.5, y1: 102.5, x2: 89.5, y2: 117.5 },
-            { img_width:700, name: "tv", className: "fa-thin fa-tv", x: 291, y:105, width: 209, height: 150, idx: 2, centerX: 186, centerY: 85, x1: 178.5, y1: 77.5, x2: 193.5, y2: 92.5 },
-            { img_width:700, name: "mouse", className: "fa-thin fa-mouse", x: 506, y:335, width: 45, height: 28, idx: 4, centerX: 248, centerY: 164, x1: 240.5, y1: 156.5, x2: 255.5, y2: 171.5 },
-            { img_width:700, name: "cup", className: "fa-thin fa-cup-straw", x: 246, y:453, width: 80, height: 69, idx: 5, centerX: 134, centerY: 229, x1: 126.5, y1: 221.5, x2: 141.5, y2: 236.5 },
-            { img_width:700, name: "keyboard", className: "fa-thin fa-keyboard", x: 360, y:334, width: 180, height: 151, idx: 6, centerX: 212, centerY: 192, x1: 204.5, y1: 184.5, x2: 219.5, y2: 199.5 },
-            { img_width:300, name: "person", className: "fa-thin fa-person", x: 197, y:112, width: 106, height: 112, idx: 3, centerX: 275, centerY: 185, x1: 267.5, y1: 177.5, x2: 282.5, y2: 192.5 }
-        ];
-
         window.onload = () => {
             getPos();
             let card = document.querySelectorAll(".card");
@@ -134,6 +120,8 @@
                 });
             });
         };
+
+
 
         function magnetize(el, e){
             const { offsetLeft, offsetTop } = document.getElementById("container");
@@ -173,10 +161,9 @@
 
             dot.forEach((item, idx) => {
                 item.setAttribute("data-idx", idx+1);
-                console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step0] dot-numb: ${idx+1} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: purple");
-                        
+
                 const data = item.getBoundingClientRect();
-                const card = new Card({ data, target: item, numb: idx+1 });
+                const card = new Card({ data, target: item });
                 card.createCard();
 
             });
@@ -186,7 +173,6 @@
 
         class Card {
             constructor(obj){
-                this.dots = document.querySelectorAll(".dot");
                 this.dot_width = obj.data.width;
                 this.dot_height = obj.data.height;
                 this.dot_data = obj.target.getBoundingClientRect();
@@ -196,49 +182,43 @@
                 this.container = document.getElementById("container");
                 this.stage_width = container.clientWidth;
                 this.stage_height = container.clientHeight;
-                this.numb = obj.numb;
-                this.radius = 120;
-                this.points = 30;
-                this.cnt1 = 0;
-                this.cnt2 = 0;
-                this.initNumb = 1;
-                this.test_numb2 = 1;
-                this.complete = false;
-                this.created = [];
             }
 
             createCard(){
-                const dots = document.querySelectorAll(".dot");
-                const cards = document.querySelectorAll(".card");
+                const radius = 120;
                 const PI2 = Math.PI * 2;
-                const angle = PI2 / this.points;
+                const points = 30;
+                const angle = PI2 / points;
                 const width = 150;
                 const height = 150;
-                const random = Math.floor(Math.random() * this.points) + 1;
+                const random = Math.floor(Math.random() * points) + 1;
                 let centerX, centerY, left, top;
 
-                for(let i = 0; i < this.points; i++){
-                    centerX = this.radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
-                    centerY = this.radius * Math.sin(angle * i) + (this.centerY - this.container.offsetTop);
+                for(let i = 0; i < points; i++){
+                    centerX = radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
+                    centerY = radius * Math.sin(angle * i) + (this.centerY - this.container.offsetTop);
                     left = Math.round(centerX + (this.dot_width / 2) - (width / 2));
                     top = Math.round(centerY + (this.dot_height / 2) - (height / 2));
 
                     const card = document.createElement("div");
                     card.setAttribute("class", `card card-${i+1}`);
-                    card.setAttribute("center-target", `dot${this.numb}`);
                     card.style.left = `${left}px`;
                     card.style.top = `${top}px`;
                     card.style.width = `${width}px`;
                     card.style.height = `${height}px`;
-                    card.innerText = `${i+1}`;
+                    card.innerText = `centerX: ${Math.round(centerX)} | centerY: ${Math.round(centerY)}\n\nleft: ${left} | top: ${top}`;
 
-                    if(this.initNumb === (i+1) && this.complete === false){
-                        console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
-
+                    if(random === (i+1)){
+                        // console.log(`○○○○○○○○○○○○○○○○○○○○○○○○○○○ random: ${random} ○○○○○○○○○○○○○○○○○○○○○○○○○○○`);
+                        // console.log(`this.centerX: ${this.centerX} | this.centerY: ${this.centerY}`)
+                        
                         this.container.appendChild(card);
+                        document.querySelectorAll(".card").forEach((item, idx) => {
+                            item.setAttribute("center-target", `dot${idx+1}`);
+                        });
+
                         this.checkCollision(card);
                         this.createCorner(card);
-                        return;
                     }
                 }
             }
@@ -248,104 +228,48 @@
                 const { offsetLeft, offsetTop } = document.getElementById("container");
                 const window_w = window.outerWidth;
                 const window_h = window.outerHeight;
-                let cards = document.querySelectorAll(".card");
+                const cards = document.querySelectorAll(".card");
                 const target_data = card_target.getBoundingClientRect();
-
                 const x1 = Math.round(target_data.x);
                 const y1 =  Math.round(target_data.y);
                 const x2 = x1 + target_data.width;
                 const y2 = y1 + target_data.height;
-
                 const stage_x1 = 0;
                 const stage_y1 = 0;
                 const stage_x2 = window_w;
                 const stage_y2 = window_h;
                 let x1_compare, y1_compare, x2_compare, y2_compare;
 
-                // console.log(`${x1}, ${y1}\n${x2}, ${y1}\n${x1}, ${y2}\n${x2}, ${y2}`)
-                console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step2-충돌체크] 실행 횟수: ${this.test_numb2} | dot: ${this.numb} ▶▶▶▶▶▶▶▶▶▶`, "color: aqua")
-
-                console.log(cards)
-
-                cards.forEach((card, idx) => {
+                cards.forEach((card) => {
                     const card_data = card.getBoundingClientRect();
-                    const dot = document.querySelector(`.dot${this.numb}`);
+                    const dot = document.querySelector(`.${card.getAttribute("center-target")}`);
                     const dot_data = dot.getBoundingClientRect();
                     x1_compare =  Math.round(card_data.x);
                     y1_compare =  Math.round(card_data.y);
                     x2_compare = x1_compare + card_data.width;
                     y2_compare = y1_compare + card_data.height;
-                    
-                    console.log(`◀◀◀◀◀◀◀◀◀◀◀◀ [step3-반복문] ${cards.length} 번 돌려라~! ▶▶▶▶▶▶▶▶▶▶`);                    
-                    console.log(`중심점: dot${this.numb} | idx: ${idx} | 이미 생선된 것: ${card.className} | 비교대상: ${card_target.className}`)
+
                     if(
                         (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
                         (stage_y1 > y1_compare || stage_y2 < y2_compare)
                     ){
-                        this.initNumb++;
-                        if( this.cnt1 > 100 ){
-                            this.initNumb = 1;
-                            this.radius = 120;
-                        }
-                        console.log(`%c[1] ${dot.className} | ${card.className} | ${this.initNumb}, ${this.radius}`, "color: green")
-                        console.log(`제거대상: ${card_target.className}`);
                         card.remove();
-                        this.createCard({ data: dot_data , target: card, numb: this.numb });
-                        return false;
+                        this.createCard({ data: dot_data , target: dot });
                     }
 
                     if(
                         (x1 < x1_compare && x1_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
                         (x1 < x1_compare && x1_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
                         (x1 < x2_compare && x2_compare < x2) && (y1 < y2_compare && y1_compare < y2) ||
-                        (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
-                        (x1_compare <= x1 || x2_compare <= x2) && (y1_compare < y1 && y1 < y2_compare)
+                        (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2)
                     ){
-                        console.log(`%c[2] ${dot.className} | ${card_target.className} | ${this.initNumb}, ${this.radius}`, "color: red")
-                        console.log(`이미 생성된 것: ${card.className}\nleft-top ${x1_compare}, ${y1_compare}\nright-top ${x2_compare}, ${y1_compare}\nleft-bottom ${x1_compare}, ${y2_compare}\nright-bottom ${x2_compare}, ${y2_compare}`)
-                        console.log(`비교대상: ${card_target.className}\nleft-top ${x1}, ${y1}\nright-top${x2}, ${y1}\nleft-bottom ${x1}, ${y2}\nright-bottom ${x2}, ${y2}`)
-                        console.log(`제거대상: ${card_target.className}`);
-
                         card_target.remove();
-
-                        if( this.initNumb === this.points){
-                            console.log(`%c${this.initNumb}, ${this.points}`, "color: yellow")
-                            this.radius = this.radius + 30;
-                            this.initNumb = 1;
-                        }else{
-                            this.initNumb++;
-                        }
-
                         this.createCard({ 
                             data: dot_data, 
-                            target: document.querySelector(`.${card_target.getAttribute("center-target")}`),
-                            numb: this.numb
+                            target: document.querySelector(`.${card_target.getAttribute("center-target")}`) 
                         });
-                        return false;
                     }
                 });
-
-                // this.dots.forEach((item) => {
-                //     dot = item.getBoundingClientRect(); 
-                //     console.log(item)
-                // });
-
-                this.complete = true;
-                console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [ste4-마지막] 성공~! | 실행횟수: ${this.test_numb2} | ${cards[cards.length-1].className} | complete: ${this.complete}  ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: hotpink")
-                try {
-                    let a_class = cards[cards.length-1].className.replace("card ", "");
-                    let a = document.querySelector("."+a_class).getBoundingClientRect();
-                    let a_x1 = a.x;
-                    let a_y1 = a.y;
-                    let a_x2 = a_x1 + a.width;
-                    let a_y2 = a_x1 + a.height;
-                    console.log(`%c성공한 것: ${cards[cards.length-1].className}\nleft-top ${a_x1}, ${a_y1}\nright-top ${a_x2}, ${a_y1}\nleft-bottom ${a_x1}, ${a_y2}\nright-bottom ${a_x2}, ${a_y2}`, "color: lightblue")
-                } catch(error) {
-
-                }
-
-                this.test_numb2++;
-                // cards = document.querySelectorAll(".card");
 
                 const corners = [
                     { width: this.centerX - x1_compare, height: this.centerY - y1_compare, x: x1_compare, y: y1_compare, pos: "left-top" },
@@ -396,6 +320,8 @@
             resize();
             drawLine({ stage: "init" });
         });
+
+
 
         resize();
         function resize(obj){

@@ -336,14 +336,13 @@ function fadeOut(obj){
 }
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ IMAGE UPLOAD, DRAG ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+let detected = [];
+
 function getMaxData(data1, data2, obj){
     const images = document.querySelectorAll(".test-zone #img");
 
 
     if(images.length == data1.length){
-        
-        console.log(data2)
-
         data1.sort((a, b) => {
             return (a.total > b.total) ? 
                 -1 : ((a.total  < b.total) ? 
@@ -404,13 +403,9 @@ function getMaxData(data1, data2, obj){
         }
 
         const unique_array = removeDuplicates(temp_array, "name");
-        console.log(data1[0].result);
-        console.log(temp_array);
-        console.log(unique_array);
-        console.log(data1[0].result.concat(unique_array));
 
         data1[0].result = data1[0].result.concat(unique_array);
-        return data1[0];
+        return  data1[0];
     }
 }
 
