@@ -97,6 +97,13 @@
         <div class="dot dot4"></div>
         <div class="dot dot5"></div>
         <div class="dot dot6"></div>
+
+        <!-- <div class="dot dot7"></div>
+        <div class="dot dot8"></div>
+        <div class="dot dot9"></div>
+        <div class="dot dot10"></div>
+        <div class="dot dot11"></div>
+        <div class="dot dot12"></div> -->
     </div>
 
     <script>
@@ -232,6 +239,8 @@
                     card.style.height = `${height}px`;
                     card.innerText = `${i+1}`;
 
+                    // this.container.appendChild(card);
+
                     if(this.initNumb === (i+1) && this.complete === false){
                         console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
 
@@ -330,20 +339,54 @@
                 //     console.log(item)
                 // });
 
-                this.complete = true;
+
+                // this.initNumb = 1;
                 console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [ste4-마지막] 성공~! | 실행횟수: ${this.test_numb2} | ${cards[cards.length-1].className} | complete: ${this.complete}  ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: hotpink")
                 try {
-                    let a_class = cards[cards.length-1].className.replace("card ", "");
-                    let a = document.querySelector("."+a_class).getBoundingClientRect();
-                    let a_x1 = a.x;
-                    let a_y1 = a.y;
-                    let a_x2 = a_x1 + a.width;
-                    let a_y2 = a_x1 + a.height;
+                    
+
+                    const a_class = cards[cards.length-1].className.replace("card ", "");
+                    const a = document.querySelector("."+a_class).getBoundingClientRect();
+                    const a_x1 = a.x;
+                    const a_y1 = a.y;
+                    const a_x2 = a_x1 + a.width;
+                    const a_y2 = a_x1 + a.height;
                     console.log(`%c성공한 것: ${cards[cards.length-1].className}\nleft-top ${a_x1}, ${a_y1}\nright-top ${a_x2}, ${a_y1}\nleft-bottom ${a_x1}, ${a_y2}\nright-bottom ${a_x2}, ${a_y2}`, "color: lightblue")
+                
+                    // this.dots.forEach((item) => {
+                    //     const dot = item.getBoundingClientRect();
+                    //     const b_x1 = dot.x;
+                    //     const b_y1 = dot.x;
+                    //     const b_x2 = b_x1 + dot.width;
+                    //     const b_y2 = b_y1 + dot.height;
+
+                    //     if(
+                    //         (a_x1 < b_x1 && b_x1 < a_x2) && (y1 < b_y1 && b_y1 < y2) ||
+                    //         (a_x1 < b_x1 && b_x1 < a_x2) && (y1 < b_y2 && b_y1 < y2) ||
+                    //         (a_x1 < b_x2 && b_x2 < a_x2) && (y1 < b_y2 && b_y1 < y2) ||
+                    //         (a_x1 < b_x2 && b_x2 < a_x2) && (y1 < b_y1 && b_y1 < y2)
+                    //     ){
+                    //         console.log(`%c곂치는 점: ${item.className}`, "background: white;color: purple");
+                    //         this.radius = this.radius + 50;
+
+                    //         console.log(dot)
+                    //         console.log(item)
+                    //         console.log(cards[cards.length-1].getAttribute("center-target").replace(/[^0-9]/g, ""));
+                            
+                    //         cards[cards.length-1].remove();
+
+                    //         this.createCard({ 
+                    //             data: dot, 
+                    //             target: item,
+                    //             numb: cards[cards.length-1].getAttribute("center-target").replace(/[^0-9]/g, "")
+                    //         });
+                    //     }
+                    // });
                 } catch(error) {
 
                 }
 
+                this.complete = true;
                 this.test_numb2++;
                 // cards = document.querySelectorAll(".card");
 
