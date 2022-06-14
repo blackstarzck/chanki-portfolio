@@ -16,7 +16,8 @@
 </head>
 <body>
     <section class="fst-pg df-c">
-        <div class="cont-wrapper df">
+        <!-- STEP1-DETECT -->
+        <div class="cont-wrapper show df">
             <!-- left -->
             <div class="lt-cont df-c">
                 <div id="switch" class="txt-wrap df-alg-c">
@@ -96,7 +97,20 @@
                 </div>
             </div>
         </div>
+        <!-- STEP2-RESULT -->
+        <div class="container" id="container">
+            <canvas id="canvas"></canvas>
+            <img id="selected-img" style="width: 720px" src="" alt="">
+        </div>
     </section>
+
+    <div class="notice-popup">
+        <span class="text"></span>
+        <div class="btn-wrap">
+            <button id="btn-yes">네</button>
+            <button id="btn-no">아니오</button>
+        </div>
+    </div>
 
     <!-- script -->
     <script src="./fontawesome-pro/js/all.js" data-auto-replace-svg="false"></script>
