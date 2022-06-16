@@ -168,7 +168,7 @@ function handleState(data){
             fadeOut({ target: ".icon-wrap.wait", stagger: true })
             .then(function(){
                 const callBackFunc = function(data){
-                    handleNotice({ stage: "init", purpose: "text-only", text: "감지된 물체로 아이콘을 확인하시겠습니까?" });
+                    if(detected.length !== 0) handleNotice({ stage: "init", purpose: "text-only", text: "감지된 물체로 아이콘을 확인하시겠습니까?" });
                 }
                 animation_state = "processing";
                 fadeIn({ target: "#switch", stagger: false });
@@ -295,6 +295,7 @@ function fadeOut(obj){
 
                     target.classList.remove("dspl-b");
                     target.classList.remove("dspl-f");
+                    target.classList.remove("show");
                     target.classList.add("dspl-n");
     
                     setTimeout(() => { 
@@ -325,6 +326,7 @@ function fadeOut(obj){
 
                     target.classList.remove("dspl-b");
                     target.classList.remove("dspl-f");
+                    target.classList.remove("show");
                     target.classList.add("dspl-n");
     
                     setTimeout(() => { 
@@ -429,19 +431,29 @@ function removeDuplicates(originalArray, prop) {
     }
     return newArray;
 }
-
+const notice = document.querySelector(".notice-popup");
 const drag_zone = document.querySelector(".drop-zone");
 const input = document.getElementById("file");
 
 // 디렉토리에서 업로드하는 경우
 input.addEventListener("change", function(){
+    const notice = document.querySelector(".notice-popup");
     const files = input.files;
+    let delay = 0;
 
-    handleImgUpload({ select_type: "cstm" }, files)
-    .then(function(result){
-        verifyLength(result);
-        handleState({ stage: "init", layout: "cstm", option: result });
-    });
+    detected = [];
+    if(notice.classList.contains("show")){
+        delay = 700;
+        handleNotice({ stage: "finished" });
+    }
+
+    setTimeout(() => {
+        handleImgUpload({ select_type: "cstm" }, files)
+        .then(function(result){
+            verifyLength(result);
+            handleState({ stage: "init", layout: "cstm", option: result });
+        });
+    }, delay);
 });
 
 drag_zone.addEventListener("dragover", function(event){
@@ -457,14 +469,26 @@ drag_zone.addEventListener("dragleave", function(event){
 // 드래그로 업로드하는 경우
 drag_zone.addEventListener("drop", function(event){
     event.preventDefault();
+    const notice = document.querySelector(".notice-popup");
     const files = event.dataTransfer.files;
+    let delay = 0;
+
+    detected = [];
+    if(notice.classList.contains("show")){
+        delay = 700;
+        handleNotice({ stage: "finished" });
+    }
 
     drag_zone.classList.remove("drag-over");
 
-    handleImgUpload({ select_type: "cstm" }, files)
-    .then(function(result){
-        handleState({ stage: "init", layout: "cstm", option: result });
-    });
+    setTimeout(() => {
+        handleImgUpload({ select_type: "cstm" }, files)
+        .then(function(result){
+            handleState({ stage: "init", layout: "cstm", option: result });
+        });
+    }, delay);
+
+
 });
 
 /*
@@ -476,7 +500,7 @@ drag_zone.addEventListener("drop", function(event){
 let flag = true;
 function handleImgUpload(type, file){
     const images = document.querySelectorAll(".test-zone #img");
-    const upload = function(data){
+    const getDetailedData = function(data){
         images.forEach((img) => {
             img.src = data.source;
         });
@@ -502,7 +526,7 @@ function handleImgUpload(type, file){
         if(type.select_type === "default"){ // 1. 기본 개발자가 설정한 이미지
             src = file.src;
 
-            upload({ source: src });
+            getDetailedData({ source: src });
             preview.setAttribute("src", src);
             document.querySelector("#container #selected-img").src = src;
             resolve({ source: src, target:  visible });
@@ -516,8 +540,9 @@ function handleImgUpload(type, file){
                 preview.src = "";
                 preview.src = src;
 
-                upload({ source: src });
-                document.getElementById("selected-main-img").src = src;
+                getDetailedData({ source: src });
+                document.querySelector("#container #selected-img").src = src;
+                document.querySelector(visible + " #selected-img").src = src;
                 resolve({ source: src, target:  visible });
             }
         }
@@ -664,7 +689,7 @@ function classifyImg(obj){
     // const img = document.querySelector(obj.target + " #selected-img");
     const img_width = obj.img.width;
     let detect_result = []; // 초기화
-    console.log(`□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ obj.target: ${obj.target} □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□`);
+    // console.log(`□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ obj.target: ${obj.target} □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□`);
 
     return new Promise(function(resolve){
         cocoSsd.load().then(model => {
@@ -682,7 +707,18 @@ function classifyImg(obj){
                             let width = Math.ceil(predictions[i].bbox[2]);
                             let height = Math.ceil(predictions[i].bbox[3]);
 
-                            detect_result.push({ img_width, name, className, x, y, width, height, idx: i+1 });
+                            // console.log(`□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ COUNT: ${i+1} □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□`);
+                            console.log(className)
+
+                            detect_result.push({ 
+                                img_width, 
+                                name, 
+                                className: className.main,
+                                sub: className.sub,
+                                x, y, 
+                                width, height, 
+                                idx: i+1 
+                            });
                             // console.log(`name: ${name}\nclassName: ${className}\nx: ${x}\ny: ${y}\nwidth: ${width}\nheight: ${height}`);
                         }
                     }
@@ -714,10 +750,8 @@ class Dot {
         const imgBox = document.querySelector(location);
 
         dot.setAttribute("class", "dot dot"+this.idx);
-        dot.style.position = "absolute";
         dot.style.left = this.x + "px";
         dot.style.top = this.y + "px";
-        dot.style.visibility = "hidden";
         dot.setAttribute("data-idx", this.idx);
         dot.setAttribute("name", this.name);
 
@@ -728,8 +762,6 @@ class Dot {
 function createDot(obj){
     const width = document.querySelector(obj.target + " #selected-img").width;
     let ratio;
-
-    console.log(obj)
 
     obj.result.forEach(function(item, idx){
         ratio = Number((width / item.img_width).toFixed(2));
@@ -759,14 +791,18 @@ function createDot(obj){
             stagger: 0.2,
             ease: "elastic", 
             force3D: true,
+            onStart: function(){ animation_stack++; },
+            onUpdate: function() { animation_state = "processing" },
             onComplete: function(){
+                animation_stack--;
+                animation_state = "waiting";
+
                 if(obj.target !== "#container"){
                     setTimeout(() => {
                         createList(obj);
                     }, 850);
-                }else{
-                    if(obj.func !== undefined) obj.func();
                 }
+                if(obj.func !== undefined) obj.func();
             }
         });
     }, 300);
@@ -830,6 +866,8 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
                     y: -10,
                     duration: 0.5,
                     ease: "back.in",
+                    onStart: function(){ animation_stack++; },
+                    onUpdate: function(){ animation_state = "processing" },
                     onComplete: function(){
                         ctrl_wrapper.classList.remove("show");
                         initMainAction();
@@ -843,10 +881,13 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
 });
 
 function initMainAction(){
+    const canvas = document.getElementById("canvas");
     const container = document.getElementById("container");
     const img =  document.querySelector("#container #selected-img");
     container.classList.add("show");
     container.style.height = img.height+"px";
+
+    canvas.classList.add("active");
 
     gsap.fromTo("#container", { opacity: 0, y: -10 }, {
         opacity: 1,
@@ -854,7 +895,6 @@ function initMainAction(){
         duration: 0.5,
         stagger: 0.1,
         ease: "back.in",
-        onStart: function(){ animation_stack++; },
         onUpdate: function(){ animation_state = "processing" },
         onComplete: function(){
             /*  순서
@@ -862,6 +902,7 @@ function initMainAction(){
                 2. 카드생성
                 3. 아이콘 노출
             */
+            container.style.transform = "";
 
             createDot({ 
                 target: "#container", 
@@ -871,54 +912,84 @@ function initMainAction(){
         }
     });
 }
+let flag_c = false;
+$(function(){
+    $(document).on("mousemove", ".card", function(e){
+        let prc = animationProcessCheck();
+        if(prc === true) return;
+        magnetize($(this)[0], e, e.target);
+    });
 
-document.getElementById("container").addEventListener("mousemove", function(e){
-    let card = e.target.classList.contains("card") ? e.target : "empty";
-    let cards = document.querySelectorAll(".card");
-
-    if(card !== "empty"){
-        magnetize(card, e);
-    }
-    if(card === "empty"){
-        cards.forEach((item) => {
-            item.classList.remove("active");
-            item.style.zIndex = 0;
-        });
-
-        gsap.to(".card", 0.6, { 
+    $(document).on("mouseleave", ".card", function(e){
+        flag_c = false;
+        $(this)[0].style.zIndex = 4;
+        gsap.to($(this)[0], 0.6, { 
             y: 0, 
-            x: 0,
-            onUpdate: function(){ drawLine({ stage: "init" }); },
+            x: 0, 
+            onUpdate: function(){ drawLine({ stage: "init" }); }
         });
-    }
+    });
 });
 
 function getPos(){
     const dot = document.querySelectorAll("#container .dot");
     const img = document.querySelector("#container img");
     let data, card;
-    
+    let dot_data;
+    let speed;
+    let cards = [];
+
+    resize();
+
     dot.forEach((item, idx) => {
         item.setAttribute("data-idx", idx+1);
-        console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step0] dot-numb: ${idx+1} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: purple");
-                
         data = item.getBoundingClientRect();
-        card = new Card({ data, target: item, numb: idx+1 });
+        card = new Card({ 
+            data, 
+            target: item, 
+            numb: idx+1,
+            detected: detected[idx]
+        });
         card.createCard();
+        cards.push(card);
     });
-    resize();
-    drawLine({ stage: "init" });
+
+    gsap.fromTo(".card", { opacity: 0, y: -10 }, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.3,
+        ease: "back.in",
+        onStart: function(){ animation_stack++; },
+        onUpdate: function(){ animation_state = "processing" },
+        onComplete: function(){
+            animation_stack = 0;
+            animation_state = "waiting"
+        }
+    });
+
+    cards.forEach((item, idx) => {
+        dot_data = item.dot.getBoundingClientRect();
+        startX = (dot_data.width) / 2 + dot_data.x;
+        startY = (dot_data.height) / 2 + dot_data.y;
+        speed = 1;
+
+        card.drawLineA(startX, startY, item.cornerX, item.cornerY, speed);
+    });
 }
 
 class Card {
     constructor(obj){
         this.dots = document.querySelectorAll(".dot");
+        this.dot = obj.target;
         this.dot_width = obj.data.width;
         this.dot_height = obj.data.height;
         this.dot_data = obj.target.getBoundingClientRect();
         this.corner_pos = [];
         this.centerX = Math.round((this.dot_data.width) / 2 + this.dot_data.x);
         this.centerY = Math.round((this.dot_data.height) / 2 + this.dot_data.y);
+        this.cornerX;
+        this.cornerY;
         this.container = document.getElementById("container");
         this.stage_width = container.clientWidth;
         this.stage_height = container.clientHeight;
@@ -931,6 +1002,7 @@ class Card {
         this.test_numb2 = 1;
         this.complete = false;
         this.created = [];
+        this.icons = obj.detected.sub;
     }
 
     createCard(){
@@ -942,6 +1014,8 @@ class Card {
         const height = 150;
         const random = Math.floor(Math.random() * this.points) + 1;
         let centerX, centerY, left, top;
+        let elem = "";
+        let icons;
 
         for(let i = 0; i < this.points; i++){
             centerX = this.radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
@@ -956,14 +1030,34 @@ class Card {
             card.style.top = `${top}px`;
             card.style.width = `${width}px`;
             card.style.height = `${height}px`;
-            card.innerText = `${i+1}`;
+            // card.innerText = `${i+1}`;
 
-            // this.container.appendChild(card);
+            elem = '<div class="main swiper-'+this.numb+'">';
+            elem +=     '<ul class="inner swiper-wrapper">';
+            for(let n = 0; n < this.icons.length; n++){
+                if(n < 10){
+                    icons = `fa-light ${this.icons[n]}`;
+                    elem += `<li class="swiper-slide" style="${width}px;height:"><i class="${icons} icon m-icon"></i></li>`;
+                }
+            }
+            elem +=     '</ul>';
+            elem +=     '<button class="btn-direct swiper-button-prev btn-prev"><i class="fa-regular fa-chevron-left"></i></button>';
+            elem +=     '<button class="btn-direct swiper-button-next btn-next"><i class="fa-regular fa-chevron-right"></i></button>';
+            elem += '</div>';
 
             if(this.initNumb === (i+1) && this.complete === false){
-                console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
-
+                // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
                 this.container.appendChild(card);
+                card.innerHTML = elem;
+                const swiper = new Swiper(`.swiper-${this.numb}`, {
+                    slidesPerView: 1,
+                    loop: false,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+
                 this.checkCollision(card);
                 this.createCorner(card);
                 return;
@@ -991,9 +1085,8 @@ class Card {
         let x1_compare, y1_compare, x2_compare, y2_compare;
 
         // console.log(`${x1}, ${y1}\n${x2}, ${y1}\n${x1}, ${y2}\n${x2}, ${y2}`)
-        console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step2-충돌체크] 실행 횟수: ${this.test_numb2} | dot: ${this.numb} ▶▶▶▶▶▶▶▶▶▶`, "color: aqua")
-
-        console.log(cards)
+        // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step2-충돌체크] 실행 횟수: ${this.test_numb2} | dot: ${this.numb} ▶▶▶▶▶▶▶▶▶▶`, "color: aqua")
+        // console.log(cards)
 
         cards.forEach((card, idx) => {
             const card_data = card.getBoundingClientRect();
@@ -1004,8 +1097,8 @@ class Card {
             x2_compare = x1_compare + card_data.width;
             y2_compare = y1_compare + card_data.height;
             
-            console.log(`◀◀◀◀◀◀◀◀◀◀◀◀ [step3-반복문] ${cards.length} 번 돌려라~! ▶▶▶▶▶▶▶▶▶▶`);                    
-            console.log(`중심점: dot${this.numb} | idx: ${idx} | 이미 생선된 것: ${card.className} | 비교대상: ${card_target.className}`)
+            // console.log(`◀◀◀◀◀◀◀◀◀◀◀◀ [step3-반복문] ${cards.length} 번 돌려라~! ▶▶▶▶▶▶▶▶▶▶`);                    
+            // console.log(`중심점: dot${this.numb} | idx: ${idx} | 이미 생선된 것: ${card.className} | 비교대상: ${card_target.className}`)
             if(
                 (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
                 (stage_y1 > y1_compare || stage_y2 < y2_compare)
@@ -1015,8 +1108,8 @@ class Card {
                     this.initNumb = 1;
                     this.radius = 120;
                 }
-                console.log(`%c[1] ${dot.className} | ${card.className} | ${this.initNumb}, ${this.radius}`, "color: green")
-                console.log(`제거대상: ${card_target.className}`);
+                // console.log(`%c[1] ${dot.className} | ${card.className} | ${this.initNumb}, ${this.radius}`, "color: green")
+                // console.log(`제거대상: ${card_target.className}`);
                 card.remove();
                 this.createCard({ data: dot_data , target: card, numb: this.numb });
                 return false;
@@ -1029,15 +1122,15 @@ class Card {
                 (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
                 (x1_compare <= x1 || x2_compare <= x2) && (y1_compare < y1 && y1 < y2_compare)
             ){
-                console.log(`%c[2] ${dot.className} | ${card_target.className} | ${this.initNumb}, ${this.radius}`, "color: red")
-                console.log(`이미 생성된 것: ${card.className}\nleft-top ${x1_compare}, ${y1_compare}\nright-top ${x2_compare}, ${y1_compare}\nleft-bottom ${x1_compare}, ${y2_compare}\nright-bottom ${x2_compare}, ${y2_compare}`)
-                console.log(`비교대상: ${card_target.className}\nleft-top ${x1}, ${y1}\nright-top${x2}, ${y1}\nleft-bottom ${x1}, ${y2}\nright-bottom ${x2}, ${y2}`)
-                console.log(`제거대상: ${card_target.className}`);
+                // console.log(`%c[2] ${dot.className} | ${card_target.className} | ${this.initNumb}, ${this.radius}`, "color: red")
+                // console.log(`이미 생성된 것: ${card.className}\nleft-top ${x1_compare}, ${y1_compare}\nright-top ${x2_compare}, ${y1_compare}\nleft-bottom ${x1_compare}, ${y2_compare}\nright-bottom ${x2_compare}, ${y2_compare}`)
+                // console.log(`비교대상: ${card_target.className}\nleft-top ${x1}, ${y1}\nright-top${x2}, ${y1}\nleft-bottom ${x1}, ${y2}\nright-bottom ${x2}, ${y2}`)
+                // console.log(`제거대상: ${card_target.className}`);
 
                 card_target.remove();
 
                 if( this.initNumb === this.points){
-                    console.log(`%c${this.initNumb}, ${this.points}`, "color: yellow")
+                    // console.log(`%c${this.initNumb}, ${this.points}`, "color: yellow")
                     this.radius = this.radius + 30;
                     this.initNumb = 1;
                 }else{
@@ -1053,7 +1146,7 @@ class Card {
             }
         });
 
-        console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [ste4-마지막] 성공~! | 실행횟수: ${this.test_numb2} | ${cards[cards.length-1].className} | complete: ${this.complete}  ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: hotpink")
+        // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [ste4-마지막] 성공~! | 실행횟수: ${this.test_numb2} | ${cards[cards.length-1].className} | complete: ${this.complete}  ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: hotpink")
         try {
             const a_class = cards[cards.length-1].className.replace("card ", "");
             const a = document.querySelector("."+a_class).getBoundingClientRect();
@@ -1061,7 +1154,7 @@ class Card {
             const a_y1 = a.y;
             const a_x2 = a_x1 + a.width;
             const a_y2 = a_x1 + a.height;
-            console.log(`%c성공한 것: ${cards[cards.length-1].className}\nleft-top ${a_x1}, ${a_y1}\nright-top ${a_x2}, ${a_y1}\nleft-bottom ${a_x1}, ${a_y2}\nright-bottom ${a_x2}, ${a_y2}`, "color: lightblue")
+            // console.log(`%c성공한 것: ${cards[cards.length-1].className}\nleft-top ${a_x1}, ${a_y1}\nright-top ${a_x2}, ${a_y1}\nleft-bottom ${a_x1}, ${a_y2}\nright-bottom ${a_x2}, ${a_y2}`, "color: lightblue")
         } catch(error) {
 
         }
@@ -1092,7 +1185,6 @@ class Card {
 
         corner.classList.add("corner");
         corner.style.position = "absolute";
-        corner.style.backgroundColor = "pink";
 
         if(this.corner_pos[0].pos === "left-top"){
             corner.style.left = "2px";
@@ -1112,6 +1204,46 @@ class Card {
         }
 
         card.appendChild(corner);
+        const corner_data = corner.getBoundingClientRect();
+
+        if(corner_data.x !== 0) this.cornerX = Math.round(corner_data.x);
+        if(corner_data.y !== 0) this.cornerY = Math.round(corner_data.y);
+    }
+
+    drawLineA(startX, startY, endX, endY){
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const waypoints=[];
+        let dx = endX - startX; // 끝x - 시작x = 거리(distance)
+        let dy = endY - startY; // 끝y - 시작y = 거리(distance)
+        let t = 1;
+
+        canvas.width = document.body.clientWidth;
+        canvas.height = document.body.clientHeight;
+
+        for(let n = 0; n <= 100; n++){
+            let x = startX + dx * n / 100; // x = 시작x + 거리x * n / 100
+            let y = startY + dy * n / 100; // y = 시작y + 거리y * n / 100
+
+            waypoints.push({ x, y });
+        }
+
+        animate();
+        function animate(){
+            if(t < waypoints.length -1){
+                ctx.beginPath();
+                requestAnimationFrame(animate);
+            }else{
+                ctx.closePath();
+                return;
+            };
+
+            ctx.moveTo(waypoints[t - 1].x, waypoints[t - 1].y);
+            ctx.lineTo(waypoints[t].x, waypoints[t].y);
+            ctx.strokeStyle = '#3AB8FF';
+            ctx.stroke();
+            t++;
+        }
     }
 }
 
@@ -1120,60 +1252,56 @@ window.addEventListener("resize", function(e){
     drawLine({ stage: "init" });
 });
 
-resize();
-function resize(){
+function resize(obj){
     const canvas = document.getElementById("canvas");
-    const container = document.getElementById("container");
-    const stage_width = container.clientWidth;
-    const stage_height = container.clientHeight;
+    const stage_width = document.body.clientWidth;
+    const stage_height = document.body.clientHeight;
 
     canvas.width = stage_width;
     canvas.height = stage_height;
-
-    // console.log(`resize! ${stage_width} | ${stage_height}`)
 }
 
-let flag_a = true;
-let flag_b = true;
 function drawLine(obj){
     const dots = document.querySelectorAll("#container .dot");
     const corners = document.querySelectorAll(".corner");
     const container = document.getElementById("container");
-    const stage_width = container.clientWidth;
-    const stage_height = container.clientHeight;
+    const stage_width = document.body.clientWidth;
+    const stage_height = document.body.clientHeight;
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d"); 
     const pos = [];
+    let x, y, x1, y1;
 
     dots.forEach((item, idx) => {
         const data = item.getBoundingClientRect();
-        // const x = (data.width / 2) + (data.x - offsetLeft);
-        // const y = (data.height / 2) + (data.y - offsetTop);
-        const x = (item.clientWidth / 2) + item.offsetLeft;
-        const y = (item.clientHeight / 2) + item.offsetTop;
+        // const x = (item.clientWidth / 2) + item.offsetLeft;
+        // const y = (item.clientHeight / 2) + item.offsetTop;
+        x = (item.clientWidth / 2) + (container.offsetLeft + item.offsetLeft);
+        y = (item.clientHeight / 2) + (container.offsetTop + item.offsetTop);
 
         pos.push({ centerX: x, centerY: y });
     }); 
 
     corners.forEach((item, idx) => {
         const data = item.getBoundingClientRect();
-        const x = data.x - container.offsetLeft;
-        const y = data.y - container.offsetTop + window.pageYOffset;
-        // const x = item.offsetLeft;
-        // const y = item.offsetTop;
+        x1 = data.x;
+        y1 = data.y;
 
-        pos[idx]["cornerX"] = x;
-        pos[idx]["cornerY"] = y;
+        pos[idx]["cornerX"] = x1;
+        pos[idx]["cornerY"] = y1;
     });
 
     ctx.clearRect(0, 0, stage_width, stage_height);
 
     if(obj.stage === "init"){
         pos.forEach((item) => {
+            // console.log("===============================================")
+            // console.log(item.centerX, item.centerY, item.cornerX, item.cornerY)
+            // console.log("===============================================")
             ctx.beginPath();
             ctx.moveTo(item.centerX, item.centerY);
             ctx.lineTo(item.cornerX, item.cornerY);
-            ctx.strokeStyle = '#ff0000';
+            ctx.strokeStyle = '#3AB8FF';
             ctx.stroke();
         });
     }
@@ -1192,31 +1320,22 @@ function magnetize(el, e){
     const distance = calculateDistance(el, mX, mY);
     const cards = document.querySelectorAll(".card");
 
-    if(distance < customDist){
-        el.classList.add("active");
+    if(flag_c === false && distance < customDist){
+        // 자석효과에 의한 이동
         el.style.zIndex = 5;
         gsap.to(el, 0.5, { 
             y: deltaY, 
             x: deltaX, 
-            onUpdate: function(){ drawLine({ stage: "init" }); }
-        });
-        cards.forEach((item) => {
-            if(item != el){
-                gsap.to(item, 0.6, { 
-                    y: 0, 
-                    x: 0, 
-                    onUpdate: function(){ drawLine({ stage: "init" }); }
-                });
-            }
-        })
-    }else{
-        el.style.zIndex = 0;
-        gsap.to(el, 0.6, { 
-            y: 0, 
-            x: 0, 
-            onUpdate: function(){ drawLine({ stage: "init" }); }
+            onUpdate: function(){  drawLine({ stage: "init" }); }
         });
     }
+
+    if(
+        e.target.classList.contains("btn-prev") || 
+        e.target.classList.contains("btn-next") || 
+        e.target.classList.contains("main") ||
+        e.target.classList.contains("m-icon")
+    ){ flag_c = true; drawLine({ stage: "init" }) }
 }
 
 function calculateDistance(elem, mouseX, mouseY) {
@@ -1236,8 +1355,7 @@ function handleNotice(data){
 
         fadeIn({ target: ".notice-popup", stagger_state: false });
     }
-    if(data.stage === "finished" || data.purpose === "pause-ctrl"){
-
+    if(data.stage === "finished"){
         fadeOut({ target: ".notice-popup", stagger_state: false });
     }
 }

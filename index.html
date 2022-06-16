@@ -12,11 +12,13 @@
     <script src="./js/classes.js"></script> <!-- class names for fontawesome -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script> <!-- Load TensorFlow.js. This is required to use coco-ssd model. -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script> <!-- Load the coco-ssd model. -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <title>찬기의 포트폴리오</title>
 </head>
 <body>
+    <canvas id="canvas"></canvas>
     <section class="fst-pg df-c">
-        <!-- STEP1-DETECT -->
         <div class="cont-wrapper show df">
             <!-- left -->
             <div class="lt-cont df-c">
@@ -97,12 +99,11 @@
                 </div>
             </div>
         </div>
-        <!-- STEP2-RESULT -->
-        <div class="container" id="container">
-            <canvas id="canvas"></canvas>
-            <img id="selected-img" style="width: 720px" src="" alt="">
-        </div>
     </section>
+
+    <div class="container" id="container">
+        <img id="selected-img" style="width: 720px" src="" alt="">
+    </div>
 
     <div class="notice-popup">
         <span class="text"></span>
