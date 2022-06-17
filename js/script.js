@@ -97,14 +97,16 @@ function handleState(data){
                         const temp = [];
                         const results = [];
 
-                        images.forEach((img) => {
+                        images.forEach((img, idx) => {
                             classifyImg({ img, target: data.target })
                             .then(function(result){
                                 temp.push({ width: img.width, img, result, total: result.length });
                                 result.forEach((item) => {
                                     results.push(item);
                                 });
-                                setLoadingAnimation({ target: data.target, state: "finish" });
+
+                                if(images.length === idx+1) setLoadingAnimation({ target: data.target, state: "finish" });
+
                                 return getMaxData(temp, results, { target: data.target });
                             })
                             .then(function(results){
@@ -412,9 +414,12 @@ function getMaxData(data1, data2, obj){
 
         data1[0].result = data1[0].result.concat(unique_array);
         detected = data1[0].result;
+        console.log("=======================================================")
         console.log(detected)
 
         return  data1[0];
+    }else{
+        
     }
 }
 
@@ -566,6 +571,10 @@ function setLoadingAnimation(obj){
     // alert(`fade_out: ${fade_out} | fade_in: ${fade_in} | 숨길녀석: ${fade_out + " .loading-box"}`);
 
     const svg = document.querySelectorAll(fade_in + " svg");
+
+    console.log(obj.state)
+    document.querySelector(fade_in + " .info").innerText = "Detecting";
+
     svg.forEach((item) => {
         item.classList.remove("dspl-b");
         item.classList.add("dspl-n");
@@ -583,10 +592,8 @@ function setLoadingAnimation(obj){
         }
 
         if(obj.state === "retry" && item.classList.contains("retry")){
-            item.classList.remove("dspl-n");
-            item.classList.add("dspl-b");
-
             setTimeout(() => {
+                item.classList.remove("dspl-n");
                 item.classList.add("dspl-b");
                 document.querySelector(fade_in + " .info").innerText = "Please Retry";
             }, 300);
@@ -694,7 +701,7 @@ function classifyImg(obj){
     return new Promise(function(resolve){
         cocoSsd.load().then(model => {
             model.detect(obj.img).then(predictions => {
-                // console.log("predictions:", predictions);
+                console.log("predictions:", predictions);
 
                 if(predictions.length !== 0){
                     for (let i = 0; i < predictions.length; i++) {
@@ -724,6 +731,7 @@ function classifyImg(obj){
                     }
                     resolve(detect_result);
                 }else{
+                    console.log("?")
                     setLoadingAnimation({ target: obj.target, state: "retry" });
                     handleState({ stage: "finished" });
                 }
@@ -1043,6 +1051,7 @@ class Card {
             elem +=     '</ul>';
             elem +=     '<button class="btn-direct swiper-button-prev btn-prev"><i class="fa-regular fa-chevron-left"></i></button>';
             elem +=     '<button class="btn-direct swiper-button-next btn-next"><i class="fa-regular fa-chevron-right"></i></button>';
+            elem +=     '<div class="swiper-pagination"></div>';
             elem += '</div>';
 
             if(this.initNumb === (i+1) && this.complete === false){
@@ -1051,6 +1060,10 @@ class Card {
                 card.innerHTML = elem;
                 const swiper = new Swiper(`.swiper-${this.numb}`, {
                     slidesPerView: 1,
+                    pagination: {
+                        el: ".swiper-pagination",
+                        type: "fraction",
+                    },
                     loop: false,
                     navigation: {
                         nextEl: '.swiper-button-next',

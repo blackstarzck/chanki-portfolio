@@ -103,9 +103,6 @@
         color: #ffffff;
         z-index: 5;
         backdrop-filter: blur(3px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
     .card .btn-direct.active:active i {
         transition: .2s;
@@ -119,6 +116,12 @@
     .card .main .icon {
         font-size: 48px;
         cursor: pointer;
+    }
+    .card .total {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translate(-50%, -50%);
     }
     .card .main { 
         width: 100%;
@@ -162,7 +165,9 @@
                 </ul>
                 <button class="btn-direct swiper-button-prev btn-prev"><i class="fa-regular fa-chevron-left"></i></button>
                 <button class="btn-direct swiper-button-next btn-next"><i class="fa-regular fa-chevron-right"></i></button>
+                <div class="swiper-pagination"></div>
             </div>
+            <!-- <span class="total">1 / 7</span> -->
             <div class="corner" style="position: absolute; background-color: pink; left: 2px; top: 2px;"></div>
         </div>
     </div>
@@ -183,6 +188,10 @@
             let card = document.querySelectorAll(".card");
             const swiper = new Swiper('.swiper', {
                 slidesPerView: 1,
+                pagination: {
+                    el: ".swiper-pagination",
+                    type: "fraction",
+                },
                 loop: false,
                 navigation: {
                     nextEl: '.swiper-button-next',
