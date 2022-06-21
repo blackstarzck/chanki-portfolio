@@ -17,8 +17,89 @@
     <title>찬기의 포트폴리오</title>
 </head>
 <body>
+    <nav class="ctrl-cont nav-ctrller">
+        <ul class="nav-wrapper">
+            <li class="btn-nav-item ctrl-item" id="btn-flow-chart">Flow-chart</li>
+            <li class="btn-nav-item ctrl-item" id="btn-crafts">Crafts</li>
+            <li class="btn-nav-item ctrl-item" id="btn-about">About</li>
+            <li class="btn-nav-item ctrl-item" id="btn-t-Story">T-Story</li>
+            <li class="btn-nav-item ctrl-item" id="btn-github">Github</li>
+        </ul>
+    </nav>
+
+    <div class="ctrl-cont lt-ctrller ctrl-m-item">
+        <div class="name-wrapper m-list-swiper">
+            <ul class="ctrl-item inner swiper-wrapper">
+                <li class="swiper-slide"><span class="m-item-name">Name of object #1</span></li>
+                <li class="swiper-slide"><span class="m-item-name">Name of object #2</span></li>
+                <li class="swiper-slide"><span class="m-item-name">Name of object #3</span></li>
+                <li class="swiper-slide"><span class="m-item-name">Name of object #4</span></li>
+                <li class="swiper-slide"><span class="m-item-name">Name of object #5</span></li>
+            </ul>
+            <button type="button" class="ctrl-item btn-direct swiper-button-prev btn-up"><i class="icon fa-regular fa-chevron-up"></i></button>
+            <button type="button" class="ctrl-item btn-direct swiper-button-next btn-down"><i class="icon fa-regular fa-chevron-down"></i></button>
+        </div>
+    </div>
+
+    <div class="ctrl-cont rotation-box">
+        <ul class="slide-wrap ctrl-item">
+            <li class="slide slide-1 show"><i class="fa-solid fa-house-night"></i></li>
+            <li class="slide slide-2"><i class="fa-solid fa-stars"></i></li>
+            <li class="slide slide-3"><i class="fa-solid fa-bolt-lightning"></i></li>
+            <li class="slide slide-4"><i class="fa-solid fa-house-night"></i></li>
+            <li class="slide slide-5"><i class="fa-solid fa-bolt-lightning"></i></li>
+        </ul>
+    </div>
+
+    <div class="ctrl-cont rt-ctrller ctrl-goback">
+        <button type="button" class="btn-direct btn-back">
+            <i class="ctrl-item icon fa-light fa-arrow-rotate-left"></i>
+            <span class="ctrl-item" >Back</span>
+        </button>
+    </div>
+
+    <div class="ctrl-cont share">
+        <button type="button" class="btn-share">
+            <i class="ctrl-item icon fa-regular fa-share"></i>
+            <span class="ctrl-item" >Share</span>
+        </button>
+    </div>
+
+    <div class="ctrl-cont pallette dspl-f">
+        <button type="button" class="btn-prev"><i class="icon fa-solid fa-chevron-left"></i></button>
+        <div class="user-ctrl df-c">
+            <!-- left -->
+            <ul class="lt-btn-wrap btn-wrap dspl-f">
+                <li class="menu-item"><button type="button" class="btn-show-code"><i class="icon fa-regular fa-code"></i></button></li>
+                <li class="menu-item"><button type="button" class="btn-list"><i class="icon fa-regular fa-list"></i></button></li>
+                <li class="menu-item"><button type="button" class="btn-color-pick" ><i class="icon fa-regular fa-palette"></i></button></li>
+            </ul>
+            <ul class="menu-cont-wrapper">
+                <!-- cont #1 -->
+                <li class="menu-cont list s-list-swiper">
+                    <ul class="list-wrap swiper-wrapper">
+                        <li class="swiper-slide list-item">item #1</li>
+                        <li class="swiper-slide list-item">item #2</li>
+                        <li class="swiper-slide list-item">item #3</li>
+                        <li class="swiper-slide list-item">item #4</li>
+                    </ul>
+                </li>
+                <!-- cont #2 -->
+                <li class="menu-cont color-pick">
+
+                </li>
+            </ul>
+            <!-- right -->
+            <ul class="rt-btn-wrap btn-wrap dspl-f">
+                <li class="menu-item"><button><i class="icon fa-solid fa-sun"></i></button></li>
+                <li class="menu-item"><button><i class="icon fa-solid fa-moon"></i></button></li>
+            </ul>
+        </div>
+        <button type="button" class="btn-next"><i class="icon fa-solid fa-chevron-right"></i></button>
+    </div> 
+
     <canvas id="canvas"></canvas>
-    <section class="fst-pg df-c">
+    <section class="fst-pg df-c dspl-n">
         <div class="cont-wrapper show df">
             <!-- left -->
             <div class="lt-cont df-c">
@@ -101,15 +182,15 @@
         </div>
     </section>
 
-    <div class="container" id="container">
+    <div class="container dspl-n" id="container">
         <img id="selected-img" style="width: 720px" src="" alt="">
     </div>
 
     <div class="notice-popup">
         <span class="text"></span>
         <div class="btn-wrap">
-            <button id="btn-yes">네</button>
-            <button id="btn-no">아니오</button>
+            <button type="button" id="btn-yes">네</button>
+            <button type="button" id="btn-no">아니오</button>
         </div>
     </div>
 

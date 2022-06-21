@@ -905,11 +905,6 @@ function initMainAction(){
         ease: "back.in",
         onUpdate: function(){ animation_state = "processing" },
         onComplete: function(){
-            /*  순서
-                1. 점 생성(애니메이션)
-                2. 카드생성
-                3. 아이콘 노출
-            */
             container.style.transform = "";
 
             createDot({ 
@@ -920,6 +915,93 @@ function initMainAction(){
         }
     });
 }
+
+function handleIcon(obj){
+    const { state, current, target } = obj;
+    const setting = state === "prev" ? { y1: -15, y2: 15 } : { y1: 15, y2: -15 };
+    const slides = document.querySelectorAll(".rotation-box li.slide");
+
+    console.log("state: " + state)
+
+    slides.forEach((slide) => {
+        if(slide.classList.contains("show")){
+            // fade out
+            gsap.fromTo(slide, { opacity: 1, y: 0 }, {
+                opacity: 0,
+                y: setting.y2,
+                duration: 0.3,
+                ease: "ease.in",
+                onUpdate: function(){ animation_state = "processing"; },
+                onComplete: function(){ 
+                    animation_state = "waiting";
+                    slide.classList.remove("show");
+                }
+            });
+        }
+    });
+
+    // fade in
+    gsap.fromTo(current, { opacity: 0, y: setting.y1 } ,{
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        ease: "ease.in",
+        onStart: function(){ current.classList.add("show") },
+        onUpdate: function(){ animation_state = "processing" },
+        onComplete: function(){ animation_state = "waiting"; }
+    });
+}
+
+showAllUI({ target: "nav-ctrller" });
+
+function showAllUI(obj){
+    const mSwiper = new Swiper(".m-list-swiper", {
+        direction: "vertical",
+        slidesPerView: 1,
+        speed: 500,
+        // loop: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        on: {
+            slidePrevTransitionStart: function(){
+                let idx = this.realIndex;
+                let slides = document.querySelectorAll(".rotation-box li.slide");
+
+                handleIcon({ state: "prev", current: slides[idx], target: slides[idx+1] });
+            },
+            slideNextTransitionStart: function(){
+                let idx = this.realIndex;
+                let slides = document.querySelectorAll(".rotation-box li.slide");
+
+                handleIcon({ state: "next", current: slides[idx], target: slides[idx-1] });
+            }
+        }
+    });
+    const sSwiper = new Swiper(".s-list-swiper", {
+        slidesPerView: 1,
+        speed: 500,
+        // loop: true,
+    });
+    document.querySelector(".pallette .btn-prev").addEventListener("click", () => {
+        console.log(1)
+        sSwiper.slidePrev();
+    });
+    document.querySelector(".pallette .btn-next").addEventListener("click", () => {
+        console.log(2)
+        sSwiper.slideNext();
+    });
+
+    sequence.fromTo(".ctrl-item", { opacity: 0, y: -10 }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "back.in"
+    });
+}
+
 let flag_c = false;
 $(function(){
     $(document).on("mousemove", ".card", function(e){
