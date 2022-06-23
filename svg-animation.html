@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Animation test</title>
+</head>
+<style>
+    #icon {
+        width: 400px;
+        height: 400px;
+    }
+    #icon path {
+        fill: transparent;
+        stroke: red;
+        stroke-width: 2px;
+    }
+</style>
+<body>
+    <i id="icon" class="fa-thin fa-sun"></i>
+
+    <script src="./fontawesome-pro/js/all.js" data-auto-replace-svg=""></script>
+    <script>
+
+
+        window.onload = function(){
+
+            handleSVGanimation();
+            function handleSVGanimation(){
+                const svg = document.querySelector("#icon");
+                const paths = document.querySelectorAll("#icon path");
+                let i = 0;
+
+                if(!paths){ return }
+
+                paths.forEach((path, idx) => {
+                    const speed = 750;
+                    const pathLength = path.getTotalLength();
+                    i++;
+
+                    console.log(pathLength)
+
+                    path.setAttribute("stroke-dasharray", pathLength);
+                    path.setAttribute("stroke-dashoffset", pathLength);
+
+                    if(idx === 0){
+                        path.innerHTML = "<animate id='animate"+i+"' attributeName='stroke-dashoffset' begin='0s' dur='"+pathLength/speed+"s' to='0' fill='freeze'/>";
+                    }else{
+                        path.innerHTML = "<animate id='animate"+i+"' attributeName='stroke-dashoffset' begin='a"+(i-1)+".end' dur='"+pathLength/speed+"s' to='0' fill='freeze'/>";
+                    
+                    }
+
+                    console.log(idx, pathLength, path.innerHTML);
+                });
+                
+                document.getElementById("animate").onbegin = () => {
+                    // console.log('begin~!')
+                    setTimeout(() => {
+                        paths.style.fill = "red";
+                    }, 1300);
+                }
+                document.getElementById("animate").onend = () => {
+                    // console.log('end~!')
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <title>Document</title>
+    <style>
+        .IroSlider { height: 10px !important; }
+    </style>
+</head>
+
+<body>
+    <div class="ColorPicker" id="sliderPicker"></div>
+    <svg><defs><g id="handle"><circle cx="8" cy="8" r="8" fill="#000000"></circle></g></defs></svg>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5/dist/iro.min.js"></script> -->
+    <script>
+        var colorPicker  = new iro.ColorPicker("#sliderPicker", {
+            // width: 450,
+            // boxHeight: "",
+            color: "rgb(255, 0, 0)",
+            // borderWidth: 1,
+            borderColor: "black",
+            handleRadius: 8,
+            // activeHandleRadius: "",
+            handleSvg: '#handle',
+            handleProps: {
+                x: 0,
+                y: -9
+            },
+            layout: [{
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'hue'
+                }
+            }]
+        });
+
+        colorPicker.on('color:change', function(color) {
+            console.log(color.hexString);
+        });
+
+    </script>
+</body>
+
+</html>

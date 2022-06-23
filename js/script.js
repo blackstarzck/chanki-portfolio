@@ -3,14 +3,13 @@ verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
 
 $(function(){
     console.log("제이쿼리 작동됨");
-})
+});
 
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LEFT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 // 애니매이션 중 클릭 방지
 let animation_state = "waiting";
-let animation_stack = 0; 
 
 // 사용자 설정 레이아아웃 변경
 document.getElementById("switch").addEventListener("click", function(){
@@ -203,7 +202,7 @@ function varifyLayout(){
 
 function animationProcessCheck(){
     let prc;
-    if(animation_state === "processing" && animation_stack !== 0) prc = true;
+    if(animation_state === "processing") prc = true;
     else prc = false;
     
     return prc;
@@ -229,7 +228,6 @@ function fadeIn(obj){
                 duration: 0.5,
                 stagger: 0.1,
                 ease: "back.in",
-                onStart: function(){ animation_stack++; },
                 onUpdate: function(){ animation_state = "processing" },
                 onComplete: function(){
                     try{
@@ -239,7 +237,6 @@ function fadeIn(obj){
                     }
                     
                     setTimeout(() => { 
-                        animation_stack--;
                         animation_state = "waiting";
                     }, 300);
                     resolve("");
@@ -251,7 +248,6 @@ function fadeIn(obj){
                 y: 0,
                 duration: 0.5,
                 ease: "back.in",
-                onStart: function(){ animation_stack++; },
                 onUpdate: function(){ animation_state = "processing" },
                 onComplete: function(){
                     try{
@@ -261,7 +257,6 @@ function fadeIn(obj){
                     }
 
                     setTimeout(() => { 
-                        animation_stack--;
                         animation_state = "waiting";
                     }, 300);
                     resolve("");
@@ -285,7 +280,6 @@ function fadeOut(obj){
                 y: -10, 
                 stagger: 0.1,
                 ease: "back.in",
-                onStart: function(){ animation_stack++; },
                 onUpdate: function(){ animation_state = "processing" },
                 onComplete: function(){
                     try{
@@ -301,7 +295,6 @@ function fadeOut(obj){
                     target.classList.add("dspl-n");
     
                     setTimeout(() => { 
-                        animation_stack--;
                         animation_state = "waiting";
                     }, 300);
                     resolve("");
@@ -316,7 +309,6 @@ function fadeOut(obj){
                 opacity: 0, 
                 y: -10, 
                 ease: "back.in",
-                onStart: function(){ animation_stack++; },
                 onUpdate: function(){ animation_state = "processing" },
                 onComplete: function(){
                     try{
@@ -332,7 +324,6 @@ function fadeOut(obj){
                     target.classList.add("dspl-n");
     
                     setTimeout(() => { 
-                        animation_stack--;
                         animation_state = "waiting";
                     }, 300);
                     resolve("");
@@ -799,10 +790,8 @@ function createDot(obj){
             stagger: 0.2,
             ease: "elastic", 
             force3D: true,
-            onStart: function(){ animation_stack++; },
             onUpdate: function() { animation_state = "processing" },
             onComplete: function(){
-                animation_stack--;
                 animation_state = "waiting";
 
                 if(obj.target !== "#container"){
@@ -874,7 +863,6 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
                     y: -10,
                     duration: 0.5,
                     ease: "back.in",
-                    onStart: function(){ animation_stack++; },
                     onUpdate: function(){ animation_state = "processing" },
                     onComplete: function(){
                         ctrl_wrapper.classList.remove("show");
@@ -979,28 +967,184 @@ function showAllUI(obj){
             }
         }
     });
-    const sSwiper = new Swiper(".s-list-swiper", {
-        slidesPerView: 1,
-        speed: 500,
-        // loop: true,
-    });
-    document.querySelector(".pallette .btn-prev").addEventListener("click", () => {
-        console.log(1)
-        sSwiper.slidePrev();
-    });
-    document.querySelector(".pallette .btn-next").addEventListener("click", () => {
-        console.log(2)
-        sSwiper.slideNext();
-    });
 
-    sequence.fromTo(".ctrl-item", { opacity: 0, y: -10 }, {
+    gsap.fromTo(".ctrl-item", { opacity: 0, y: -10 }, {
         opacity: 1,
         y: 0,
         duration: 0.5,
         stagger: 0.1,
         ease: "back.in"
     });
+
+    initPalletteSwiper();
+    initColorPicker();
 }
+
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ PALLETTE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+const btns_lt = document.querySelectorAll(".pallette .lt-btn-wrap li");
+const btns_rt = document.querySelectorAll(".pallette .rt-btn-wrap li");
+const indicator_lt = document.querySelector(".lt-btn-wrap .indicator");
+const indicator_rt = document.querySelector(".rt-btn-wrap .indicator");
+const btns_menu = document.querySelectorAll(".pallette .menu-item button");
+
+// EVENT
+btns_lt.forEach((btn) => {
+    let x = btn.offsetLeft;
+    if(btn.classList.contains("active")){
+        indicator_lt.style.transform = `transLateX(${x}px)`;
+    }
+
+    btn.addEventListener("click", (e) => {
+        const swiper = document.querySelector(".menu-cont.s-list-swiper");
+        const color = document.querySelector(".menu-cont.color-pick");
+        const btn_code = btn.children[0].classList.contains("btn-show-code") ?  btn.children[0] : "";
+        const btn_list = btn.children[0].classList.contains("btn-list") ?  btn.children[0] : "";
+        const btn_color = btn.children[0].classList.contains("btn-color-pick") ?  btn.children[0] : "";
+        let prc = animationProcessCheck();
+        if(prc === true) return;
+
+        btns_lt.forEach((btn) => {
+            btn.classList.remove("active");
+        });
+
+        btn.classList.add("active");
+        indicator_lt.style.transform = `transLateX(${x}px)`;
+
+        if(btn_code){ console.log(1) }
+
+        if(btn_list && !swiper.classList.contains("show")){
+            swiper.classList.add("show");
+            gsap.fromTo(swiper, { opacity: 0, y: -15 }, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "back.in",
+                onUpdate: function(){
+                    animation_state = "processing"
+                },
+                onComplete: function(){
+                    animation_state = "waiting"
+                    color.classList.remove("show");
+                }
+            });
+            gsap.to(color, {
+                opacity: 0,
+                y: 15,
+                duration: 0.5,
+                ease: "back.in",
+                onUpdate: function(){
+                    animation_state = "processing"
+                },
+                onComplete: function(){
+                    animation_state = "waiting"
+                }
+            });
+        }
+        if(btn_color && !color.classList.contains("show")){
+            color.classList.add("show");
+            gsap.fromTo(color, { opacity: 0, y: -15 }, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "back.in",
+                onUpdate: function(){
+                    animation_state = "processing"
+                },
+                onComplete: function(){
+                    animation_state = "waiting"
+                    swiper.classList.remove("show");
+                }
+            });
+            gsap.to(swiper, {
+                opacity: 0,
+                y: 15,
+                duration: 0.5,
+                ease: "back.in",
+                onUpdate: function(){
+                    animation_state = "processing"
+                },
+                onComplete: function(){
+                    animation_state = "waiting"
+                }
+            });
+        }
+    });
+});
+
+btns_rt.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        btns_rt.forEach((btn) => {
+            btn.classList.remove("active");
+        });
+
+        btn.classList.add("active");
+
+        if(btn.children[0].classList.contains("btn-dark")){
+            document.body.classList.add("dk-mode");
+        }
+        if(btn.children[0].classList.contains("btn-light")){
+            document.body.classList.remove("dk-mode");
+        }
+    });
+});
+
+
+// color picker
+function initColorPicker(){
+    const handle = document.getElementById("handle");
+    const colorPicker  = new iro.ColorPicker("#sliderPicker", {
+        width: document.querySelector("#sliderPicker").clientWidth,
+        // boxHeight: "",
+        color: "rgb(255, 0, 0)",
+        // borderWidth: 1,
+        borderColor: "black",
+        handleRadius: 8,
+        // activeHandleRadius: "",
+        handleSvg: '#handle',
+        handleProps: { x: 0, y: -9 },
+        layout: [{
+            component: iro.ui.Slider,
+            options: {
+                sliderType: 'hue'
+            }
+        }]
+    });
+
+    handle.children[0].style.fill = colorPicker.color.hexString;
+
+    //EVENTS
+    colorPicker.on('color:change', function(color) {
+        const icons = document.querySelectorAll(".rotation-box .slide i");
+        const icon_show = document.querySelector(".rotation-box .slide.show i");
+
+        icons.forEach((icon) => { icon.style.color = "" });
+        icon_show.style.color = color.hexString;
+        handle.children[0].style.fill = color.hexString;
+
+        console.log(handle.children[0])
+    });
+}
+
+function initPalletteSwiper(){
+    const sSwiper = new Swiper(".s-list-swiper", {
+        slidesPerView: "auto",
+        spaceBetween: 30,
+        speed: 500,
+        centeredSlides: true,
+        // loop: true,
+    });
+
+    //EVENTS
+    document.querySelector(".pallette .btn-prev").addEventListener("click", () => {
+        const swiper = document.querySelector(".pallette .menu-cont.list.show");
+        if(swiper) sSwiper.slidePrev();
+    });
+    document.querySelector(".pallette .btn-next").addEventListener("click", () => {
+        const swiper = document.querySelector(".pallette .menu-cont.list.show");
+        if(swiper) sSwiper.slidePrev();
+    });
+}
+
 
 let flag_c = false;
 $(function(){
@@ -1050,10 +1194,8 @@ function getPos(){
         duration: 1,
         stagger: 0.3,
         ease: "back.in",
-        onStart: function(){ animation_stack++; },
         onUpdate: function(){ animation_state = "processing" },
         onComplete: function(){
-            animation_stack = 0;
             animation_state = "waiting"
         }
     });
@@ -1456,7 +1598,7 @@ function handleNotice(data){
 }
 
 function setCookie(data){
-    var todayDate = new Date();
+    const todayDate = new Date();
 
     todayDate = new Date(parseInt(todayDate.getTime() / 86400000) * 86400000 + 54000000);
 
