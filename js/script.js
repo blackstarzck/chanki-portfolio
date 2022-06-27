@@ -1222,8 +1222,6 @@ notice.addEventListener("click", () => {
     handleNotice({ stage: "finished" });
 });
 
-
-
 bindEvents();
 function bindEvents(){
     const icons = document.querySelectorAll(".pallette .swiper-list li");
