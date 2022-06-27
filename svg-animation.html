@@ -12,57 +12,78 @@
         height: 400px;
     }
     #icon path {
-        fill: transparent;
+        /* fill: transparent;
         stroke: red;
-        stroke-width: 2px;
+        stroke-width: 2px; */
     }
+    #test { animation: fill 3s ease forwards; }
+    @keyframes fill {
+    0% { fill: #ffffff }
+    100% { fill: red; }
+}
 </style>
 <body>
-    <i id="icon" class="fa-thin fa-sun"></i>
+    <div class="wrap">
+        <i id="icon" class="fa-thin fa-sun"></i>
+    </div>
+
+    <button id="btn">click</button>
+    <button id="fill">fill</button>
+
+    <svg id="test">
+        <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="" />
+    </svg>
 
     <script src="./fontawesome-pro/js/all.js" data-auto-replace-svg=""></script>
     <script>
 
 
         window.onload = function(){
+            document.getElementById("fill").addEventListener("click", function(){
+                document.querySelector(".wrap").classList.add("fill");
+            })
 
-            handleSVGanimation();
-            function handleSVGanimation(){
-                const svg = document.querySelector("#icon");
-                const paths = document.querySelectorAll("#icon path");
+            document.getElementById("btn").addEventListener("click", function(){
+                var elements = document.getElementsByTagName("animate");
+
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].beginElement();
+                }
+            });
+
+            const target = document.querySelectorAll("#icon path");
+
+            addAnimationSVG();
+            function addAnimationSVG(){
+                const svgs = document.querySelectorAll("svg");
                 let i = 0;
 
-                if(!paths){ return }
-
-                paths.forEach((path, idx) => {
-                    const speed = 750;
-                    const pathLength = path.getTotalLength();
+                svgs.forEach((svg) => {
                     i++;
 
-                    console.log(pathLength)
+                    const speed = 750;
+                    const path = svg.children[0];
+                    const pathLength = path.getTotalLength();
+                    const elem = document.createElement("clipPath");
+                    const elem_a = document.createElement("circle");
+                    const elem_b = document.createElement("use");
 
+                    elem.setAttribute("id", "clip"+i);
+                    elem_b.setAttribute("clip-path", "url(#clip"+i+")");
+                    elem_b.setAttribute("href", "#path"+i);
+                    elem_b.setAttribute("fill", "red");
+                    elem_a.setAttribute
+
+                    // svg.insertBefore(elem, path);
+                    // elem.append(elem_a);
+                    // svg.append(elem_b);
+                    // svg.append();
+
+                    path.setAttribute("id", "path"+i);
                     path.setAttribute("stroke-dasharray", pathLength);
                     path.setAttribute("stroke-dashoffset", pathLength);
-
-                    if(idx === 0){
-                        path.innerHTML = "<animate id='animate"+i+"' attributeName='stroke-dashoffset' begin='0s' dur='"+pathLength/speed+"s' to='0' fill='freeze'/>";
-                    }else{
-                        path.innerHTML = "<animate id='animate"+i+"' attributeName='stroke-dashoffset' begin='a"+(i-1)+".end' dur='"+pathLength/speed+"s' to='0' fill='freeze'/>";
-                    
-                    }
-
-                    console.log(idx, pathLength, path.innerHTML);
+                    path.innerHTML = "<animate id='animate"+i+"' restart='whenNotActive' attributeName='stroke-dashoffset' begin='indefinite' dur='"+pathLength/speed+"s' to='0' fill='freeze'/>";
                 });
-                
-                document.getElementById("animate").onbegin = () => {
-                    // console.log('begin~!')
-                    setTimeout(() => {
-                        paths.style.fill = "red";
-                    }, 1300);
-                }
-                document.getElementById("animate").onend = () => {
-                    // console.log('end~!')
-                }
             }
         }
     </script>

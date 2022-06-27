@@ -36,7 +36,7 @@
     </nav>
 
     <div class="ctrl-cont lt-ctrller ctrl-m-item">
-        <div class="name-wrapper m-list-swiper">
+        <div class="name-wrapper swiperIntro">
             <ul class="ctrl-item inner swiper-wrapper">
                 <li class="swiper-slide"><span class="m-item-name">Name of object #1</span></li>
                 <li class="swiper-slide"><span class="m-item-name">Name of object #2</span></li>
@@ -50,13 +50,45 @@
     </div>
 
     <div class="ctrl-cont rotation-box">
-        <ul class="slide-wrap ctrl-item">
-            <li class="slide slide-1 show"><i class="fa-solid fa-house-night"></i></li>
-            <li class="slide slide-2"><i class="fa-solid fa-stars"></i></li>
-            <li class="slide slide-3"><i class="fa-solid fa-bolt-lightning"></i></li>
-            <li class="slide slide-4"><i class="fa-solid fa-house-night"></i></li>
-            <li class="slide slide-5"><i class="fa-solid fa-bolt-lightning"></i></li>
-        </ul>
+        <div class="svg-codes">
+            <p class="inner"></p>
+            <div class="btn-wrap">
+                <button id="btn-dwn" class="btn-dwn" title=""><i class="fa-regular fa-down-to-bracket"></i></button>
+                <button id="btn-copy" class="btn-copy" title=""><i class="fa-solid fa-paste"></i></button>
+            </div>
+        </div>
+
+        <div class="main-slides ctrl-item">
+            <!-- 1 -->
+            <ul class="slide-wrap 1 show">
+                <li class="slide slide-1 show"><i class="fa-solid fa-house-night"></i></li>
+                <li class="slide slide-2"><i class="fa-solid fa-stars"></i></li>
+                <li class="slide slide-3"><i class="fa-solid fa-bolt-lightning"></i></li>
+            </ul>
+            <!-- 2 -->
+            <ul class="slide-wrap 2">
+                <li class="slide slide-1"><i class="fa-regular fa-alicorn"></i></li>
+                <li class="slide slide-2"><i class="fa-regular fa-badger-honey"></i></li>
+                <li class="slide slide-3"><i class="fa-regular fa-bat"></i></li>
+            </ul>
+            <!-- 3 -->
+            <ul class="slide-wrap 3">
+                <li class="slide slide-1"><i class="fa-solid fa-cat-space"></i></li>
+                <li class="slide slide-2"><i class="fa-solid fa-cow"></i></li>
+                <li class="slide slide-3"><i class="fa-solid fa-deer"></i></li>
+            </ul>
+            <!-- 4 -->
+            <ul class="slide-wrap 4">
+                <li class="slide slide-1"><i class="fa-solid fa-dog"></i></li>
+                <li class="slide slide-2"><i class="fa-solid fa-dog-leashed"></i></li>
+                <li class="slide slide-3"><i class="fa-solid fa-dog-leashed"></i></li>
+            </ul>
+            <ul class="slide-wrap 5">
+                <li class="slide slide-1"><i class="fa-solid fa-hippo"></i></li>
+                <li class="slide slide-2"><i class="fa-solid fa-monkey"></i></li>
+                <li class="slide slide-3"><i class="fa-solid fa-narwhal"></i></li>
+            </ul>
+        </div>
     </div>
 
     <div class="ctrl-cont rt-ctrller ctrl-goback">
@@ -74,7 +106,7 @@
     </div>
 
     <div class="ctrl-cont ctrl-item pallette dspl-f">
-        <button type="button" class="btn-prev"><i class="icon fa-solid fa-chevron-left"></i></button>
+        <!-- <button type="button" class="btn-prev"><i class="icon fa-solid fa-chevron-left"></i></button> -->
         <div class="user-ctrl df-c">
             <!-- left -->
             <ul class="lt-btn-wrap btn-wrap dspl-f">
@@ -85,13 +117,47 @@
             </ul>
             <div class="menu-cont-wrapper">
                 <!-- cont #1 -->
-                <div class="menu-cont list s-list-swiper show">
-                    <ul class="list-wrap swiper-wrapper">
-                        <li class="swiper-slide list-item" title="item #1">item #1</li>
-                        <li class="swiper-slide list-item" title="item #2">item #2</li>
-                        <li class="swiper-slide list-item" title="item #3">item #3</li>
-                        <li class="swiper-slide list-item" title="item #4">item #4</li>
-                    </ul>
+                <div class="icons-container">
+                    <!-- 1 -->
+                    <div class="menu-cont swiper-list swiperPallete-1 show">
+                        <ul class="list-wrap swiper-wrapper">
+                            <li class="swiper-slide slide-1 active" index="1" title="house-night"><i class="fa-solid fa-house-night"></i></li>
+                            <li class="swiper-slide slide-2" index="2" title="stars"><i class="fa-solid fa-stars"></i></li>
+                            <li class="swiper-slide slide-3" index="3" title="bolt-lightning"><i class="fa-solid fa-bolt-lightning"></i></li>
+                        </ul>
+                    </div>
+                    <!-- 2 -->
+                    <div class="menu-cont swiper-list swiperPallete-2">
+                        <ul class="list-wrap swiper-wrapper">
+                            <li class="swiper-slide slide-1 active" index="1" title="alicorn"><i class="fa-regular fa-alicorn"></i></li>
+                            <li class="swiper-slide slide-2" index="2" title="badger-honey"><i class="fa-regular fa-badger-honey"></i></li>
+                            <li class="swiper-slide slide-3" index="3" title="bat"><i class="fa-regular fa-bat"></i></li>
+                        </ul>
+                    </div>
+                    <!-- 3 -->
+                    <div class="menu-cont swiper-list swiperPallete-3">
+                        <ul class="list-wrap swiper-wrapper">
+                            <li class="swiper-slide slide-1 active" index="1" itle="cat-space"><i class="fa-solid fa-cat-space"></i></li>
+                            <li class="swiper-slide slide-2" index="2" itle="cow"><i class="fa-solid fa-cow"></i></li>
+                            <li class="swiper-slide slide-3" index="3" itle="deer"><i class="fa-solid fa-deer"></i></li>
+                        </ul>
+                    </div>
+                    <!-- 4 -->
+                    <div class="menu-cont swiper-list swiperPallete-4">
+                        <ul class="list-wrap swiper-wrapper">
+                            <li class="swiper-slide slide-1 active" index="1" title="dog"><i class="fa-solid fa-dog"></i></li>
+                            <li class="swiper-slide slide-2" index="2" title="dog-leashed"><i class="fa-solid fa-dog-leashed"></i></li>
+                            <li class="swiper-slide slide-3" index="3" title="dog-leashed"><i class="fa-solid fa-dog-leashed"></i></li>
+                        </ul>
+                    </div>
+                    <!-- 5 -->
+                    <div class="menu-cont swiper-list swiperPallete-5">
+                        <ul class="list-wrap swiper-wrapper">
+                            <li class="swiper-slide slide-1 active" index="1" title="hippo"><i class="fa-solid fa-hippo"></i></li>
+                            <li class="swiper-slide slide-2" index="2" title="monkey"><i class="fa-solid fa-monkey"></i></li>
+                            <li class="swiper-slide slide-3" index="3" title="narwhal"><i class="fa-solid fa-narwhal"></i></li>
+                        </ul>
+                    </div>
                 </div>
                 <!-- cont #2 -->
                 <div class="menu-cont color-pick" id="sliderPicker">
@@ -104,7 +170,7 @@
                 <li class="menu-item"><button type="button" class="btn-dark"><i class="icon fa-solid fa-moon"></i></button></li>
             </ul>
         </div>
-        <button type="button" class="btn-next"><i class="icon fa-solid fa-chevron-right"></i></button>
+        <!-- <button type="button" class="btn-next"><i class="icon fa-solid fa-chevron-right"></i></button> -->
     </div> 
 
     <canvas id="canvas"></canvas>
@@ -205,8 +271,8 @@
 
     <!-- script -->
     <!-- <script src="https://kit.fontawesome.com/ca0a58fa37.js" crossorigin="anonymous"></script> -->
-    <!-- <script src="./fontawesome-pro/js/all.js"></script> -->
-    <script src="./fontawesome-pro/js/all.js" data-auto-replace-svg="false"></script>
+    <script src="./fontawesome-pro/js/all.js" data-keep-original-source="false"></script>
+    <!-- <script src="./fontawesome-pro/js/all.js" data-auto-replace-svg="false"></script> -->
     <script src="./js/script.js"></script>
 </body>
 </html>

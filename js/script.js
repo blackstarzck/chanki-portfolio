@@ -169,7 +169,7 @@ function handleState(data){
             fadeOut({ target: ".icon-wrap.wait", stagger: true })
             .then(function(){
                 const callBackFunc = function(data){
-                    if(detected.length !== 0) handleNotice({ stage: "init", purpose: "text-only", text: "감지된 물체로 아이콘을 확인하시겠습니까?" });
+                    if(detected.length !== 0) handleNotice({ stage: "init", descr: "감지된 물체로 아이콘을 확인하시겠습니까?" });
                 }
                 animation_state = "processing";
                 fadeIn({ target: "#switch", stagger: false });
@@ -285,7 +285,7 @@ function fadeOut(obj){
                     try{
                         if(obj.func !== undefined) obj.func(obj.param);
                     }catch{
-                        alert("콜백함수를 실행할 수 없습니다. fadeIn");
+                        alert("콜백함수를 실행할 수 없습니다. fadeOut");
                     }
                     gsap.set(target.children, { y: 0 }); // 초기화
 
@@ -314,7 +314,7 @@ function fadeOut(obj){
                     try{
                         if(obj.func !== undefined) obj.func(obj.param);
                     }catch{
-                        alert("콜백함수를 실행할 수 없습니다. fadeIn");
+                        alert("콜백함수를 실행할 수 없습니다. fadeOut");
                     }
                     gsap.set(target.children, { y: 0 }); // 초기화
 
@@ -904,46 +904,119 @@ function initMainAction(){
     });
 }
 
-function handleIcon(obj){
-    const { state, current, target } = obj;
-    const setting = state === "prev" ? { y1: -15, y2: 15 } : { y1: 15, y2: -15 };
-    const slides = document.querySelectorAll(".rotation-box li.slide");
+function handleMainSlide(obj){
+    const { state, current, prev } = obj;
+    const setting = state === "prev" ? { y1: 150, y2: -150 } : { y1: -150, y2: 150 };
+    const slides = document.querySelectorAll(".rotation-box .slide-wrap.show li.slide");
+    
+    current.classList.add("show");
+    current.children[0].classList.add("show");
 
-    console.log("state: " + state)
-
-    slides.forEach((slide) => {
-        if(slide.classList.contains("show")){
-            // fade out
-            gsap.fromTo(slide, { opacity: 1, y: 0 }, {
-                opacity: 0,
-                y: setting.y2,
-                duration: 0.3,
-                ease: "ease.in",
-                onUpdate: function(){ animation_state = "processing"; },
-                onComplete: function(){ 
-                    animation_state = "waiting";
-                    slide.classList.remove("show");
-                }
+    // fade out
+    gsap.fromTo(prev, { opacity: 1, y: 0 }, {
+        opacity: 0,
+        y: setting.y1,
+        duration: 0.3,
+        ease: "ease.in",
+        onUpdate: function(){ animation_state = "processing"; },
+        onComplete: function(){
+            animation_state = "waiting";
+            prev.classList.remove("show");
+            prev.children.forEach((item) => {
+                item.classList.remove("show");
+                item.style.transform = "";
+                item.style.opacity = "";
             });
         }
     });
 
     // fade in
-    gsap.fromTo(current, { opacity: 0, y: setting.y1 } ,{
+    gsap.fromTo(current, { opacity: 0, y: setting.y2 } ,{
         opacity: 1,
         y: 0,
         duration: 0.3,
         ease: "ease.in",
-        onStart: function(){ current.classList.add("show") },
+        onStart: function(){ current.classList.add("show"); },
+        onUpdate: function(){ animation_state = "processing" },
+        onComplete: function(){
+            animation_state = "waiting";
+            beginSVGanimation();
+        }
+    });
+}
+
+function beginSVGanimation(obj){
+    const delay = obj?.delay || 0;
+    const elem_animate = document.querySelector(".rotation-box .slide-wrap.show li.show animate");
+
+    console.log("begin element: ", elem_animate.parentNode.parentNode.parentNode.parentNode);
+    console.log(elem_animate.parentNode.parentNode.parentNode)
+
+    setTimeout(() => {
+        elem_animate.beginElement();"begin~"
+        elem_animate.onbegin = () => { /* console.log("SVG animate begin~"); */ }
+        elem_animate.onend = () => { /* console.log("SVG animateend~"); */ }
+    }, delay);
+
+}
+
+function handlePalleteSlide(obj){
+    const { state, current, prev } = obj;
+    const setting = state === "prev" ? { y1: -45, y2: 45 } : { y1: 45, y2: -45 };
+    
+    current.classList.add("show");
+    current.children[0].children[0].classList.add("active");
+
+    // fade out
+    gsap.fromTo(prev, { opacity: 1, y: 0 }, {
+        opacity: 0,
+        y: setting.y2,
+        duration: 0.3,
+        ease: "ease.in",
+        onUpdate: function(){ animation_state = "processing"; },
+        onComplete: function(){
+            animation_state = "waiting";
+            prev.classList.remove("show");
+            prev.children[0].children.forEach((item) => { item.classList.remove("active") });
+        }
+    });
+
+    // fade in
+    gsap.fromTo(current, { opacity: 0, y: setting.y1 }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        ease: "ease.in",
+        onStart: function(){ },
         onUpdate: function(){ animation_state = "processing" },
         onComplete: function(){ animation_state = "waiting"; }
     });
 }
 
-showAllUI({ target: "nav-ctrller" });
+function addAnimationSVG(){
+    // const paths = document.querySelectorAll("#icon path");
+    const svgs = document.querySelectorAll(".rotation-box li svg");
+    const paths = document.querySelectorAll(".rotation-box li svg path");
+    let i = 0;
+
+    svgs.forEach((svg) => {
+        const path = svg.children[0];
+        const pathLength = path.getTotalLength();
+        const speed = 750;
+
+        i++;
+        path.setAttribute("stroke-dasharray", pathLength);
+        path.setAttribute("stroke-dashoffset", pathLength);
+        path.setAttribute("fill", "");
+        path.innerHTML = "<animate id='animate"+i+"' attributeName='stroke-dashoffset' begin='indefinite' dur='"+Math.round(pathLength/speed)+"s' to='0' fill='freeze'/>";
+    });
+}
 
 function showAllUI(obj){
-    const mSwiper = new Swiper(".m-list-swiper", {
+    const code_box = document.querySelector(".rotation-box .svg-codes");
+    const slide_wraps = document.querySelectorAll(".rotation-box .main-slides .slide-wrap");
+    const swiper_lists = document.querySelectorAll(".icons-container .swiper-list");
+    const mSwiper = new Swiper(".swiperIntro", {
         direction: "vertical",
         slidesPerView: 1,
         speed: 500,
@@ -954,16 +1027,24 @@ function showAllUI(obj){
         },
         on: {
             slidePrevTransitionStart: function(){
-                let idx = this.realIndex;
-                let slides = document.querySelectorAll(".rotation-box li.slide");
-
-                handleIcon({ state: "prev", current: slides[idx], target: slides[idx+1] });
+                const idx = this.realIndex;
+                const data_a = { state: "prev", current: slide_wraps[idx], prev: slide_wraps[idx+1]};
+                const data_b = { state: "prev", current: swiper_lists[idx], prev: swiper_lists[idx+1]};
+                
+                if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
+                
+                handleMainSlide(data_a);
+                handlePalleteSlide(data_b);
             },
             slideNextTransitionStart: function(){
                 let idx = this.realIndex;
-                let slides = document.querySelectorAll(".rotation-box li.slide");
-
-                handleIcon({ state: "next", current: slides[idx], target: slides[idx-1] });
+                const data_a = { state: "next", current: slide_wraps[idx], prev: slide_wraps[idx-1]};
+                const data_b = { state: "next", current: swiper_lists[idx], prev: swiper_lists[idx-1]};
+                
+                if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
+                
+                handleMainSlide(data_a);
+                handlePalleteSlide(data_b);
             }
         }
     });
@@ -973,7 +1054,8 @@ function showAllUI(obj){
         y: 0,
         duration: 0.5,
         stagger: 0.1,
-        ease: "back.in"
+        ease: "back.in",
+        onComplete: function(){ beginSVGanimation({ delay: 500 }); }
     });
 
     initPalletteSwiper();
@@ -986,6 +1068,8 @@ const btns_rt = document.querySelectorAll(".pallette .rt-btn-wrap li");
 const indicator_lt = document.querySelector(".lt-btn-wrap .indicator");
 const indicator_rt = document.querySelector(".rt-btn-wrap .indicator");
 const btns_menu = document.querySelectorAll(".pallette .menu-item button");
+const btn_copy = document.getElementById("btn-copy");
+const btn_dwn = document.getElementById("btn-dwn");
 
 // EVENT
 btns_lt.forEach((btn) => {
@@ -995,11 +1079,14 @@ btns_lt.forEach((btn) => {
     }
 
     btn.addEventListener("click", (e) => {
-        const swiper = document.querySelector(".menu-cont.s-list-swiper");
+        const swiper = document.querySelector(".icons-container");
         const color = document.querySelector(".menu-cont.color-pick");
+        const svg = document.querySelector(".rotation-box li.show");
+        const code = document.querySelector(".svg-codes");
         const btn_code = btn.children[0].classList.contains("btn-show-code") ?  btn.children[0] : "";
         const btn_list = btn.children[0].classList.contains("btn-list") ?  btn.children[0] : "";
         const btn_color = btn.children[0].classList.contains("btn-color-pick") ?  btn.children[0] : "";
+        const callBackFunc = () => { code.classList.remove("show"); }
         let prc = animationProcessCheck();
         if(prc === true) return;
 
@@ -1010,7 +1097,16 @@ btns_lt.forEach((btn) => {
         btn.classList.add("active");
         indicator_lt.style.transform = `transLateX(${x}px)`;
 
-        if(btn_code){ console.log(1) }
+        if(btn_code && !code.classList.contains("show")){
+            code.children[0].innerText = svg.innerHTML; // svg코드 삽입
+            code.classList.add("show");
+
+            fadeIn({ target: ".svg-codes", stagger: false });
+        }else{
+            fadeOut({ target: ".svg-codes", stagger: false, func: callBackFunc, param: "" });
+        }
+
+        if((btn_list || btn_color) && code.classList.contains("show")) fadeOut({ target: ".svg-codes", stagger: false, func: callBackFunc, param: "" });
 
         if(btn_list && !swiper.classList.contains("show")){
             swiper.classList.add("show");
@@ -1040,6 +1136,7 @@ btns_lt.forEach((btn) => {
                 }
             });
         }
+
         if(btn_color && !color.classList.contains("show")){
             color.classList.add("show");
             gsap.fromTo(color, { opacity: 0, y: -15 }, {
@@ -1088,6 +1185,147 @@ btns_rt.forEach((btn) => {
     });
 });
 
+btn_dwn.addEventListener("click", () => {
+    const svg = document.querySelector(".rotation-box li.show svg");
+    const file_nm = svg.getAttribute("data-icon");
+    
+    saveSvg(svg, file_nm+".svg");
+
+    notice.classList.add("dwn-popup");
+
+    handleNotice({ stage: "init", descr: `"${file_nm}"를(을) 다운로드했습니다.` });
+    setTimeout(() => {
+        handleNotice({ stage: "finished" });
+        setTimeout(() => { notice.classList.remove("dwn-popup"); }, 800 );
+    }, 1800);
+});
+
+btn_copy.addEventListener("click", () => {
+    const svg = document.querySelector(".rotation-box li.show svg");
+    const file_nm = svg.getAttribute("data-icon");
+    let prc = animationProcessCheck();
+    let code = document.querySelector(".rotation-box .svg-codes p.inner").innerText;
+    if(prc === true) return;
+
+    navigator.clipboard.writeText(code);
+
+    notice.classList.add("copied-popup");
+
+    handleNotice({ stage: "init", descr: `"${file_nm}"를(을) 립보드에 복사했습니다.` });
+    setTimeout(() => {
+        handleNotice({ stage: "finished" });
+        setTimeout(() => { notice.classList.remove("copied-popup"); }, 800 );
+    }, 1800);
+});
+
+notice.addEventListener("click", () => {
+    handleNotice({ stage: "finished" });
+});
+
+
+
+bindEvents();
+function bindEvents(){
+    const icons = document.querySelectorAll(".pallette .swiper-list li");
+
+    icons?.forEach((icon, idx_a) => {
+        icon.addEventListener("click", (e) => {
+            const active_wrap = document.querySelectorAll(".pallette .swiper-list.show li");
+            const main_lists = document.querySelectorAll(".main-slides .slide-wrap.show li");
+            const code_box = document.querySelector(".rotation-box .svg-codes");
+            let prev_idx, curr_idx;
+            let prc = animationProcessCheck();
+            if(prc === true) return;
+
+            if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
+
+            active_wrap.forEach((icon, idx_a) => {
+                if(icon.classList.contains("active")) prev_idx = idx_a;
+                icon.classList.remove("active");
+            });
+
+            icon.classList.add("active");
+
+            active_wrap.forEach((icon, idx_b) => { if(icon.classList.contains("active")) curr_idx = idx_b; });
+            
+            // console.log("prev-idx: ", prev_idx);
+            // console.log("curr-idx: ", curr_idx);
+            console.log(curr_idx, "main_lists: ", main_lists)
+
+            if(curr_idx > prev_idx){
+                console.log("1. 왼쪽에서 오른쪽");
+                main_lists[curr_idx].classList.add("show");
+                gsap.fromTo(main_lists[curr_idx], { opacity: 0, x: -300 }, {
+                    opacity: 1,
+                    x: 0,
+                    duration: .7,
+                    ease: "ease.in",
+                    onUpdate: function(){ animation_state = "processing" },
+                    onComplete: function(){
+                        animation_state = "waiting";
+                        main_lists[prev_idx].classList.remove("show");
+
+                        beginSVGanimation({ delay: 0 });
+                    }
+                });
+                gsap.fromTo(main_lists[prev_idx],{ opacity: 1, x: 0 }, {
+                    opacity: 0,
+                    x: 300,
+                    duration: .7,
+                    ease: "ease.in",
+                    onUpdate: function(){ animation_state = "processing" },
+                    onComplete: function(){
+                        animation_state = "waiting";
+                        main_lists[prev_idx].classList.remove("show");
+                    }
+                });
+            }
+            if(curr_idx < prev_idx){
+                console.log("2. 오른쪽에서 왼쪽");
+                main_lists[curr_idx].classList.add("show");
+                gsap.fromTo(main_lists[curr_idx], { opacity: 0, x: 300 }, {
+                    opacity: 1,
+                    x: 0,
+                    duration: .7,
+                    ease: "ease.in",
+                    onUpdate: function(){ animation_state = "processing" },
+                    onComplete: function(){
+                        animation_state = "waiting";
+                        main_lists[prev_idx].classList.remove("show");
+
+                        beginSVGanimation({ delay: 0 });
+                    }
+                });
+                gsap.fromTo(main_lists[prev_idx], { opacity: 1, x: 0 }, {
+                    opacity: 0,
+                    x: -300,
+                    duration: .7,
+                    ease: "ease.in",
+                    onUpdate: function(){ animation_state = "processing" },
+                    onComplete: function(){
+                        animation_state = "waiting";
+                        main_lists[prev_idx].classList.remove("show");
+                    }
+                });
+            }
+        });
+    });
+}
+
+
+function saveSvg(svgEl, name) {
+    // svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    var svgData = svgEl.outerHTML;
+    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = name;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
 
 // color picker
 function initColorPicker(){
@@ -1114,40 +1352,40 @@ function initColorPicker(){
 
     //EVENTS
     colorPicker.on('color:change', function(color) {
-        const icons = document.querySelectorAll(".rotation-box .slide i");
-        const icon_show = document.querySelector(".rotation-box .slide.show i");
+        const icons = document.querySelectorAll(".rotation-box .slide path");
+        const icon_show = document.querySelector(".rotation-box .slide.show path");
 
-        icons.forEach((icon) => { icon.style.color = "" });
-        icon_show.style.color = color.hexString;
+        icons.forEach((icon) => { icon.style.stroke = "" });
+
+        icon_show.style.stroke = color.hexString;
         handle.children[0].style.fill = color.hexString;
-
-        console.log(handle.children[0])
     });
 }
 
 function initPalletteSwiper(){
-    const sSwiper = new Swiper(".s-list-swiper", {
-        slidesPerView: "auto",
-        spaceBetween: 30,
-        speed: 500,
-        centeredSlides: true,
-        // loop: true,
-    });
+    const swipers = document.querySelectorAll(".icons-container .swiper-list");
+    let sSwiper;
 
-    //EVENTS
-    document.querySelector(".pallette .btn-prev").addEventListener("click", () => {
-        const swiper = document.querySelector(".pallette .menu-cont.list.show");
-        if(swiper) sSwiper.slidePrev();
-    });
-    document.querySelector(".pallette .btn-next").addEventListener("click", () => {
-        const swiper = document.querySelector(".pallette .menu-cont.list.show");
-        if(swiper) sSwiper.slidePrev();
+    swipers.forEach((swiper, idx) => {
+        sSwiper = new Swiper(".swiperPallete-"+(idx+1), {
+            slidesPerView: 5,
+            spaceBetween: 30,
+            speed: 500,
+            freeMode: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            }
+        });
     });
 }
 
 
 let flag_c = false;
 $(function(){
+    showAllUI();
+    addAnimationSVG();
+
     $(document).on("mousemove", ".card", function(e){
         let prc = animationProcessCheck();
         if(prc === true) return;
@@ -1583,16 +1821,19 @@ function calculateDistance(elem, mouseX, mouseY) {
 }
 
 function handleNotice(data){
+    const { stage, descr } = data;
     const popup = document.querySelector(".notice-popup");
     const text = document.querySelector(".notice-popup .text");
 
-    if(data.stage === "init"){
+    console.log(data)
+
+    if(stage === "init"){
         popup.classList.add("show");
-        text.innerText = data.text;
+        text.innerText = descr;
 
         fadeIn({ target: ".notice-popup", stagger_state: false });
     }
-    if(data.stage === "finished"){
+    if(stage === "finished"){
         fadeOut({ target: ".notice-popup", stagger_state: false });
     }
 }
