@@ -50,11 +50,13 @@ function getIconClassName(name){
 
             for(let i = 0; i < temp3.length; i++){
                 if(temp3[i] === "fa-" + data && result === ""){
-                    className = icon_types[0] + temp3[i];
+                    // className = icon_types[1] + temp3[i];
+                    className = temp3[i];
                     result = "exact";
                 }
             }
-            if(result !== "exact") className = icon_types[0] + temp3[random];
+            // if(result !== "exact") className = icon_types[1] + temp3[random];
+            if(result !== "exact") className = temp3[random];
         }else{
 
             className = undefined;

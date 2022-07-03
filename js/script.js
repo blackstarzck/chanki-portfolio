@@ -13,15 +13,15 @@ let animation_state = "waiting";
 
 // 사용자 설정 레이아아웃 변경
 document.getElementById("switch").addEventListener("click", function(){
-    let prc = animationProcessCheck();
+    const prc = animationProcessCheck();
     if(prc === true) return;
 
     const layout = varifyLayout();
     const other_layout = layout === "default" ? "cstm" : "default";
-    const icon = document.querySelector(".lt-cont .icon-bg > i");
+    const icon = document.querySelector(".lt-cont .icon-bg > svg");
 
     if(icon.style.transform == ""){
-        icon.style.transform = "rotate(360deg)";
+        icon.style.transform = "rotate(180deg)";
     }else{
         icon.style.transform = "";
     }
@@ -32,7 +32,7 @@ document.getElementById("switch").addEventListener("click", function(){
 // 기본 레이아웃으로 진행 시
 document.getElementById("setDefImg").addEventListener("click", function(){
     const def_img = { src: "./img/def-img.jpg", location: document.querySelector(".img-01 #selected-img") };
-    let prc = animationProcessCheck();
+    const prc = animationProcessCheck();
     if(prc === true) return;
 
     handleImgUpload({ select_type: "default" }, { src: def_img.src })
@@ -129,9 +129,7 @@ function handleState(data){
             verifyLength(option);
 
             const dots = document.querySelectorAll(".dot");
-            dots.forEach(function(item){
-                item.remove();
-            });
+            dots.forEach(function(item){ item.remove(); });
 
             if(results.length !== 0){
                 document.getElementById("results-wrap").innerHTML = "";
@@ -169,7 +167,12 @@ function handleState(data){
             fadeOut({ target: ".icon-wrap.wait", stagger: true })
             .then(function(){
                 const callBackFunc = function(data){
-                    if(detected.length !== 0) handleNotice({ stage: "init", descr: "감지된 물체로 아이콘을 확인하시겠습니까?" });
+                    if(detected.length !== 0) 
+                        handleNotice({ 
+                            stage: "init", 
+                            descr: "감지된 물체로 아이콘을 확인하시겠습니까?", 
+                            className: "show-result-popup" 
+                        });
                 }
                 animation_state = "processing";
                 fadeIn({ target: "#switch", stagger: false });
@@ -312,7 +315,7 @@ function fadeOut(obj){
                 onUpdate: function(){ animation_state = "processing" },
                 onComplete: function(){
                     try{
-                        if(obj.func !== undefined) obj.func(obj.param);
+                        if(obj.func) obj.func(obj.param);
                     }catch{
                         alert("콜백함수를 실행할 수 없습니다. fadeOut");
                     }
@@ -405,8 +408,8 @@ function getMaxData(data1, data2, obj){
 
         data1[0].result = data1[0].result.concat(unique_array);
         detected = data1[0].result;
-        console.log("=======================================================")
-        console.log(detected)
+        // console.log("=======================================================")
+        // console.log(detected)
 
         return  data1[0];
     }else{
@@ -563,7 +566,6 @@ function setLoadingAnimation(obj){
 
     const svg = document.querySelectorAll(fade_in + " svg");
 
-    console.log(obj.state)
     document.querySelector(fade_in + " .info").innerText = "Detecting";
 
     svg.forEach((item) => {
@@ -595,6 +597,7 @@ function setLoadingAnimation(obj){
 function verifyLength(obj){
     const target = obj.target;
     const imges = document.querySelectorAll(".img-box");
+    const container_img = document.querySelector(".container #selected-img");
     let img = new Image();
     let width, height, align;
 
@@ -608,6 +611,9 @@ function verifyLength(obj){
         imges.forEach(function(item){
             if(item.classList.contains(target.replace(".", ""))){
                 document.querySelector(target).classList.add(align);
+                container_img.classList.remove("hrz");
+                container_img.classList.remove("vrt");
+                container_img.classList.add(align);
             }else{
                 setTimeout(() => {
                     item.classList.remove("vrt");
@@ -659,10 +665,10 @@ function handleHoverAnimation(obj){
     const current_idx = obj.target.getAttribute("data-idx");
 
     target.forEach((item, other_idx) => {
-        item.classList.remove("show");
+        item.classList.remove("hover");
         if(current_idx == (other_idx + 1)){
 
-            if(obj.state === "active") item.classList.add("show");
+            if(obj.state === "active") item.classList.add("hover");
             if(verify === "dot"){
                 // dot animation
                 gsap.from(item, {
@@ -692,7 +698,7 @@ function classifyImg(obj){
     return new Promise(function(resolve){
         cocoSsd.load().then(model => {
             model.detect(obj.img).then(predictions => {
-                console.log("predictions:", predictions);
+                // console.log("predictions:", predictions);
 
                 if(predictions.length !== 0){
                     for (let i = 0; i < predictions.length; i++) {
@@ -706,7 +712,7 @@ function classifyImg(obj){
                             let height = Math.ceil(predictions[i].bbox[3]);
 
                             // console.log(`□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ COUNT: ${i+1} □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□`);
-                            console.log(className)
+                            // console.log(className)
 
                             detect_result.push({ 
                                 img_width, 
@@ -722,7 +728,6 @@ function classifyImg(obj){
                     }
                     resolve(detect_result);
                 }else{
-                    console.log("?")
                     setLoadingAnimation({ target: obj.target, state: "retry" });
                     handleState({ stage: "finished" });
                 }
@@ -759,14 +764,22 @@ class Dot {
 }
 
 function createDot(obj){
+    const cont_img = document.querySelector("#container #selected-img");
     const width = document.querySelector(obj.target + " #selected-img").width;
+    const offsetLeft = (obj.target === "#container") ? cont_img.offsetLeft : 0;
+    const offsetTop = (obj.target === "#container") ? cont_img.offsetTop : 0;
     let ratio;
+
+    if(document.querySelectorAll(".container .dot").length > 0 || document.querySelectorAll(".container .card").length > 0){
+        document.querySelectorAll(".container .dot").forEach((dot, i) => { dot.remove() });
+        document.querySelectorAll(".container .card").forEach((card, i) => { card.remove() });
+    }
 
     obj.result.forEach(function(item, idx){
         ratio = Number((width / item.img_width).toFixed(2));
         let dot = new Dot(
-            item.x, 
-            item.y, 
+            item.x + offsetLeft, 
+            item.y + offsetTop, 
             item.width, 
             item.height, 
             item.name, 
@@ -779,9 +792,8 @@ function createDot(obj){
     const dots = document.querySelectorAll(obj.target + " .dot");
 
     setTimeout(() => {
-        dots.forEach(function(item){
-            item.style.visibility = "visible";
-        })
+        dots.forEach(function(item){ item.style.visibility = "visible" });
+
         gsap.from(obj.target +" .dot", {
             duration: 1,
             scale: 0.5, 
@@ -857,6 +869,9 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
         const id = e.target.getAttribute("id");
 
         if(id === "btn-yes"){
+            document.body.classList.remove("step1-img-detect");
+            document.body.classList.add("step2-detect-result");
+
             setTimeout(() => {
                 gsap.to(".cont-wrapper", {
                     opacity: 0,
@@ -866,7 +881,7 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
                     onUpdate: function(){ animation_state = "processing" },
                     onComplete: function(){
                         ctrl_wrapper.classList.remove("show");
-                        initMainAction();
+                        handleMainAction({ state: "init" });
                     }
                 });
             }, 600);
@@ -876,32 +891,100 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
     });
 });
 
-function initMainAction(){
+function handleMainAction(obj){
+    const { state, show } = obj;
     const canvas = document.getElementById("canvas");
     const container = document.getElementById("container");
     const img =  document.querySelector("#container #selected-img");
-    container.classList.add("show");
-    container.style.height = img.height+"px";
+    let setting;
 
-    canvas.classList.add("active");
+    if(state === "init"){
+        canvas.classList.add("active");
+        container.classList.remove("dspl-n");
+        container.classList.add("show");
+        container.style.height = img.height+"px";
 
-    gsap.fromTo("#container", { opacity: 0, y: -10 }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "back.in",
-        onUpdate: function(){ animation_state = "processing" },
-        onComplete: function(){
-            container.style.transform = "";
+        gsap.fromTo("#container", { opacity: 0, y: -10 }, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "back.in",
+            onUpdate: function(){ animation_state = "processing" },
+            onComplete: function(){
+                container.style.transform = "";
+                handleNotice({ 
+                    stage: "init", 
+                    descr: "감지된 결과를 바탕으로 카드를 구성중입니다.", 
+                    className: "card-proc-popup" 
+                });
+                createDot({ 
+                    target: "#container", 
+                    result: detected,
+                    func: getPos
+                });
+            }
+        });
+        setMainElements();
+    }
 
-            createDot({ 
-                target: "#container", 
-                result: detected,
-                func: getPos
-            });
+    if(state === "finished"){
+        canvas.classList.remove("active");
+        gsap.fromTo(container.children, { opacity: 1, y: 0 }, {
+            opacity: 0,
+            y: -10,
+            duration: 1,
+            stagger: -0.1,
+            ease: "back.in",
+            onUpdate: function(){ animation_state = "processing";  drawLine({ stage: "init" }); },
+            onComplete: function(){
+                animation_state = "waiting";
+                showAllUI({ state: "init", show });
+                addAnimationSVG();
+
+                canvas.width = "";
+                canvas.height = "";
+                container.classList.add("dspl-n");
+                container.classList.remove("show");
+                container.style.height = "";
+                container.children.forEach((item) => { item.style.opacity = ""; item.style.transform = "" });
+            }
+        });
+    }
+}
+
+function setMainElements(){
+    const ico_container  = document.querySelector(".icons-container");
+    const slides_contianer = document.querySelector(".rotation-box .main-slides");
+    const name_container = document.querySelector(".lt-ctrller .swiper-wrapper");
+    let elem_a = "", elem_b = "", elem_c = "";
+    let ico, active;
+
+    for(let i = 0; i < detected.length; i++){
+        elem_a += `<ul class="slide-wrap ${(i+1)}" object-name="${detected[i].name}">`;
+        elem_c += `<li class="swiper-slide" object-name="${detected[i].name}"><span class="m-item-name">${detected[i].name}</span></li>`;
+        
+        elem_b +=   `<div class="menu-cont swiper-list swiperPallete-${(i+1)}" object-name="${detected[i].name}">`;
+        elem_b +=       `<ul class="list-wrap swiper-wrapper">`;
+        for(let n = 0; n < detected[i].sub.length; n++){
+            active = (n === 0) ? "active" : "";
+            ico = detected[i].sub[n];
+
+            elem_a +=     `<li class="slide slide-${(n+1)}" title="${ico}"><i class="fa-thin ${ico}"></i></li>`;
+            elem_b +=     `<li class="swiper-slide slide-${(n+1)} ${active}" index="${(n+1)}" title="${ico}"><i class="fa-thin ${ico}"></i></li>`;
         }
-    });
+        elem_a += `</ul>`;
+
+        elem_b +=   `</ul>`;
+        elem_b += `</div>`;
+    }
+    slides_contianer.innerHTML = "";
+    ico_container.innerHTML = "";
+    name_container.innerHTML = "";
+    slides_contianer.innerHTML = elem_a;
+    ico_container.innerHTML = elem_b;
+    name_container.innerHTML = elem_c;
+
+    bindEventsB();
 }
 
 function handleMainSlide(obj){
@@ -949,11 +1032,8 @@ function beginSVGanimation(obj){
     const delay = obj?.delay || 0;
     const elem_animate = document.querySelector(".rotation-box .slide-wrap.show li.show animate");
 
-    console.log("begin element: ", elem_animate.parentNode.parentNode.parentNode.parentNode);
-    console.log(elem_animate.parentNode.parentNode.parentNode)
-
     setTimeout(() => {
-        elem_animate.beginElement();"begin~"
+        elem_animate.beginElement();
         elem_animate.onbegin = () => { /* console.log("SVG animate begin~"); */ }
         elem_animate.onend = () => { /* console.log("SVG animateend~"); */ }
     }, delay);
@@ -999,8 +1079,7 @@ function addAnimationSVG(){
     const paths = document.querySelectorAll(".rotation-box li svg path");
     let i = 0;
 
-    svgs.forEach((svg) => {
-        const path = svg.children[0];
+    paths.forEach((path) => {
         const pathLength = path.getTotalLength();
         const speed = 750;
 
@@ -1013,6 +1092,8 @@ function addAnimationSVG(){
 }
 
 function showAllUI(obj){
+    const { state, show } = obj;
+    const ctrl_items = document.querySelectorAll(".ctrl-item");
     const code_box = document.querySelector(".rotation-box .svg-codes");
     const slide_wraps = document.querySelectorAll(".rotation-box .main-slides .slide-wrap");
     const swiper_lists = document.querySelectorAll(".icons-container .swiper-list");
@@ -1020,7 +1101,6 @@ function showAllUI(obj){
         direction: "vertical",
         slidesPerView: 1,
         speed: 500,
-        // loop: true,
         navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
@@ -1032,7 +1112,7 @@ function showAllUI(obj){
                 const data_b = { state: "prev", current: swiper_lists[idx], prev: swiper_lists[idx+1]};
                 
                 if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
-                
+                console.log("prev-idx: ", idx );
                 handleMainSlide(data_a);
                 handlePalleteSlide(data_b);
             },
@@ -1042,12 +1122,14 @@ function showAllUI(obj){
                 const data_b = { state: "next", current: swiper_lists[idx], prev: swiper_lists[idx-1]};
                 
                 if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
-                
+                console.log("next-idx: ", idx );
                 handleMainSlide(data_a);
                 handlePalleteSlide(data_b);
             }
         }
     });
+
+    ctrl_items.forEach((item) => { item.classList.remove("hide"); });
 
     gsap.fromTo(".ctrl-item", { opacity: 0, y: -10 }, {
         opacity: 1,
@@ -1055,11 +1137,63 @@ function showAllUI(obj){
         duration: 0.5,
         stagger: 0.1,
         ease: "back.in",
-        onComplete: function(){ beginSVGanimation({ delay: 500 }); }
-    });
+        onComplete: function(){
+            slide_wraps.forEach((item, idx) => {
+                let obj_nm = item.getAttribute("object-name");
+                if(obj_nm === show){
+                    mSwiper.slideTo(idx, 500);
+                    item.classList.add("show");
+                    item.children[0].classList.add("show");
+                }
+            });
+            ctrl_items.forEach((item) => { item.style.zIndex = 10 });
 
-    initPalletteSwiper();
+            beginSVGanimation({ delay: 500 });
+            initPalletteSwiper({ state, show });
+        }
+    });
     initColorPicker();
+}
+function hideMainUIs(){
+    const canvas = document.getElementById("canvas");
+    const ctrl_items = document.querySelectorAll(".ctrl-item");
+    const dots = document.querySelectorAll(".dot");
+    const cards = document.querySelectorAll(".card");
+    const test_imgs = document.querySelectorAll(".test-zone img");
+    const lists = document.getElementById("results-wrap");
+    const fst_cont = document.querySelector(".cont-wrapper");
+    const seq = gsap.timeline();
+
+    fst_cont.classList.add("show");
+    animation_state = "processing";
+
+
+    // reset
+    // dots.forEach((item) => { item.remove(); });
+    // cards.forEach((item) => { item.remove(); });
+    // test_imgs.forEach((item) => { item.src = ""; });
+    // lists.innerHTML = "";
+
+    seq.fromTo(".ctrl-item", { opacity: 1, y: 0 }, {
+        opacity: 0, y: -10,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "back.in",
+        onComplete: function(){
+            ctrl_items.forEach((item) => { 
+                item.style.zIndex = "";
+                item.classList.remove("hide");
+            });
+            
+        }
+    });
+    seq.fromTo(".cont-wrapper", { opacity: 0, y: -10, delay: 1 }, {
+        opacity: 1, y: 0,
+        onComplete: function(){
+            animation_state = "waiting";
+            canvas.classList.remove("active");
+        }
+    })
 }
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ PALLETTE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
@@ -1087,7 +1221,7 @@ btns_lt.forEach((btn) => {
         const btn_list = btn.children[0].classList.contains("btn-list") ?  btn.children[0] : "";
         const btn_color = btn.children[0].classList.contains("btn-color-pick") ?  btn.children[0] : "";
         const callBackFunc = () => { code.classList.remove("show"); }
-        let prc = animationProcessCheck();
+        const prc = animationProcessCheck();
         if(prc === true) return;
 
         btns_lt.forEach((btn) => {
@@ -1111,29 +1245,21 @@ btns_lt.forEach((btn) => {
         if(btn_list && !swiper.classList.contains("show")){
             swiper.classList.add("show");
             gsap.fromTo(swiper, { opacity: 0, y: -15 }, {
-                opacity: 1,
-                y: 0,
+                opacity: 1, y: 0,
                 duration: 0.5,
                 ease: "back.in",
-                onUpdate: function(){
-                    animation_state = "processing"
-                },
+                onUpdate: function(){ animation_state = "processing" },
                 onComplete: function(){
-                    animation_state = "waiting"
+                    animation_state = "waiting";
                     color.classList.remove("show");
                 }
             });
             gsap.to(color, {
-                opacity: 0,
-                y: 15,
+                opacity: 0, y: 15,
                 duration: 0.5,
                 ease: "back.in",
-                onUpdate: function(){
-                    animation_state = "processing"
-                },
-                onComplete: function(){
-                    animation_state = "waiting"
-                }
+                onUpdate: function(){ animation_state = "processing"; },
+                onComplete: function(){ animation_state = "waiting"; }
             });
         }
 
@@ -1144,11 +1270,9 @@ btns_lt.forEach((btn) => {
                 y: 0,
                 duration: 0.5,
                 ease: "back.in",
-                onUpdate: function(){
-                    animation_state = "processing"
-                },
+                onUpdate: function(){ animation_state = "processing"; },
                 onComplete: function(){
-                    animation_state = "waiting"
+                    animation_state = "waiting";
                     swiper.classList.remove("show");
                 }
             });
@@ -1157,12 +1281,8 @@ btns_lt.forEach((btn) => {
                 y: 15,
                 duration: 0.5,
                 ease: "back.in",
-                onUpdate: function(){
-                    animation_state = "processing"
-                },
-                onComplete: function(){
-                    animation_state = "waiting"
-                }
+                onUpdate: function(){ animation_state = "processing"; },
+                onComplete: function(){ animation_state = "waiting"; }
             });
         }
     });
@@ -1190,10 +1310,11 @@ btn_dwn.addEventListener("click", () => {
     const file_nm = svg.getAttribute("data-icon");
     
     saveSvg(svg, file_nm+".svg");
-
-    notice.classList.add("dwn-popup");
-
-    handleNotice({ stage: "init", descr: `"${file_nm}"를(을) 다운로드했습니다.` });
+    handleNotice({ 
+        stage: "init", 
+        descr: `"${file_nm}"를(을) 다운로드했습니다.`, 
+        className: "dwn-popup"
+    });
     setTimeout(() => {
         handleNotice({ stage: "finished" });
         setTimeout(() => { notice.classList.remove("dwn-popup"); }, 800 );
@@ -1203,36 +1324,48 @@ btn_dwn.addEventListener("click", () => {
 btn_copy.addEventListener("click", () => {
     const svg = document.querySelector(".rotation-box li.show svg");
     const file_nm = svg.getAttribute("data-icon");
-    let prc = animationProcessCheck();
+    const prc = animationProcessCheck();
     let code = document.querySelector(".rotation-box .svg-codes p.inner").innerText;
     if(prc === true) return;
 
     navigator.clipboard.writeText(code);
 
-    notice.classList.add("copied-popup");
-
-    handleNotice({ stage: "init", descr: `"${file_nm}"를(을) 립보드에 복사했습니다.` });
+    handleNotice({ 
+        stage: "init", 
+        descr: `"${file_nm}"를(을) 립보드에 복사했습니다.`, 
+        className: "copied-popup" 
+    });
     setTimeout(() => {
         handleNotice({ stage: "finished" });
         setTimeout(() => { notice.classList.remove("copied-popup"); }, 800 );
     }, 1800);
 });
 
-notice.addEventListener("click", () => {
-    handleNotice({ stage: "finished" });
-});
+function bindEventsA(){
+    const cards = document.querySelectorAll(".container .card");
 
-bindEvents();
-function bindEvents(){
+    cards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+            const className = e.target.className.baseVal;
+            const object_nm = card.getAttribute("object-name");
+            const prc = animationProcessCheck();
+            if(prc === true) return;
+
+            console.log(object_nm);
+            if(className?.indexOf("chevron") === -1) handleMainAction({ state: "finished", show: object_nm });
+        });
+    });
+}
+function bindEventsB(){
     const icons = document.querySelectorAll(".pallette .swiper-list li");
 
-    icons?.forEach((icon, idx_a) => {
+    icons.forEach((icon, idx_a) => {
         icon.addEventListener("click", (e) => {
             const active_wrap = document.querySelectorAll(".pallette .swiper-list.show li");
             const main_lists = document.querySelectorAll(".main-slides .slide-wrap.show li");
             const code_box = document.querySelector(".rotation-box .svg-codes");
             let prev_idx, curr_idx;
-            let prc = animationProcessCheck();
+            const prc = animationProcessCheck();
             if(prc === true) return;
 
             if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
@@ -1248,15 +1381,15 @@ function bindEvents(){
             
             // console.log("prev-idx: ", prev_idx);
             // console.log("curr-idx: ", curr_idx);
-            console.log(curr_idx, "main_lists: ", main_lists)
+            // console.log(curr_idx, "main_lists: ", main_lists)
 
             if(curr_idx > prev_idx){
-                console.log("1. 왼쪽에서 오른쪽");
+                // console.log("1. 왼쪽에서 오른쪽");
                 main_lists[curr_idx].classList.add("show");
-                gsap.fromTo(main_lists[curr_idx], { opacity: 0, x: -300 }, {
+                gsap.fromTo(main_lists[curr_idx], { opacity: 0, x: -270 }, {
                     opacity: 1,
                     x: 0,
-                    duration: .7,
+                    duration: .5,
                     ease: "ease.in",
                     onUpdate: function(){ animation_state = "processing" },
                     onComplete: function(){
@@ -1268,8 +1401,8 @@ function bindEvents(){
                 });
                 gsap.fromTo(main_lists[prev_idx],{ opacity: 1, x: 0 }, {
                     opacity: 0,
-                    x: 300,
-                    duration: .7,
+                    x: 270,
+                    duration: .5,
                     ease: "ease.in",
                     onUpdate: function(){ animation_state = "processing" },
                     onComplete: function(){
@@ -1279,12 +1412,12 @@ function bindEvents(){
                 });
             }
             if(curr_idx < prev_idx){
-                console.log("2. 오른쪽에서 왼쪽");
+                // console.log("2. 오른쪽에서 왼쪽");
                 main_lists[curr_idx].classList.add("show");
-                gsap.fromTo(main_lists[curr_idx], { opacity: 0, x: 300 }, {
+                gsap.fromTo(main_lists[curr_idx], { opacity: 0, x: 270 }, {
                     opacity: 1,
                     x: 0,
-                    duration: .7,
+                    duration: .5,
                     ease: "ease.in",
                     onUpdate: function(){ animation_state = "processing" },
                     onComplete: function(){
@@ -1296,8 +1429,8 @@ function bindEvents(){
                 });
                 gsap.fromTo(main_lists[prev_idx], { opacity: 1, x: 0 }, {
                     opacity: 0,
-                    x: -300,
-                    duration: .7,
+                    x: -270,
+                    duration: .5,
                     ease: "ease.in",
                     onUpdate: function(){ animation_state = "processing" },
                     onComplete: function(){
@@ -1312,7 +1445,6 @@ function bindEvents(){
 
 
 function saveSvg(svgEl, name) {
-    // svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     var svgData = svgEl.outerHTML;
     var preface = '<?xml version="1.0" standalone="no"?>\r\n';
     var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
@@ -1327,6 +1459,8 @@ function saveSvg(svgEl, name) {
 
 // color picker
 function initColorPicker(){
+    if(document.querySelector(".IroColorPicker")) return false;
+
     const handle = document.getElementById("handle");
     const colorPicker  = new iro.ColorPicker("#sliderPicker", {
         width: document.querySelector("#sliderPicker").clientWidth,
@@ -1353,39 +1487,39 @@ function initColorPicker(){
         const icons = document.querySelectorAll(".rotation-box .slide path");
         const icon_show = document.querySelector(".rotation-box .slide.show path");
 
-        icons.forEach((icon) => { icon.style.stroke = "" });
+        // icons.forEach((icon) => { icon.style.stroke = "" });
 
         icon_show.style.stroke = color.hexString;
         handle.children[0].style.fill = color.hexString;
     });
 }
 
-function initPalletteSwiper(){
+function initPalletteSwiper(obj){
+    const { state, show } = obj;
     const swipers = document.querySelectorAll(".icons-container .swiper-list");
     let sSwiper;
 
-    swipers.forEach((swiper, idx) => {
-        sSwiper = new Swiper(".swiperPallete-"+(idx+1), {
-            slidesPerView: 5,
-            spaceBetween: 30,
-            speed: 500,
-            freeMode: true,
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            }
+    if(state === "init"){
+        swipers.forEach((swiper, idx) => {
+            let obj_nm = swiper.getAttribute("object-name");
+            sSwiper = new Swiper(".swiperPallete-"+(idx+1), {
+                slidesPerView: 4,
+                spaceBetween: 30,
+                speed: 500,
+                freeMode: true
+            });
+            if(obj_nm === show){ swiper.classList.add("show"); }
         });
-    });
+    }else{
+        swipers[0].classList.add("show");
+    }
 }
 
 
 let flag_c = false;
 $(function(){
-    showAllUI();
-    addAnimationSVG();
-
     $(document).on("mousemove", ".card", function(e){
-        let prc = animationProcessCheck();
+        const prc = animationProcessCheck();
         if(prc === true) return;
         magnetize($(this)[0], e, e.target);
     });
@@ -1403,10 +1537,11 @@ $(function(){
 
 function getPos(){
     const dot = document.querySelectorAll("#container .dot");
-    const img = document.querySelector("#container img");
+    const dot_ttl = dot.length;
+    const loadingBar = document.querySelector(".loading-bar .bar");
     let data, card;
     let dot_data;
-    let speed;
+    let proc;
     let cards = [];
 
     resize();
@@ -1422,6 +1557,9 @@ function getPos(){
         });
         card.createCard();
         cards.push(card);
+        proc = Math.round( (cards.length / dot_ttl) * 100);
+
+        loadingBar.style.width = `${proc}%`;
     });
 
     gsap.fromTo(".card", { opacity: 0, y: -10 }, {
@@ -1430,19 +1568,17 @@ function getPos(){
         duration: 1,
         stagger: 0.3,
         ease: "back.in",
+        onStart: function(){ handleNotice({ stage: "finished" }) },
         onUpdate: function(){ animation_state = "processing" },
-        onComplete: function(){
-            animation_state = "waiting"
-        }
+        onComplete: function(){ animation_state = "waiting"; bindEventsA(); }
     });
 
     cards.forEach((item, idx) => {
         dot_data = item.dot.getBoundingClientRect();
         startX = (dot_data.width) / 2 + dot_data.x;
         startY = (dot_data.height) / 2 + dot_data.y;
-        speed = 1;
 
-        card.drawLineA(startX, startY, item.cornerX, item.cornerY, speed);
+        card.drawLineA(startX, startY, item.cornerX, item.cornerY);
     });
 }
 
@@ -1467,23 +1603,20 @@ class Card {
         this.cnt1 = 0;
         this.cnt2 = 0;
         this.initNumb = 1;
-        this.test_numb2 = 1;
         this.complete = false;
         this.created = [];
         this.icons = obj.detected.sub;
+        this.name = obj.detected.name;
     }
 
     createCard(){
-        const dots = document.querySelectorAll(".dot");
-        const cards = document.querySelectorAll(".card");
         const PI2 = Math.PI * 2;
         const angle = PI2 / this.points;
         const width = 150;
         const height = 150;
-        const random = Math.floor(Math.random() * this.points) + 1;
         let centerX, centerY, left, top;
         let elem = "";
-        let icons;
+        let icon;
 
         for(let i = 0; i < this.points; i++){
             centerX = this.radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
@@ -1504,15 +1637,17 @@ class Card {
             elem +=     '<ul class="inner swiper-wrapper">';
             for(let n = 0; n < this.icons.length; n++){
                 if(n < 10){
-                    icons = `fa-light ${this.icons[n]}`;
-                    elem += `<li class="swiper-slide" style="${width}px;height:"><i class="${icons} icon m-icon"></i></li>`;
+                    icon = `fa-light ${this.icons[n]}`;
+                    elem += `<li class="swiper-slide" style="${width}px;height:"><div class="svg-box"><i class="${icon} icon m-icon"></i></div></li>`;
                 }
             }
             elem +=     '</ul>';
-            elem +=     '<button class="btn-direct swiper-button-prev btn-prev"><i class="fa-regular fa-chevron-left"></i></button>';
-            elem +=     '<button class="btn-direct swiper-button-next btn-next"><i class="fa-regular fa-chevron-right"></i></button>';
+            elem +=     '<button class="btn-direct swiper-button-prev btn-prev"><div class="svg-box"><i class="fa-regular fa-chevron-left"></i></div></button>';
+            elem +=     '<button class="btn-direct swiper-button-next btn-next"><div class="svg-box"><i class="fa-regular fa-chevron-right"></i></div></button>';
             elem +=     '<div class="swiper-pagination"></div>';
             elem += '</div>';
+
+            card.setAttribute("object-name", `${this.name}`);
 
             if(this.initNumb === (i+1) && this.complete === false){
                 // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
@@ -1557,10 +1692,6 @@ class Card {
         const stage_y2 = window_h;
         let x1_compare, y1_compare, x2_compare, y2_compare;
 
-        // console.log(`${x1}, ${y1}\n${x2}, ${y1}\n${x1}, ${y2}\n${x2}, ${y2}`)
-        // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step2-충돌체크] 실행 횟수: ${this.test_numb2} | dot: ${this.numb} ▶▶▶▶▶▶▶▶▶▶`, "color: aqua")
-        // console.log(cards)
-
         cards.forEach((card, idx) => {
             const card_data = card.getBoundingClientRect();
             const dot = document.querySelector(`.dot${this.numb}`);
@@ -1570,8 +1701,6 @@ class Card {
             x2_compare = x1_compare + card_data.width;
             y2_compare = y1_compare + card_data.height;
             
-            // console.log(`◀◀◀◀◀◀◀◀◀◀◀◀ [step3-반복문] ${cards.length} 번 돌려라~! ▶▶▶▶▶▶▶▶▶▶`);                    
-            // console.log(`중심점: dot${this.numb} | idx: ${idx} | 이미 생선된 것: ${card.className} | 비교대상: ${card_target.className}`)
             if(
                 (stage_x1 > x1_compare || stage_x2 < x2_compare) ||
                 (stage_y1 > y1_compare || stage_y2 < y2_compare)
@@ -1581,8 +1710,6 @@ class Card {
                     this.initNumb = 1;
                     this.radius = 120;
                 }
-                // console.log(`%c[1] ${dot.className} | ${card.className} | ${this.initNumb}, ${this.radius}`, "color: green")
-                // console.log(`제거대상: ${card_target.className}`);
                 card.remove();
                 this.createCard({ data: dot_data , target: card, numb: this.numb });
                 return false;
@@ -1595,15 +1722,10 @@ class Card {
                 (x1 < x2_compare && x2_compare < x2) && (y1 < y1_compare && y1_compare < y2) ||
                 (x1_compare <= x1 || x2_compare <= x2) && (y1_compare < y1 && y1 < y2_compare)
             ){
-                // console.log(`%c[2] ${dot.className} | ${card_target.className} | ${this.initNumb}, ${this.radius}`, "color: red")
-                // console.log(`이미 생성된 것: ${card.className}\nleft-top ${x1_compare}, ${y1_compare}\nright-top ${x2_compare}, ${y1_compare}\nleft-bottom ${x1_compare}, ${y2_compare}\nright-bottom ${x2_compare}, ${y2_compare}`)
-                // console.log(`비교대상: ${card_target.className}\nleft-top ${x1}, ${y1}\nright-top${x2}, ${y1}\nleft-bottom ${x1}, ${y2}\nright-bottom ${x2}, ${y2}`)
-                // console.log(`제거대상: ${card_target.className}`);
 
                 card_target.remove();
 
                 if( this.initNumb === this.points){
-                    // console.log(`%c${this.initNumb}, ${this.points}`, "color: yellow")
                     this.radius = this.radius + 30;
                     this.initNumb = 1;
                 }else{
@@ -1619,22 +1741,8 @@ class Card {
             }
         });
 
-        // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [ste4-마지막] 성공~! | 실행횟수: ${this.test_numb2} | ${cards[cards.length-1].className} | complete: ${this.complete}  ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: hotpink")
-        try {
-            const a_class = cards[cards.length-1].className.replace("card ", "");
-            const a = document.querySelector("."+a_class).getBoundingClientRect();
-            const a_x1 = a.x;
-            const a_y1 = a.y;
-            const a_x2 = a_x1 + a.width;
-            const a_y2 = a_x1 + a.height;
-            // console.log(`%c성공한 것: ${cards[cards.length-1].className}\nleft-top ${a_x1}, ${a_y1}\nright-top ${a_x2}, ${a_y1}\nleft-bottom ${a_x1}, ${a_y2}\nright-bottom ${a_x2}, ${a_y2}`, "color: lightblue")
-        } catch(error) {
-
-        }
-
+        // console.log("길이: ", document.querySelectorAll(".card").length)
         this.complete = true;
-        this.test_numb2++;
-        // cards = document.querySelectorAll(".card");
 
         const corners = [
             { width: this.centerX - x1_compare, height: this.centerY - y1_compare, x: x1_compare, y: y1_compare, pos: "left-top" },
@@ -1768,9 +1876,6 @@ function drawLine(obj){
 
     if(obj.stage === "init"){
         pos.forEach((item) => {
-            // console.log("===============================================")
-            // console.log(item.centerX, item.centerY, item.cornerX, item.cornerY)
-            // console.log("===============================================")
             ctx.beginPath();
             ctx.moveTo(item.centerX, item.centerY);
             ctx.lineTo(item.cornerX, item.cornerY);
@@ -1779,6 +1884,7 @@ function drawLine(obj){
         });
     }
 }
+
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 자석효과 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 function magnetize(el, e){
@@ -1819,20 +1925,32 @@ function calculateDistance(elem, mouseX, mouseY) {
 }
 
 function handleNotice(data){
-    const { stage, descr } = data;
+    const loadingBar = document.querySelector(".loading-bar .bar");
+    const { stage, descr, className } = data;
     const popup = document.querySelector(".notice-popup");
     const text = document.querySelector(".notice-popup .text");
-
-    console.log(data)
+    const classArray = [ "show-result-popup", "card-proc-popup", "dwn-popup", "copied-popup" ];
+    const callBackFunc = () => {
+        classArray.forEach((item) => {
+            if(popup.classList.contains(item)) popup.classList.remove(item);
+        });
+    };
 
     if(stage === "init"){
         popup.classList.add("show");
+        popup.classList.add(className);
         text.innerText = descr;
+
+        if(className === "card-proc-popup") loadingBar.style.width = "1%";
 
         fadeIn({ target: ".notice-popup", stagger_state: false });
     }
     if(stage === "finished"){
-        fadeOut({ target: ".notice-popup", stagger_state: false });
+        fadeOut({ 
+            target: ".notice-popup", 
+            stagger_state: false,
+            func: callBackFunc
+        });
     }
 }
 
@@ -1848,3 +1966,13 @@ function setCookie(data){
     todayDate.setDate( todayDate.getDate() + data.expiredays );
     document.cookie = data.name + "=" + escape( data.value ) + "; path=/; expires=" + todayDate.toGMTString() + ";"
 }
+
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ MAIN EVENTS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+const btn_goBack = document.querySelector(".goback .btn-back");
+
+btn_goBack.addEventListener("click", () => {
+    const prc = animationProcessCheck();
+    if(prc === true) return;
+
+    hideMainUIs();
+});

@@ -24,28 +24,28 @@
     <title>찬기의 포트폴리오</title>
 
 </head>
-<body>
+<body class="step1-img-detect">
     <nav class="ctrl-cont nav-ctrller">
         <ul class="nav-wrapper">
-            <li class="btn-nav-item ctrl-item" id="btn-flow-chart">Flow-chart</li>
-            <li class="btn-nav-item ctrl-item" id="btn-crafts">Crafts</li>
-            <li class="btn-nav-item ctrl-item" id="btn-about">About</li>
-            <li class="btn-nav-item ctrl-item" id="btn-t-Story">T-Story</li>
-            <li class="btn-nav-item ctrl-item" id="btn-github">Github</li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-flow-chart">Flow-chart</li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-crafts">Crafts</li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-about">About</li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-t-Story">T-Story</li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-github">Github</li>
         </ul>
     </nav>
 
     <div class="ctrl-cont lt-ctrller ctrl-m-item">
         <div class="name-wrapper swiperIntro">
-            <ul class="ctrl-item inner swiper-wrapper">
-                <li class="swiper-slide"><span class="m-item-name">Name of object #1</span></li>
+            <ul class="ctrl-item hide inner swiper-wrapper">
+                <!-- <li class="swiper-slide"><span class="m-item-name">Name of object #1</span></li>
                 <li class="swiper-slide"><span class="m-item-name">Name of object #2</span></li>
                 <li class="swiper-slide"><span class="m-item-name">Name of object #3</span></li>
                 <li class="swiper-slide"><span class="m-item-name">Name of object #4</span></li>
-                <li class="swiper-slide"><span class="m-item-name">Name of object #5</span></li>
+                <li class="swiper-slide"><span class="m-item-name">Name of object #5</span></li> -->
             </ul>
-            <button type="button" class="ctrl-item btn-direct swiper-button-prev btn-up"><i class="icon fa-regular fa-chevron-up"></i></button>
-            <button type="button" class="ctrl-item btn-direct swiper-button-next btn-down"><i class="icon fa-regular fa-chevron-down"></i></button>
+            <button type="button" class="ctrl-item hide btn-direct swiper-button-prev btn-up"><i class="icon fa-regular fa-chevron-up"></i></button>
+            <button type="button" class="ctrl-item hide btn-direct swiper-button-next btn-down"><i class="icon fa-regular fa-chevron-down"></i></button>
         </div>
     </div>
 
@@ -58,54 +58,24 @@
             </div>
         </div>
 
-        <div class="main-slides ctrl-item">
-            <!-- 1 -->
-            <ul class="slide-wrap 1 show">
-                <li class="slide slide-1 show"><i class="fa-solid fa-house-night"></i></li>
-                <li class="slide slide-2"><i class="fa-solid fa-stars"></i></li>
-                <li class="slide slide-3"><i class="fa-solid fa-bolt-lightning"></i></li>
-            </ul>
-            <!-- 2 -->
-            <ul class="slide-wrap 2">
-                <li class="slide slide-1"><i class="fa-regular fa-alicorn"></i></li>
-                <li class="slide slide-2"><i class="fa-regular fa-badger-honey"></i></li>
-                <li class="slide slide-3"><i class="fa-regular fa-bat"></i></li>
-            </ul>
-            <!-- 3 -->
-            <ul class="slide-wrap 3">
-                <li class="slide slide-1"><i class="fa-solid fa-cat-space"></i></li>
-                <li class="slide slide-2"><i class="fa-solid fa-cow"></i></li>
-                <li class="slide slide-3"><i class="fa-solid fa-deer"></i></li>
-            </ul>
-            <!-- 4 -->
-            <ul class="slide-wrap 4">
-                <li class="slide slide-1"><i class="fa-solid fa-dog"></i></li>
-                <li class="slide slide-2"><i class="fa-solid fa-dog-leashed"></i></li>
-                <li class="slide slide-3"><i class="fa-solid fa-dog-leashed"></i></li>
-            </ul>
-            <ul class="slide-wrap 5">
-                <li class="slide slide-1"><i class="fa-solid fa-hippo"></i></li>
-                <li class="slide slide-2"><i class="fa-solid fa-monkey"></i></li>
-                <li class="slide slide-3"><i class="fa-solid fa-narwhal"></i></li>
-            </ul>
-        </div>
+        <div class="main-slides ctrl-item hide"></div>
     </div>
 
-    <div class="ctrl-cont rt-ctrller ctrl-goback">
-        <button type="button" class="btn-direct btn-back">
-            <i class="ctrl-item icon fa-light fa-arrow-rotate-left"></i>
-            <span class="ctrl-item" >Back</span>
+    <div class="ctrl-cont rt-ctrller goback">
+        <button type="button" type="button" class="btn-direct btn-back">
+            <div class="ctrl-item hide df-c"><i class="icon fa-light fa-arrow-rotate-left"></i></div>
+            <span class="ctrl-item hide" >Back</span>
         </button>
     </div>
 
     <div class="ctrl-cont share">
         <button type="button" class="btn-share">
-            <i class="ctrl-item icon fa-regular fa-share"></i>
-            <span class="ctrl-item" >Share</span>
+            <div class="ctrl-item hide  df-c"><i class="icon fa-regular fa-share"></i></div>
+            <span class="ctrl-item hide" >Share</span>
         </button>
     </div>
 
-    <div class="ctrl-cont ctrl-item pallette dspl-f">
+    <div class="ctrl-cont ctrl-item hide pallette dspl-f">
         <!-- <button type="button" class="btn-prev"><i class="icon fa-solid fa-chevron-left"></i></button> -->
         <div class="user-ctrl df-c">
             <!-- left -->
@@ -117,48 +87,7 @@
             </ul>
             <div class="menu-cont-wrapper">
                 <!-- cont #1 -->
-                <div class="icons-container">
-                    <!-- 1 -->
-                    <div class="menu-cont swiper-list swiperPallete-1 show">
-                        <ul class="list-wrap swiper-wrapper">
-                            <li class="swiper-slide slide-1 active" index="1" title="house-night"><i class="fa-solid fa-house-night"></i></li>
-                            <li class="swiper-slide slide-2" index="2" title="stars"><i class="fa-solid fa-stars"></i></li>
-                            <li class="swiper-slide slide-3" index="3" title="bolt-lightning"><i class="fa-solid fa-bolt-lightning"></i></li>
-                        </ul>
-                    </div>
-                    <!-- 2 -->
-                    <div class="menu-cont swiper-list swiperPallete-2">
-                        <ul class="list-wrap swiper-wrapper">
-                            <li class="swiper-slide slide-1 active" index="1" title="alicorn"><i class="fa-regular fa-alicorn"></i></li>
-                            <li class="swiper-slide slide-2" index="2" title="badger-honey"><i class="fa-regular fa-badger-honey"></i></li>
-                            <li class="swiper-slide slide-3" index="3" title="bat"><i class="fa-regular fa-bat"></i></li>
-                        </ul>
-                    </div>
-                    <!-- 3 -->
-                    <div class="menu-cont swiper-list swiperPallete-3">
-                        <ul class="list-wrap swiper-wrapper">
-                            <li class="swiper-slide slide-1 active" index="1" itle="cat-space"><i class="fa-solid fa-cat-space"></i></li>
-                            <li class="swiper-slide slide-2" index="2" itle="cow"><i class="fa-solid fa-cow"></i></li>
-                            <li class="swiper-slide slide-3" index="3" itle="deer"><i class="fa-solid fa-deer"></i></li>
-                        </ul>
-                    </div>
-                    <!-- 4 -->
-                    <div class="menu-cont swiper-list swiperPallete-4">
-                        <ul class="list-wrap swiper-wrapper">
-                            <li class="swiper-slide slide-1 active" index="1" title="dog"><i class="fa-solid fa-dog"></i></li>
-                            <li class="swiper-slide slide-2" index="2" title="dog-leashed"><i class="fa-solid fa-dog-leashed"></i></li>
-                            <li class="swiper-slide slide-3" index="3" title="dog-leashed"><i class="fa-solid fa-dog-leashed"></i></li>
-                        </ul>
-                    </div>
-                    <!-- 5 -->
-                    <div class="menu-cont swiper-list swiperPallete-5">
-                        <ul class="list-wrap swiper-wrapper">
-                            <li class="swiper-slide slide-1 active" index="1" title="hippo"><i class="fa-solid fa-hippo"></i></li>
-                            <li class="swiper-slide slide-2" index="2" title="monkey"><i class="fa-solid fa-monkey"></i></li>
-                            <li class="swiper-slide slide-3" index="3" title="narwhal"><i class="fa-solid fa-narwhal"></i></li>
-                        </ul>
-                    </div>
-                </div>
+                <div class="icons-container"></div>
                 <!-- cont #2 -->
                 <div class="menu-cont color-pick" id="sliderPicker">
                     <svg><defs><g id="handle"><circle cx="8" cy="8" r="8" fill="#000000" stroke-width="2" stroke="#ffffff"></circle></g></defs></svg>                
@@ -174,7 +103,7 @@
     </div> 
 
     <canvas id="canvas"></canvas>
-    <section class="fst-pg df-c dspl-n">
+    <section class="fst-pg df-c">
         <div class="cont-wrapper show df">
             <!-- left -->
             <div class="lt-cont df-c">
@@ -187,14 +116,18 @@
 
                 <!-- layout-1 -->
                 <div class="icon-wrap default" id="setDefImg">
-                    <i class="icon fa-light fa-sparkles"></i>
+                    <div class="svg-box">
+                        <i class="icon fa-light fa-sparkles"></i>
+                    </div>
                     <span>Set default image<br>to enter</span>
                 </div>
 
                 <!-- layout-2 -->
                 <div class="icon-wrap cstm dspl-n">
                     <div class="drop-zone">
-                        <i class="icon fa-light fa-arrow-up-from-bracket drop-inner"></i>
+                        <div class="svg-box">
+                            <i class="icon fa-light fa-arrow-up-from-bracket drop-inner"></i>
+                        </div>
                         <span class="drop-inner">Drag and Drop file<br>or</span>
                     </div>
                     <label for="file" class="btn-img-upload">Browse</label>
@@ -203,7 +136,9 @@
 
                 <!-- layout-3 -->
                 <div class="icon-wrap wait dspl-n">
-                    <i class="icon fa-light fa-ban"></i>
+                    <div class="svg-box">
+                        <i class="icon fa-light fa-ban"></i>
+                    </div>
                     <span class="info">Please wait</span>
                 </div>
 
@@ -213,7 +148,9 @@
 
                 <!-- process-state: waiting -->
                 <div class="prc-wrap df wait">
-                    <i class="icon fa-light fa-image"></i>
+                    <div class="svg-box">
+                        <i class="icon fa-light fa-image"></i>
+                    </div>
                     <span class="info">Waiting</span>
                 </div>
 
@@ -222,9 +159,9 @@
                         <!-- <img id="selected-img" src="" alt=""> -->
                         <img id="selected-img" src="./img/def-img.jpg" alt="">
                         <div class="loading-box dspl-n">
-                            <svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg>
-                            <svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg>
-                            <svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z"/></svg>
+                            <div class="svg-box finish"><svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg></div>
+                            <div class="svg-box pending"><svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg></div>
+                            <div class="svg-box retry"><svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z"/></svg></div>
                             <span class="info">Detecting...</span>
                         </div>
                         
@@ -233,9 +170,9 @@
                     <div class="cont img-box img-02 dspl-n">
                         <img id="selected-img" src="" alt="">
                         <div class="loading-box dspl-n">
-                            <svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg>
-                            <svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg>
-                            <svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z"/></svg>
+                            <div class="svg-box finish"><svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg></div>
+                            <div class="svg-box pending"><svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg></div>
+                            <div class="svg-box retry"><svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z"/></svg></div>
                             <span class="info">Detecting...</span>
                         </div>
                         
@@ -258,7 +195,7 @@
     </section>
 
     <div class="container dspl-n" id="container">
-        <img id="selected-img" style="width: 720px" src="" alt="">
+        <img id="selected-img" src="" alt="">
     </div>
 
     <div class="notice-popup">
@@ -267,12 +204,12 @@
             <button type="button" id="btn-yes">네</button>
             <button type="button" id="btn-no">아니오</button>
         </div>
+        <div class="loading-bar"><div class="inner"><div class="bar"></div></div></div>
     </div>
 
     <!-- script -->
     <!-- <script src="https://kit.fontawesome.com/ca0a58fa37.js" crossorigin="anonymous"></script> -->
-    <script src="./fontawesome-pro/js/all.js" data-keep-original-source="false"></script>
-    <!-- <script src="./fontawesome-pro/js/all.js" data-auto-replace-svg="false"></script> -->
+    <script src="./fontawesome-pro/js/all.js" data-keep-original-source="true"></script>
     <script src="./js/script.js"></script>
 </body>
 </html>
