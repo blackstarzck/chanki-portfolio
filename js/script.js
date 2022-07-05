@@ -947,9 +947,7 @@ function handleMainAction(obj){
                 container.classList.remove("show");
                 container.style.height = "";
                 container.children.forEach((item) => { item.style.opacity = ""; item.style.transform = "" });
-                try{
-                    Kakao.init('7ad18fb056d47268f2c567afa7f80620');
-                }catch(error){};
+                Kakao?.init('7ad18fb056d47268f2c567afa7f80620');
             }
         });
     }
