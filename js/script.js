@@ -1450,7 +1450,7 @@ function bindEventsD(){
     const dots = document.querySelectorAll("#container .dot");
     const cards = document.querySelectorAll(".card");
     const device = detectDevice();
-    // if(device === "PC") return false;
+    if(device === "PC") return false;
 
     dots.forEach((item) => {
         item.addEventListener("click", (e) => {
@@ -1915,36 +1915,36 @@ function drawLine(obj){
     const device = detectDevice();
     let x, y, x1, y1;
 
-    // if(device === "PC"){
-    //     dots.forEach((item, idx) => {
-    //         const data = item.getBoundingClientRect();
-    //         x = (item.clientWidth / 2) + (container.offsetLeft + item.offsetLeft);
-    //         y = (item.clientHeight / 2) + (container.offsetTop + item.offsetTop);
+    if(device === "PC"){
+        dots.forEach((item, idx) => {
+            const data = item.getBoundingClientRect();
+            x = (item.clientWidth / 2) + (container.offsetLeft + item.offsetLeft);
+            y = (item.clientHeight / 2) + (container.offsetTop + item.offsetTop);
 
-    //         pos.push({ centerX: x, centerY: y });
-    //     }); 
+            pos.push({ centerX: x, centerY: y });
+        }); 
 
-    //     corners.forEach((item, idx) => {
-    //         const data = item.getBoundingClientRect();
-    //         x1 = data.x;
-    //         y1 = data.y;
+        corners.forEach((item, idx) => {
+            const data = item.getBoundingClientRect();
+            x1 = data.x;
+            y1 = data.y;
 
-    //         pos[idx]["cornerX"] = x1;
-    //         pos[idx]["cornerY"] = y1;
-    //     });
+            pos[idx]["cornerX"] = x1;
+            pos[idx]["cornerY"] = y1;
+        });
 
-    //     ctx.clearRect(0, 0, stage_width, stage_height);
+        ctx.clearRect(0, 0, stage_width, stage_height);
 
-    //     if(obj.stage === "init"){
-    //         pos.forEach((item) => {
-    //             ctx.beginPath();
-    //             ctx.moveTo(item.centerX, item.centerY);
-    //             ctx.lineTo(item.cornerX, item.cornerY);
-    //             ctx.strokeStyle = '#3AB8FF';
-    //             ctx.stroke();
-    //         });
-    //     }
-    // }
+        if(obj.stage === "init"){
+            pos.forEach((item) => {
+                ctx.beginPath();
+                ctx.moveTo(item.centerX, item.centerY);
+                ctx.lineTo(item.cornerX, item.cornerY);
+                ctx.strokeStyle = '#3AB8FF';
+                ctx.stroke();
+            });
+        }
+    }
 }
 
 function detectDevice(){
