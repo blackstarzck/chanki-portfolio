@@ -1976,12 +1976,16 @@ function setCookie(data){
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ MAIN EVENTS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 const btn_goBack = document.querySelector(".goback .btn-back");
+const btn_share = document.querySelector(".btn-share");
 
 btn_goBack.addEventListener("click", () => {
     const prc = animationProcessCheck();
     if(prc === true) return;
 
     hideMainUIs();
+});
+btn_share.addEventListener("click", () => {
+    kakaoInit();
 });
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ KAKAO ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
