@@ -939,6 +939,7 @@ function handleMainAction(obj){
             onComplete: function(){
                 animation_state = "waiting";
                 showAllUI({ state: "init", show });
+                kakaoInit();
                 addAnimationSVG();
 
                 canvas.width = "";
@@ -1982,3 +1983,33 @@ btn_goBack.addEventListener("click", () => {
 
     hideMainUIs();
 });
+
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ KAKAO ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+function kakaoInit(){
+    try{
+        Kakao.init('7ad18fb056d47268f2c567afa7f80620');
+        Kakao.Link.sendDefault({
+            objectType: 'feed',
+            content: {
+            title: '카카오공유하기 시 타이틀',
+            description: '카카오공유하기 시 설명',
+            imageUrl: '카카오공유하기 시 썸네일 이미지 경로',
+            link: {
+                mobileWebUrl: '카카오공유하기 시 클릭 후 이동 경로',
+                webUrl: '카카오공유하기 시 클릭 후 이동 경로',
+            },
+            },
+            buttons: [
+            {
+                title: '웹으로 보기',
+                link: {
+                mobileWebUrl: '카카오공유하기 시 클릭 후 이동 경로',
+                webUrl: '카카오공유하기 시 클릭 후 이동 경로',
+                },
+            },
+            ],
+            // 카카오톡 미설치 시 카카오톡 설치 경로이동
+            installTalk: true,
+        })
+    }catch(error){};
+}
