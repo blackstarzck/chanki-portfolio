@@ -1994,7 +1994,7 @@ function kakaoInit(){
         objectType: 'feed',
         content: {
         title: '팀플레이어 김찬기 포트폴리오',
-        description: '2022.07.05',
+        description: '2022.07.05 ~ ing',
         imageUrl: 'https://img1.daumcdn.net/thumb/C428x428/?scode=mtistory2&fname=https%3A%2F%2Ftistory4.daumcdn.net%2Ftistory%2F4007905%2Fattach%2F7d95921c781e48beb4e0a1dcf829487b',
         link: {
             mobileWebUrl: 'https://blackstarzck.github.io/chanki-portfolio/',
