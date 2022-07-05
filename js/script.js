@@ -1,11 +1,6 @@
 
 verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
 
-$(function(){
-    console.log("제이쿼리 작동됨");
-});
-
-
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LEFT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 // 애니매이션 중 클릭 방지
@@ -100,9 +95,7 @@ function handleState(data){
                             classifyImg({ img, target: data.target })
                             .then(function(result){
                                 temp.push({ width: img.width, img, result, total: result.length });
-                                result.forEach((item) => {
-                                    results.push(item);
-                                });
+                                result.forEach((item) => { results.push(item) });
 
                                 if(images.length === idx+1) setLoadingAnimation({ target: data.target, state: "finish" });
 
@@ -770,10 +763,10 @@ function createDot(obj){
     const offsetTop = (obj.target === "#container") ? cont_img.offsetTop : 0;
     let ratio;
 
-    if(document.querySelectorAll(".container .dot").length > 0 || document.querySelectorAll(".container .card").length > 0){
-        document.querySelectorAll(".container .dot").forEach((dot, i) => { dot.remove() });
-        document.querySelectorAll(".container .card").forEach((card, i) => { card.remove() });
-    }
+    // if(document.querySelectorAll(".container .dot").length > 0 || document.querySelectorAll(".container .card").length > 0){
+    //     document.querySelectorAll(".container .dot").forEach((dot, i) => { dot.remove() });
+    //     document.querySelectorAll(".container .card").forEach((card, i) => { card.remove() });
+    // }
 
     obj.result.forEach(function(item, idx){
         ratio = Number((width / item.img_width).toFixed(2));
@@ -920,7 +913,8 @@ function handleMainAction(obj){
                 createDot({ 
                     target: "#container", 
                     result: detected,
-                    func: getPos
+                    // func: getPos
+                    func: bindEventsD
                 });
             }
         });
@@ -935,7 +929,10 @@ function handleMainAction(obj){
             duration: 0.6,
             stagger: -0.1,
             ease: "back.in",
-            onUpdate: function(){ animation_state = "processing";  drawLine({ stage: "init" }); },
+            onUpdate: function(){
+                animation_state = "processing";
+                drawLine({ stage: "init" });
+            },
             onComplete: function(){
                 animation_state = "waiting";
                 showAllUI({ state: "init", show });
@@ -1204,7 +1201,7 @@ function hideMainUIs(){
     })
 }
 
-/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ PALETTE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BIND EVENTS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 function bindEventsA(){
     const btns_lt = document.querySelectorAll(".pallette .lt-btn-wrap li");
@@ -1449,7 +1446,58 @@ function bindEventsC(){
         });
     });
 }
+function bindEventsD(){
+    const dots = document.querySelectorAll("#container .dot");
+    const cards = document.querySelectorAll(".card");
+    const device = detectDevice();
+    // if(device === "PC") return false;
 
+    dots.forEach((item) => {
+        item.addEventListener("click", (e) => {
+            const container = document.getElementById("container");
+            const { oiffsetLeft, offsetTop, clientWidth, clientHeight } = container;
+            const centerX = oiffsetLeft + (clientWidth  / 2);
+            const centerY = offsetTop + (clientHeight  / 2);
+            const dotA = `dot${e.target.getAttribute("data-idx")}`;
+            console.log("hi")
+            cards.forEach((card) => {
+                const dotB = card.getAttribute("center-target");
+                const x = centerX - card.clientWidth;
+                const y = centerX - card.clientHeight;
+
+                if(card.classList.contains("selected")){
+                    gsap.to(card, {
+                        opacity: 0, y: -10,
+                        duration: 1,
+                        stagger: 0.3,
+                        ease: "back.in",
+                        onStart: function(){ handleNotice({ stage: "finished" }) },
+                        onUpdate: function(){ animation_state = "processing" },
+                        onComplete: function(){ 
+                            animation_state = "waiting";
+                            card.classList.remove("selected");
+                        }
+                    });
+                }else{
+                    if(dotA === dotB){
+                        console.log(3)
+                        card.classList.add("selected");
+                        gsap.fromTo(card, { opacity: 0, y: -10}, {
+                            opacity: 1, y: 0,
+                            duration: 1,
+                            stagger: 0.3,
+                            ease: "back.in",
+                            onStart: function(){ handleNotice({ stage: "finished" }) },
+                            onUpdate: function(){ animation_state = "processing" },
+                            onComplete: function(){ animation_state = "waiting"; }
+                        });
+                    }
+                }
+            })
+        });
+    })
+}
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ PALETTE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 function saveSvg(svgEl, name) {
     var svgData = svgEl.outerHTML;
@@ -1525,21 +1573,27 @@ function initPalletteSwiper(obj){
 
 let flag_c = false;
 $(function(){
-    $(document).on("mousemove", ".card", function(e){
-        const prc = animationProcessCheck();
-        if(prc === true) return;
-        magnetize($(this)[0], e, e.target);
-    });
-
-    $(document).on("mouseleave", ".card", function(e){
-        flag_c = false;
-        $(this)[0].style.zIndex = 4;
-        gsap.to($(this)[0], 0.6, { 
-            y: 0, 
-            x: 0, 
-            onUpdate: function(){ drawLine({ stage: "init" }); }
+    const device = detectDevice();
+    
+    if(device === "PC"){
+        $(document).on("mousemove", ".card", function(e){
+            const prc = animationProcessCheck();
+            if(prc === true) return;
+            magnetize($(this)[0], e, e.target);
         });
-    });
+    
+        $(document).on("mouseleave", ".card", function(e){
+            flag_c = false;
+            $(this)[0].style.zIndex = 4;
+            gsap.to($(this)[0], 0.6, { 
+                y: 0, 
+                x: 0, 
+                onUpdate: function(){ drawLine({ stage: "init" }); }
+            });
+        });
+    }else{
+        document.body.classList.add("mobile")
+    }
 });
 
 function getPos(){
@@ -1577,7 +1631,7 @@ function getPos(){
         ease: "back.in",
         onStart: function(){ handleNotice({ stage: "finished" }) },
         onUpdate: function(){ animation_state = "processing" },
-        onComplete: function(){ animation_state = "waiting"; bindEventsB(); }
+        onComplete: function(){ animation_state = "waiting"; bindEventsB(); bindEventsD(); }
     });
 
     cards.forEach((item, idx) => {
@@ -1858,39 +1912,75 @@ function drawLine(obj){
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d"); 
     const pos = [];
+    const device = detectDevice();
     let x, y, x1, y1;
 
-    dots.forEach((item, idx) => {
-        const data = item.getBoundingClientRect();
-        // const x = (item.clientWidth / 2) + item.offsetLeft;
-        // const y = (item.clientHeight / 2) + item.offsetTop;
-        x = (item.clientWidth / 2) + (container.offsetLeft + item.offsetLeft);
-        y = (item.clientHeight / 2) + (container.offsetTop + item.offsetTop);
+    // if(device === "PC"){
+    //     dots.forEach((item, idx) => {
+    //         const data = item.getBoundingClientRect();
+    //         x = (item.clientWidth / 2) + (container.offsetLeft + item.offsetLeft);
+    //         y = (item.clientHeight / 2) + (container.offsetTop + item.offsetTop);
 
-        pos.push({ centerX: x, centerY: y });
-    }); 
+    //         pos.push({ centerX: x, centerY: y });
+    //     }); 
 
-    corners.forEach((item, idx) => {
-        const data = item.getBoundingClientRect();
-        x1 = data.x;
-        y1 = data.y;
+    //     corners.forEach((item, idx) => {
+    //         const data = item.getBoundingClientRect();
+    //         x1 = data.x;
+    //         y1 = data.y;
 
-        pos[idx]["cornerX"] = x1;
-        pos[idx]["cornerY"] = y1;
-    });
+    //         pos[idx]["cornerX"] = x1;
+    //         pos[idx]["cornerY"] = y1;
+    //     });
 
-    ctx.clearRect(0, 0, stage_width, stage_height);
+    //     ctx.clearRect(0, 0, stage_width, stage_height);
 
-    if(obj.stage === "init"){
-        pos.forEach((item) => {
-            ctx.beginPath();
-            ctx.moveTo(item.centerX, item.centerY);
-            ctx.lineTo(item.cornerX, item.cornerY);
-            ctx.strokeStyle = '#3AB8FF';
-            ctx.stroke();
-        });
-    }
+    //     if(obj.stage === "init"){
+    //         pos.forEach((item) => {
+    //             ctx.beginPath();
+    //             ctx.moveTo(item.centerX, item.centerY);
+    //             ctx.lineTo(item.cornerX, item.cornerY);
+    //             ctx.strokeStyle = '#3AB8FF';
+    //             ctx.stroke();
+    //         });
+    //     }
+    // }
 }
+
+function detectDevice(){
+    let userAgent = navigator.userAgent.toLowerCase();
+    let detectWV = userAgent.indexOf("wv");
+    let detectAndroid = userAgent.indexOf("android");
+    let detectIPhone = userAgent.indexOf("iphone");
+    let detectIPad = userAgent.indexOf("ipad");
+    let filter = "win16|win32|win64|mac|macintel";
+    let device = "";
+
+    if ( navigator.platform ) {
+        if ( filter.indexOf( navigator.platform.toLowerCase() ) < 0) {
+            if(detectAndroid > -1){
+                if(navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1 || navigator.userAgent.indexOf("SamsungBrowser") > -1 || (detectWV == -1 && navigator.userAgent.indexOf("Chrome"))){
+                    // alert('[안드로이드] 웹 입니다');
+                    device = "AND-WEB";
+                }else{
+                    // alert('[안드로이드] 앱 입니다');
+                    device = "AND-APP";
+                }
+            }else if(detectIPhone > -1 || detectIPad > -1){
+                if(navigator.userAgent.indexOf("Safari") > -1 || navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1){
+                    // alert('[IOS] 웹 입니다');
+                    device = "iOS-WEB";
+                }else{
+                    // alert('[IOS] 앱 입니다');
+                    device = "iOS-APP";
+                }
+            }
+        }else{
+            device = "PC";
+        }
+        return device;
+    }
+};
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 자석효과 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 

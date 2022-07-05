@@ -226,7 +226,8 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 
 .dot { visibility: hidden; width: 15px;height: 15px;position: absolute;left: 0;top: 0;border-radius: 50% ;background-color: var(--blue-1);z-index: 2; }
 .dot.hover { background-color: #ffffff; }
-.dot:hover { transition: .3s;background-color: #ffffff; }
+.dot:hover:not(#container .dot) { transition: .3s;background-color: #ffffff; }
+#container .dot { cursor: pointer; }
 .test-zone { width: 1px;height: 1px;position: absolute;left: -100vw;top: -100vh;visibility: hidden;overflow: hidden; }
 
 /* result contents */
@@ -237,6 +238,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 .container #selected-img { border-radius: 5px; }
 .container > img.vrt { width: 440px; }
 .container > img.hrz { width: 720px; }
+body.mobile .container .card { opacity: 0; }
 .container .card { opacity: 0;border-radius: 5px;background-color: var(--black-blur-2);outline: 1px solid var(--blue-1);position: absolute;font-size: 30px;color: var(--white-1);z-index: 17;backdrop-filter: blur(3px); }
 .container .card .btn-direct.active:active i {transition: .2s;color: var(--blue-1); }
 .container .card svg { transition: .3s;color: var(--white-1); }
