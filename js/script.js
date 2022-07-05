@@ -932,7 +932,7 @@ function handleMainAction(obj){
         gsap.fromTo(container.children, { opacity: 1, y: 0 }, {
             opacity: 0,
             y: -10,
-            duration: 1,
+            duration: 0.6,
             stagger: -0.1,
             ease: "back.in",
             onUpdate: function(){ animation_state = "processing";  drawLine({ stage: "init" }); },
@@ -984,7 +984,7 @@ function setMainElements(){
     ico_container.innerHTML = elem_b;
     name_container.innerHTML = elem_c;
 
-    bindEventsB();
+    bindEventsC();
 }
 
 function handleMainSlide(obj){
@@ -1093,10 +1093,15 @@ function addAnimationSVG(){
 
 function showAllUI(obj){
     const { state, show } = obj;
-    const ctrl_items = document.querySelectorAll(".ctrl-item");
+    const ctrl = document.querySelectorAll(".ctrl-cont");
+    const ctrl_items = document.querySelectorAll(".ctrl-cont .ctrl-item");
     const code_box = document.querySelector(".rotation-box .svg-codes");
     const slide_wraps = document.querySelectorAll(".rotation-box .main-slides .slide-wrap");
     const swiper_lists = document.querySelectorAll(".icons-container .swiper-list");
+    
+    ctrl.forEach((item) => { item.classList.remove("dspl-n") });
+    bindEventsA();
+
     const mSwiper = new Swiper(".swiperIntro", {
         direction: "vertical",
         slidesPerView: 1,
@@ -1155,6 +1160,7 @@ function showAllUI(obj){
     initColorPicker();
 }
 function hideMainUIs(){
+    const ctrl = document.querySelectorAll(".ctrl-cont");
     const canvas = document.getElementById("canvas");
     const ctrl_items = document.querySelectorAll(".ctrl-item");
     const dots = document.querySelectorAll(".dot");
@@ -1192,156 +1198,157 @@ function hideMainUIs(){
         onComplete: function(){
             animation_state = "waiting";
             canvas.classList.remove("active");
+            ctrl.forEach((item) => { item.classList.add("dspl-n") });
         }
     })
 }
 
-/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ PALLETTE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
-const btns_lt = document.querySelectorAll(".pallette .lt-btn-wrap li");
-const btns_rt = document.querySelectorAll(".pallette .rt-btn-wrap li");
-const indicator_lt = document.querySelector(".lt-btn-wrap .indicator");
-const indicator_rt = document.querySelector(".rt-btn-wrap .indicator");
-const btns_menu = document.querySelectorAll(".pallette .menu-item button");
-const btn_copy = document.getElementById("btn-copy");
-const btn_dwn = document.getElementById("btn-dwn");
-
-// EVENT
-btns_lt.forEach((btn) => {
-    let x = btn.offsetLeft;
-    if(btn.classList.contains("active")){
-        indicator_lt.style.transform = `transLateX(${x}px)`;
-    }
-
-    btn.addEventListener("click", (e) => {
-        const swiper = document.querySelector(".icons-container");
-        const color = document.querySelector(".menu-cont.color-pick");
-        const svg = document.querySelector(".rotation-box li.show");
-        const code = document.querySelector(".svg-codes");
-        const btn_code = btn.children[0].classList.contains("btn-show-code") ?  btn.children[0] : "";
-        const btn_list = btn.children[0].classList.contains("btn-list") ?  btn.children[0] : "";
-        const btn_color = btn.children[0].classList.contains("btn-color-pick") ?  btn.children[0] : "";
-        const callBackFunc = () => { code.classList.remove("show"); }
-        const prc = animationProcessCheck();
-        if(prc === true) return;
-
-        btns_lt.forEach((btn) => {
-            btn.classList.remove("active");
-        });
-
-        btn.classList.add("active");
-        indicator_lt.style.transform = `transLateX(${x}px)`;
-
-        if(btn_code && !code.classList.contains("show")){
-            code.children[0].innerText = svg.innerHTML; // svg코드 삽입
-            code.classList.add("show");
-
-            fadeIn({ target: ".svg-codes", stagger: false });
-        }else{
-            fadeOut({ target: ".svg-codes", stagger: false, func: callBackFunc, param: "" });
-        }
-
-        if((btn_list || btn_color) && code.classList.contains("show")) fadeOut({ target: ".svg-codes", stagger: false, func: callBackFunc, param: "" });
-
-        if(btn_list && !swiper.classList.contains("show")){
-            swiper.classList.add("show");
-            gsap.fromTo(swiper, { opacity: 0, y: -15 }, {
-                opacity: 1, y: 0,
-                duration: 0.5,
-                ease: "back.in",
-                onUpdate: function(){ animation_state = "processing" },
-                onComplete: function(){
-                    animation_state = "waiting";
-                    color.classList.remove("show");
-                }
-            });
-            gsap.to(color, {
-                opacity: 0, y: 15,
-                duration: 0.5,
-                ease: "back.in",
-                onUpdate: function(){ animation_state = "processing"; },
-                onComplete: function(){ animation_state = "waiting"; }
-            });
-        }
-
-        if(btn_color && !color.classList.contains("show")){
-            color.classList.add("show");
-            gsap.fromTo(color, { opacity: 0, y: -15 }, {
-                opacity: 1,
-                y: 0,
-                duration: 0.5,
-                ease: "back.in",
-                onUpdate: function(){ animation_state = "processing"; },
-                onComplete: function(){
-                    animation_state = "waiting";
-                    swiper.classList.remove("show");
-                }
-            });
-            gsap.to(swiper, {
-                opacity: 0,
-                y: 15,
-                duration: 0.5,
-                ease: "back.in",
-                onUpdate: function(){ animation_state = "processing"; },
-                onComplete: function(){ animation_state = "waiting"; }
-            });
-        }
-    });
-});
-
-btns_rt.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-        btns_rt.forEach((btn) => {
-            btn.classList.remove("active");
-        });
-
-        btn.classList.add("active");
-
-        if(btn.children[0].classList.contains("btn-dark")){
-            document.body.classList.add("dk-mode");
-        }
-        if(btn.children[0].classList.contains("btn-light")){
-            document.body.classList.remove("dk-mode");
-        }
-    });
-});
-
-btn_dwn.addEventListener("click", () => {
-    const svg = document.querySelector(".rotation-box li.show svg");
-    const file_nm = svg.getAttribute("data-icon");
-    
-    saveSvg(svg, file_nm+".svg");
-    handleNotice({ 
-        stage: "init", 
-        descr: `"${file_nm}"를(을) 다운로드했습니다.`, 
-        className: "dwn-popup"
-    });
-    setTimeout(() => {
-        handleNotice({ stage: "finished" });
-        setTimeout(() => { notice.classList.remove("dwn-popup"); }, 800 );
-    }, 1800);
-});
-
-btn_copy.addEventListener("click", () => {
-    const svg = document.querySelector(".rotation-box li.show svg");
-    const file_nm = svg.getAttribute("data-icon");
-    const prc = animationProcessCheck();
-    let code = document.querySelector(".rotation-box .svg-codes p.inner").innerText;
-    if(prc === true) return;
-
-    navigator.clipboard.writeText(code);
-
-    handleNotice({ 
-        stage: "init", 
-        descr: `"${file_nm}"를(을) 립보드에 복사했습니다.`, 
-        className: "copied-popup" 
-    });
-    setTimeout(() => {
-        handleNotice({ stage: "finished" });
-        setTimeout(() => { notice.classList.remove("copied-popup"); }, 800 );
-    }, 1800);
-});
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ PALETTE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 function bindEventsA(){
+    const btns_lt = document.querySelectorAll(".pallette .lt-btn-wrap li");
+    const btns_rt = document.querySelectorAll(".pallette .rt-btn-wrap li");
+    const indicator_lt = document.querySelector(".lt-btn-wrap .indicator");
+    const indicator_rt = document.querySelector(".rt-btn-wrap .indicator");
+    const btns_menu = document.querySelectorAll(".pallette .menu-item button");
+    const btn_copy = document.getElementById("btn-copy");
+    const btn_dwn = document.getElementById("btn-dwn");
+    
+    // EVENT
+    btns_lt.forEach((btn) => {
+        let x = btn.offsetLeft;
+        if(btn.classList.contains("active")){
+            console.log(2, btn)
+            indicator_lt.style.transform = `transLateX(${x}px)`;
+        }
+        btn.addEventListener("click", (e) => {
+            const swiper = document.querySelector(".icons-container");
+            const color = document.querySelector(".menu-cont.color-pick");
+            const svg = document.querySelector(".rotation-box li.show");
+            const code = document.querySelector(".svg-codes");
+            const btn_code = btn.children[0].classList.contains("btn-show-code") ?  btn.children[0] : "";
+            const btn_list = btn.children[0].classList.contains("btn-list") ?  btn.children[0] : "";
+            const btn_color = btn.children[0].classList.contains("btn-color-pick") ?  btn.children[0] : "";
+            const callBackFunc = () => { code.classList.remove("show"); }
+            const prc = animationProcessCheck();
+            if(prc === true) return;
+    
+            btns_lt.forEach((btn) => { btn.classList.remove("active") });
+    
+            btn.classList.add("active");
+            indicator_lt.style.transform = `transLateX(${x}px)`;
+    
+            if(btn_code && !code.classList.contains("show")){
+                code.children[0].innerText = svg.innerHTML; // svg코드 삽입
+                code.classList.add("show");
+    
+                fadeIn({ target: ".svg-codes", stagger: false });
+            }else{
+                fadeOut({ target: ".svg-codes", stagger: false, func: callBackFunc, param: "" });
+            }
+    
+            if((btn_list || btn_color) && code.classList.contains("show")) fadeOut({ target: ".svg-codes", stagger: false, func: callBackFunc, param: "" });
+    
+            if(btn_list && !swiper.classList.contains("show")){
+                swiper.classList.add("show");
+                gsap.fromTo(swiper, { opacity: 0, y: -15 }, {
+                    opacity: 1, y: 0,
+                    duration: 0.5,
+                    ease: "back.in",
+                    onUpdate: function(){ animation_state = "processing" },
+                    onComplete: function(){
+                        animation_state = "waiting";
+                        color.classList.remove("show");
+                    }
+                });
+                gsap.to(color, {
+                    opacity: 0, y: 15,
+                    duration: 0.5,
+                    ease: "back.in",
+                    onUpdate: function(){ animation_state = "processing"; },
+                    onComplete: function(){ animation_state = "waiting"; }
+                });
+            }
+    
+            if(btn_color && !color.classList.contains("show")){
+                color.classList.add("show");
+                gsap.fromTo(color, { opacity: 0, y: -15 }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    ease: "back.in",
+                    onUpdate: function(){ animation_state = "processing"; },
+                    onComplete: function(){
+                        animation_state = "waiting";
+                        swiper.classList.remove("show");
+                    }
+                });
+                gsap.to(swiper, {
+                    opacity: 0,
+                    y: 15,
+                    duration: 0.5,
+                    ease: "back.in",
+                    onUpdate: function(){ animation_state = "processing"; },
+                    onComplete: function(){ animation_state = "waiting"; }
+                });
+            }
+        });
+    });
+    
+    btns_rt.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            btns_rt.forEach((btn) => {
+                btn.classList.remove("active");
+            });
+    
+            btn.classList.add("active");
+    
+            if(btn.children[0].classList.contains("btn-dark")){
+                document.body.classList.add("dk-mode");
+            }
+            if(btn.children[0].classList.contains("btn-light")){
+                document.body.classList.remove("dk-mode");
+            }
+        });
+    });
+    
+    btn_dwn.addEventListener("click", () => {
+        const svg = document.querySelector(".rotation-box li.show svg");
+        const file_nm = svg.getAttribute("data-icon");
+        
+        saveSvg(svg, file_nm+".svg");
+        handleNotice({ 
+            stage: "init", 
+            descr: `"${file_nm}"를(을) 다운로드했습니다.`, 
+            className: "dwn-popup"
+        });
+        setTimeout(() => {
+            handleNotice({ stage: "finished" });
+            setTimeout(() => { notice.classList.remove("dwn-popup"); }, 800 );
+        }, 1800);
+    });
+    
+    btn_copy.addEventListener("click", () => {
+        const svg = document.querySelector(".rotation-box li.show svg");
+        const file_nm = svg.getAttribute("data-icon");
+        const prc = animationProcessCheck();
+        let code = document.querySelector(".rotation-box .svg-codes p.inner").innerText;
+        if(prc === true) return;
+    
+        navigator.clipboard.writeText(code);
+    
+        handleNotice({ 
+            stage: "init", 
+            descr: `"${file_nm}"를(을) 립보드에 복사했습니다.`, 
+            className: "copied-popup" 
+        });
+        setTimeout(() => {
+            handleNotice({ stage: "finished" });
+            setTimeout(() => { notice.classList.remove("copied-popup"); }, 800 );
+        }, 1800);
+    });
+}
+function bindEventsB(){
     const cards = document.querySelectorAll(".container .card");
 
     cards.forEach((card) => {
@@ -1351,12 +1358,11 @@ function bindEventsA(){
             const prc = animationProcessCheck();
             if(prc === true) return;
 
-            console.log(object_nm);
             if(className?.indexOf("chevron") === -1) handleMainAction({ state: "finished", show: object_nm });
         });
     });
 }
-function bindEventsB(){
+function bindEventsC(){
     const icons = document.querySelectorAll(".pallette .swiper-list li");
 
     icons.forEach((icon, idx_a) => {
@@ -1570,7 +1576,7 @@ function getPos(){
         ease: "back.in",
         onStart: function(){ handleNotice({ stage: "finished" }) },
         onUpdate: function(){ animation_state = "processing" },
-        onComplete: function(){ animation_state = "waiting"; bindEventsA(); }
+        onComplete: function(){ animation_state = "waiting"; bindEventsB(); }
     });
 
     cards.forEach((item, idx) => {

@@ -25,7 +25,7 @@
 
 </head>
 <body class="step1-img-detect">
-    <nav class="ctrl-cont nav-ctrller">
+    <nav class="ctrl-cont dspl-n nav-ctrller">
         <ul class="nav-wrapper">
             <li class="btn-nav-item ctrl-item hide" id="btn-flow-chart">Flow-chart</li>
             <li class="btn-nav-item ctrl-item hide" id="btn-crafts">Crafts</li>
@@ -35,21 +35,16 @@
         </ul>
     </nav>
 
-    <div class="ctrl-cont lt-ctrller ctrl-m-item">
+    <div class="ctrl-cont dspl-n lt-ctrller ctrl-m-item">
         <div class="name-wrapper swiperIntro">
             <ul class="ctrl-item hide inner swiper-wrapper">
-                <!-- <li class="swiper-slide"><span class="m-item-name">Name of object #1</span></li>
-                <li class="swiper-slide"><span class="m-item-name">Name of object #2</span></li>
-                <li class="swiper-slide"><span class="m-item-name">Name of object #3</span></li>
-                <li class="swiper-slide"><span class="m-item-name">Name of object #4</span></li>
-                <li class="swiper-slide"><span class="m-item-name">Name of object #5</span></li> -->
             </ul>
             <button type="button" class="ctrl-item hide btn-direct swiper-button-prev btn-up"><i class="icon fa-regular fa-chevron-up"></i></button>
             <button type="button" class="ctrl-item hide btn-direct swiper-button-next btn-down"><i class="icon fa-regular fa-chevron-down"></i></button>
         </div>
     </div>
 
-    <div class="ctrl-cont rotation-box">
+    <div class="ctrl-cont dspl-n rotation-box">
         <div class="svg-codes">
             <p class="inner"></p>
             <div class="btn-wrap">
@@ -61,45 +56,47 @@
         <div class="main-slides ctrl-item hide"></div>
     </div>
 
-    <div class="ctrl-cont rt-ctrller goback">
+    <div class="ctrl-cont dspl-n rt-ctrller goback">
         <button type="button" type="button" class="btn-direct btn-back">
             <div class="ctrl-item hide df-c"><i class="icon fa-light fa-arrow-rotate-left"></i></div>
             <span class="ctrl-item hide" >Back</span>
         </button>
     </div>
 
-    <div class="ctrl-cont share">
+    <div class="ctrl-cont dspl-n share">
         <button type="button" class="btn-share">
             <div class="ctrl-item hide  df-c"><i class="icon fa-regular fa-share"></i></div>
             <span class="ctrl-item hide" >Share</span>
         </button>
     </div>
 
-    <div class="ctrl-cont ctrl-item hide pallette dspl-f">
-        <!-- <button type="button" class="btn-prev"><i class="icon fa-solid fa-chevron-left"></i></button> -->
-        <div class="user-ctrl df-c">
-            <!-- left -->
-            <ul class="lt-btn-wrap btn-wrap dspl-f">
-                <li class="menu-item"><button type="button" class="btn-show-code"><i class="icon fa-regular fa-code"></i></button></li>
-                <li class="menu-item active"><button type="button" class="btn-list"><i class="icon fa-regular fa-list"></i></button></li>
-                <li class="menu-item"><button type="button" class="btn-color-pick" ><i class="icon fa-regular fa-palette"></i></button></li>
-                <li class="indicator"></li>
-            </ul>
-            <div class="menu-cont-wrapper">
-                <!-- cont #1 -->
-                <div class="icons-container"></div>
-                <!-- cont #2 -->
-                <div class="menu-cont color-pick" id="sliderPicker">
-                    <svg><defs><g id="handle"><circle cx="8" cy="8" r="8" fill="#000000" stroke-width="2" stroke="#ffffff"></circle></g></defs></svg>                
+    <div class="ctrl-cont dspl-n pallette">
+        <div class="inner ctrl-item hide dspl-f">
+            <!-- <button type="button" class="btn-prev"><i class="icon fa-solid fa-chevron-left"></i></button> -->
+            <div class="user-ctrl df-c">
+                <!-- left -->
+                <ul class="lt-btn-wrap btn-wrap dspl-f">
+                    <li class="menu-item"><button type="button" class="btn-show-code"><i class="icon fa-regular fa-code"></i></button></li>
+                    <li class="menu-item active"><button type="button" class="btn-list"><i class="icon fa-regular fa-list"></i></button></li>
+                    <li class="menu-item"><button type="button" class="btn-color-pick" ><i class="icon fa-regular fa-palette"></i></button></li>
+                    <li class="indicator"></li>
+                </ul>
+                <div class="menu-cont-wrapper">
+                    <!-- cont #1 -->
+                    <div class="icons-container"></div>
+                    <!-- cont #2 -->
+                    <div class="menu-cont color-pick" id="sliderPicker">
+                        <svg><defs><g id="handle"><circle cx="8" cy="8" r="8" fill="#000000" stroke-width="2" stroke="#ffffff"></circle></g></defs></svg>                
+                    </div>
                 </div>
+                <!-- right -->
+                <ul class="rt-btn-wrap btn-wrap dspl-f">
+                    <li class="menu-item active"><button type="button" class="btn-light"><i class="icon fa-solid fa-sun"></i></button></li>
+                    <li class="menu-item"><button type="button" class="btn-dark"><i class="icon fa-solid fa-moon"></i></button></li>
+                </ul>
             </div>
-            <!-- right -->
-            <ul class="rt-btn-wrap btn-wrap dspl-f">
-                <li class="menu-item active"><button type="button" class="btn-light"><i class="icon fa-solid fa-sun"></i></button></li>
-                <li class="menu-item"><button type="button" class="btn-dark"><i class="icon fa-solid fa-moon"></i></button></li>
-            </ul>
+            <!-- <button type="button" class="btn-next"><i class="icon fa-solid fa-chevron-right"></i></button> -->
         </div>
-        <!-- <button type="button" class="btn-next"><i class="icon fa-solid fa-chevron-right"></i></button> -->
     </div> 
 
     <canvas id="canvas"></canvas>
