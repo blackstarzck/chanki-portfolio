@@ -1,5 +1,31 @@
 
 verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
+const device = detectDevice();
+let dev_size;
+
+if(matchMedia("screen and (max-width: 767px)").matches){ 
+    dev_size = "MOBILE";
+    if(!document.body.classList.contains("mobile")) document.body.classList.add("mobile");
+}else if(matchMedia("screen and (max-width: 1023px)").matches){
+    dev_size = "TABLET";
+    if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
+}else if(matchMedia("screen and (min-width: 1024px)").matches){
+    dev_size = "PC";
+    if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
+}
+window.onresize = () => {
+    if(matchMedia("screen and (max-width: 767px)").matches){ 
+        dev_size = "MOBILE";
+        if(!document.body.classList.contains("mobile")) document.body.classList.add("mobile");
+    }else if(matchMedia("screen and (max-width: 1023px)").matches){
+        dev_size = "TABLET";
+        if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
+    }else if(matchMedia("screen and (min-width: 1024px)").matches){
+        dev_size = "PC";
+        if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
+    }
+}
+
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LEFT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
@@ -590,7 +616,8 @@ function setLoadingAnimation(obj){
 function verifyLength(obj){
     const target = obj.target;
     const imges = document.querySelectorAll(".img-box");
-    const container_img = document.querySelector(".container #selected-img");
+    // const container_img = document.querySelector(".container #selected-img");
+    const container = document.querySelector(".container");
     let img = new Image();
     let width, height, align;
 
@@ -604,9 +631,13 @@ function verifyLength(obj){
         imges.forEach(function(item){
             if(item.classList.contains(target.replace(".", ""))){
                 document.querySelector(target).classList.add(align);
-                container_img.classList.remove("hrz");
-                container_img.classList.remove("vrt");
-                container_img.classList.add(align);
+                // container_img.classList.remove("hrz");
+                // container_img.classList.remove("vrt");
+                // container_img.classList.add(align);
+
+                container.classList.remove("hrz");
+                container.classList.remove("vrt");
+                container.classList.add(align);
             }else{
                 setTimeout(() => {
                     item.classList.remove("vrt");
@@ -765,10 +796,10 @@ function createDot(obj){
     const dotsArray = [];
     let ratio;
 
-    // if(document.querySelectorAll(".container .dot").length > 0 || document.querySelectorAll(".container .card").length > 0){
-    //     document.querySelectorAll(".container .dot").forEach((dot, i) => { dot.remove() });
-    //     document.querySelectorAll(".container .card").forEach((card, i) => { card.remove() });
-    // }
+    if(document.querySelectorAll(".container .dot").length > 0 || document.querySelectorAll(".container .card").length > 0){
+        document.querySelectorAll(".container .dot").forEach((dot, i) => { dot.remove() });
+        document.querySelectorAll(".container .card").forEach((card, i) => { card.remove() });
+    }
 
     console.log(obj.result)
 
@@ -922,10 +953,15 @@ function handleMainAction(obj){
     let setting;
 
     if(state === "init"){
-        canvas.classList.add("active");
         container.classList.remove("dspl-n");
         container.classList.add("show");
+
+        if(device === "PC" && dev_size !== "MOBILE"){
+            canvas.classList.add("active");
+
+        }
         container.style.height = img.height+"px";
+        
 
         gsap.fromTo("#container", { opacity: 0, y: -10 }, {
             opacity: 1,
@@ -1478,17 +1514,18 @@ function bindEventsC(){
 function bindEventsD(){
     const dots = document.querySelectorAll("#container .dot");
     const cards = document.querySelectorAll(".card");
-    const device = detectDevice();
-    if(device === "PC") return false;
+    // if(device === "PC") return false;
 
     dots.forEach((item) => {
         item.addEventListener("click", (e) => {
+            const prc = animationProcessCheck();
+            if(prc === true) return;
+
             const container = document.getElementById("container");
             const { oiffsetLeft, offsetTop, clientWidth, clientHeight } = container;
             const centerX = oiffsetLeft + (clientWidth  / 2);
             const centerY = offsetTop + (clientHeight  / 2);
             const dotA = `dot${e.target.getAttribute("data-idx")}`;
-            console.log("hi")
             cards.forEach((card) => {
                 const dotB = card.getAttribute("center-target");
                 const x = centerX - card.clientWidth;
@@ -1505,11 +1542,12 @@ function bindEventsD(){
                         onComplete: function(){ 
                             animation_state = "waiting";
                             card.classList.remove("selected");
+                            card.classList.add("dspl-n");
                         }
                     });
                 }else{
                     if(dotA === dotB){
-                        console.log(3)
+                        card.classList.remove("dspl-n");
                         card.classList.add("selected");
                         gsap.fromTo(card, { opacity: 0, y: -10}, {
                             opacity: 1, y: 0,
@@ -1524,7 +1562,16 @@ function bindEventsD(){
                 }
             })
         });
-    })
+    });
+    document.getElementById("container").addEventListener("click", (e) => {
+        if(e.target.getAttribute("id") === "selected-img"){
+            fadeOut({ 
+                target: ".card.selected", 
+                stagger: false,
+                func: () => { document.querySelector(".card.selected").classList.remove("selected") }
+            });
+        }
+    });
 }
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ PALETTE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
@@ -1602,9 +1649,7 @@ function initPalletteSwiper(obj){
 
 let flag_c = false;
 $(function(){
-    const device = detectDevice();
-    
-    if(device === "PC"){
+    if(device === "PC" && dev_size !== "MOBILE"){
         $(document).on("mousemove", ".card", function(e){
             const prc = animationProcessCheck();
             if(prc === true) return;
@@ -1620,8 +1665,6 @@ $(function(){
                 onUpdate: function(){ drawLine({ stage: "init" }); }
             });
         });
-    }else{
-        document.body.classList.add("mobile")
     }
 });
 
@@ -1650,30 +1693,34 @@ function getPos(){
         proc = Math.round( (cards.length / dot_ttl) * 100);
 
         loadingBar.style.width = `${proc}%`;
+        if(proc === 100) handleNotice({ stage: "finished" });
     });
+    console.log(0)
+    bindEventsD();
 
-    gsap.fromTo(".card", { opacity: 0, y: -10 }, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.3,
-        ease: "back.in",
-        onStart: function(){ handleNotice({ stage: "finished" }) },
-        onUpdate: function(){ animation_state = "processing" },
-        onComplete: function(){ 
-            animation_state = "waiting"; 
-            bindEventsB(); 
-            bindEventsD(); 
-        }
-    });
-
-    cards.forEach((item, idx) => {
-        dot_data = item.dot.getBoundingClientRect();
-        startX = (dot_data.width) / 2 + dot_data.x;
-        startY = (dot_data.height) / 2 + dot_data.y;
-
-        card.drawLineA(startX, startY, item.cornerX, item.cornerY);
-    });
+    if(device === "PC" && dev_size !== "MOBILE"){
+        gsap.fromTo(".card", { opacity: 0, y: -10 }, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.3,
+            ease: "back.in",
+            onStart: function(){ handleNotice({ stage: "finished" }) },
+            onUpdate: function(){ animation_state = "processing" },
+            onComplete: function(){ 
+                animation_state = "waiting"; 
+                bindEventsB();  
+            }
+        });
+    
+        cards.forEach((item, idx) => {
+            dot_data = item.dot.getBoundingClientRect();
+            startX = (dot_data.width) / 2 + dot_data.x;
+            startY = (dot_data.height) / 2 + dot_data.y;
+    
+            card.drawLineA(startX, startY, item.cornerX, item.cornerY);
+        });
+    }
 }
 
 class Card {
@@ -1712,27 +1759,20 @@ class Card {
         let elem = "";
         let icon;
 
-        for(let i = 0; i < this.points; i++){
-            centerX = this.radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
-            centerY = this.radius * Math.sin(angle * i) + (this.centerY - this.container.offsetTop);
-            left = Math.round(centerX + (this.dot_width / 2) - (width / 2));
-            top = Math.round(centerY + (this.dot_height / 2) - (height / 2));
-
+        if(dev_size === "MOBILE"){
             const card = document.createElement("div");
-            card.setAttribute("class", `card card-${i+1}`);
+            card.setAttribute("class", `card card-${this.numb}`);
             card.setAttribute("center-target", `dot${this.numb}`);
-            card.style.left = `${left}px`;
-            card.style.top = `${top}px`;
+
             card.style.width = `${width}px`;
             card.style.height = `${height}px`;
-            // card.innerText = `${i+1}`;
 
             elem = '<div class="main swiper-'+this.numb+'">';
             elem +=     '<ul class="inner swiper-wrapper">';
             for(let n = 0; n < this.icons.length; n++){
                 if(n < 10){
                     icon = `fa-light ${this.icons[n]}`;
-                    elem += `<li class="swiper-slide" style="${width}px;height:"><div class="svg-box"><i class="${icon} icon m-icon"></i></div></li>`;
+                    elem += `<li class="swiper-slide"><div class="svg-box"><i class="${icon} icon m-icon"></i></div></li>`;
                 }
             }
             elem +=     '</ul>';
@@ -1742,27 +1782,76 @@ class Card {
             elem += '</div>';
 
             card.setAttribute("object-name", `${this.name}`);
+            this.container.appendChild(card);
+            card.innerHTML = elem;
 
-            if(this.initNumb === (i+1) && this.complete === false){
-                // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
-                this.container.appendChild(card);
-                card.innerHTML = elem;
-                const swiper = new Swiper(`.swiper-${this.numb}`, {
-                    slidesPerView: 1,
-                    pagination: {
-                        el: ".swiper-pagination",
-                        type: "fraction",
-                    },
-                    loop: false,
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                });
+            const swiper = new Swiper(`.swiper-${this.numb}`, {
+                slidesPerView: 1,
+                pagination: {
+                    el: ".swiper-pagination",
+                    type: "fraction",
+                },
+                loop: false,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+        }
 
-                this.checkCollision(card);
-                this.createCorner(card);
-                return;
+        if(device === "PC" && dev_size !== "MOBILE"){
+            for(let i = 0; i < this.points; i++){
+                centerX = this.radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
+                centerY = this.radius * Math.sin(angle * i) + (this.centerY - this.container.offsetTop);
+                left = Math.round(centerX + (this.dot_width / 2) - (width / 2));
+                top = Math.round(centerY + (this.dot_height / 2) - (height / 2));
+
+                const card = document.createElement("div");
+                card.setAttribute("class", `card card-${i+1}`);
+                card.setAttribute("center-target", `dot${this.numb}`);
+                card.style.left = `${left}px`;
+                card.style.top = `${top}px`;
+                card.style.width = `${width}px`;
+                card.style.height = `${height}px`;
+                // card.innerText = `${i+1}`;
+
+                elem = '<div class="main swiper-'+this.numb+'">';
+                elem +=     '<ul class="inner swiper-wrapper">';
+                for(let n = 0; n < this.icons.length; n++){
+                    if(n < 10){
+                        icon = `fa-light ${this.icons[n]}`;
+                        elem += `<li class="swiper-slide"><div class="svg-box"><i class="${icon} icon m-icon"></i></div></li>`;
+                    }
+                }
+                elem +=     '</ul>';
+                elem +=     '<button class="btn-direct swiper-button-prev btn-prev"><div class="svg-box"><i class="fa-regular fa-chevron-left"></i></div></button>';
+                elem +=     '<button class="btn-direct swiper-button-next btn-next"><div class="svg-box"><i class="fa-regular fa-chevron-right"></i></div></button>';
+                elem +=     '<div class="swiper-pagination"></div>';
+                elem += '</div>';
+
+                card.setAttribute("object-name", `${this.name}`);
+
+                if(this.initNumb === (i+1) && this.complete === false){
+                    // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
+                    this.container.appendChild(card);
+                    card.innerHTML = elem;
+                    const swiper = new Swiper(`.swiper-${this.numb}`, {
+                        slidesPerView: 1,
+                        pagination: {
+                            el: ".swiper-pagination",
+                            type: "fraction",
+                        },
+                        loop: false,
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                    });
+
+                    this.checkCollision(card);
+                    this.createCorner(card);
+                    return;
+                }
             }
         }
     }
@@ -1770,8 +1859,8 @@ class Card {
     checkCollision(card_target){
         // const cont_data = this.container.getBoundingClientRect();
         const { offsetLeft, offsetTop } = document.getElementById("container");
-        const window_w = window.outerWidth;
-        const window_h = window.outerHeight;
+        const window_w = window.innerWidth;
+        const window_h = window.innerHeight;
         let cards = document.querySelectorAll(".card");
         const target_data = card_target.getBoundingClientRect();
 
@@ -1945,7 +2034,6 @@ function drawLine(obj){
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d"); 
     const pos = [];
-    const device = detectDevice();
     let x, y, x1, y1;
 
     if(device === "PC"){
