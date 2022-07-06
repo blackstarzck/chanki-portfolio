@@ -1514,7 +1514,7 @@ function bindEventsC(){
 function bindEventsD(){
     const dots = document.querySelectorAll("#container .dot");
     const cards = document.querySelectorAll(".card");
-    // if(device === "PC") return false;
+    if(dev_size !== "MOBILE") return false;
 
     dots.forEach((item) => {
         item.addEventListener("click", (e) => {
