@@ -1564,7 +1564,8 @@ function bindEventsD(){
         });
     });
     document.getElementById("container").addEventListener("click", (e) => {
-        if(e.target.getAttribute("id") === "selected-img"){
+        const selected = document.querySelector(".card.selected") || null;
+        if(e.target.getAttribute("id") === "selected-img" && selected !== null){
             fadeOut({ 
                 target: ".card.selected", 
                 stagger: false,
