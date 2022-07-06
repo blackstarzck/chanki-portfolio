@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,8 +7,7 @@
     <link rel="shortcut icon" href="./img/logo.png">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./fontawesome-pro/css/all.css">
-    </script>
+    <link rel="stylesheet" href="./fontawesome-pro/css/all.css" ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
@@ -20,14 +18,13 @@
     <!-- Load the coco-ssd model. -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
     <!-- swiper -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <!-- color picker -->
-    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
     <title>찬기의 포트폴리오</title>
 
 </head>
-
 <body class="step1-img-detect">
     <nav class="ctrl-cont dspl-n nav-ctrller">
         <ul class="nav-wrapper">
@@ -43,10 +40,8 @@
         <div class="name-wrapper swiperIntro">
             <ul class="ctrl-item hide inner swiper-wrapper">
             </ul>
-            <button type="button" class="ctrl-item hide btn-direct swiper-button-prev btn-up"><i
-                    class="icon fa-regular fa-chevron-up"></i></button>
-            <button type="button" class="ctrl-item hide btn-direct swiper-button-next btn-down"><i
-                    class="icon fa-regular fa-chevron-down"></i></button>
+            <button type="button" class="ctrl-item hide btn-direct swiper-button-prev btn-up"><i class="icon fa-regular fa-chevron-up"></i></button>
+            <button type="button" class="ctrl-item hide btn-direct swiper-button-next btn-down"><i class="icon fa-regular fa-chevron-down"></i></button>
         </div>
     </div>
 
@@ -65,14 +60,14 @@
     <div class="ctrl-cont dspl-n rt-ctrller goback">
         <button type="button" type="button" class="btn-direct btn-back">
             <div class="ctrl-item hide df-c"><i class="icon fa-light fa-arrow-rotate-left"></i></div>
-            <span class="ctrl-item hide">Back</span>
+            <span class="ctrl-item hide" >Back</span>
         </button>
     </div>
 
     <div class="ctrl-cont dspl-n share">
         <button type="button" class="btn-share">
             <div class="ctrl-item hide  df-c"><i class="icon fa-regular fa-share"></i></div>
-            <span class="ctrl-item hide">Share</span>
+            <span class="ctrl-item hide" >Share</span>
         </button>
     </div>
 
@@ -82,12 +77,9 @@
             <div class="user-ctrl df-c">
                 <!-- left -->
                 <ul class="lt-btn-wrap btn-wrap dspl-f">
-                    <li class="menu-item"><button type="button" class="btn-show-code"><i
-                                class="icon fa-regular fa-code"></i></button></li>
-                    <li class="menu-item active"><button type="button" class="btn-list"><i
-                                class="icon fa-regular fa-list"></i></button></li>
-                    <li class="menu-item"><button type="button" class="btn-color-pick"><i
-                                class="icon fa-regular fa-palette"></i></button></li>
+                    <li class="menu-item"><button type="button" class="btn-show-code"><i class="icon fa-regular fa-code"></i></button></li>
+                    <li class="menu-item active"><button type="button" class="btn-list"><i class="icon fa-regular fa-list"></i></button></li>
+                    <li class="menu-item"><button type="button" class="btn-color-pick" ><i class="icon fa-regular fa-palette"></i></button></li>
                     <li class="indicator"></li>
                 </ul>
                 <div class="menu-cont-wrapper">
@@ -95,27 +87,18 @@
                     <div class="icons-container"></div>
                     <!-- cont #2 -->
                     <div class="menu-cont color-pick" id="sliderPicker">
-                        <svg>
-                            <defs>
-                                <g id="handle">
-                                    <circle cx="8" cy="8" r="8" fill="#000000" stroke-width="2" stroke="#ffffff">
-                                    </circle>
-                                </g>
-                            </defs>
-                        </svg>
+                        <svg><defs><g id="handle"><circle cx="8" cy="8" r="8" fill="#000000" stroke-width="2" stroke="#ffffff"></circle></g></defs></svg>                
                     </div>
                 </div>
                 <!-- right -->
                 <ul class="rt-btn-wrap btn-wrap dspl-f">
-                    <li class="menu-item active"><button type="button" class="btn-light"><i
-                                class="icon fa-solid fa-sun"></i></button></li>
-                    <li class="menu-item"><button type="button" class="btn-dark"><i
-                                class="icon fa-solid fa-moon"></i></button></li>
+                    <li class="menu-item active"><button type="button" class="btn-light"><i class="icon fa-solid fa-sun"></i></button></li>
+                    <li class="menu-item"><button type="button" class="btn-dark"><i class="icon fa-solid fa-moon"></i></button></li>
                 </ul>
             </div>
             <!-- <button type="button" class="btn-next"><i class="icon fa-solid fa-chevron-right"></i></button> -->
         </div>
-    </div>
+    </div> 
 
     <canvas id="canvas"></canvas>
     <section class="fst-pg df-c">
@@ -146,8 +129,7 @@
                         <span class="drop-inner">Drag and Drop file<br>or</span>
                     </div>
                     <label for="file" class="btn-img-upload">Browse</label>
-                    <input type="file" name="" id="file" accept="image/*" required="true" multiple="false"
-                        hidden="true">
+                    <input type="file" name="" id="file" accept="image/*" required="true" multiple="false" hidden="true">
                 </div>
 
                 <!-- layout-3 -->
@@ -175,43 +157,25 @@
                         <!-- <img id="selected-img" src="" alt=""> -->
                         <img id="selected-img" src="./img/def-img.jpg" alt="">
                         <div class="loading-box dspl-n">
-                            <div class="svg-box finish"><svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 10 7">
-                                    <path d="M1 3L4 6L9 1" /></svg></div>
-                            <div class="svg-box pending"><svg class="pending">
-                                    <circle cx="6" cy="6" r="5"></circle>
-                                </svg></div>
-                            <div class="svg-box retry"><svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512">
-                                    <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                                    <path
-                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z" />
-                                    </svg></div>
+                            <div class="svg-box finish"><svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg></div>
+                            <div class="svg-box pending"><svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg></div>
+                            <div class="svg-box retry"><svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z"/></svg></div>
                             <span class="info">Detecting...</span>
                         </div>
-
+                        
                     </div>
 
                     <div class="cont img-box img-02 dspl-n">
                         <img id="selected-img" src="" alt="">
                         <div class="loading-box dspl-n">
-                            <div class="svg-box finish"><svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 10 7">
-                                    <path d="M1 3L4 6L9 1" /></svg></div>
-                            <div class="svg-box pending"><svg class="pending">
-                                    <circle cx="6" cy="6" r="5"></circle>
-                                </svg></div>
-                            <div class="svg-box retry"><svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512">
-                                    <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                                    <path
-                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z" />
-                                    </svg></div>
+                            <div class="svg-box finish"><svg class="finish dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 7"><path d="M1 3L4 6L9 1" /></svg></div>
+                            <div class="svg-box pending"><svg class="pending"><circle  cx="6" cy="6" r="5"></circle></svg></div>
+                            <div class="svg-box retry"><svg class="retry dspl-n" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 304c13.25 0 24-10.75 24-24v-128C280 138.8 269.3 128 256 128S232 138.8 232 152v128C232 293.3 242.8 304 256 304zM256 337.1c-17.36 0-31.44 14.08-31.44 31.44C224.6 385.9 238.6 400 256 400s31.44-14.08 31.44-31.44C287.4 351.2 273.4 337.1 256 337.1z"/></svg></div>
                             <span class="info">Detecting...</span>
                         </div>
-
+                        
                     </div>
-
+                    
                     <ul class="cont" id="results-wrap">
 
                     </ul>
@@ -230,161 +194,7 @@
 
     <div class="container dspl-n" id="container">
         <img id="selected-img" src="" alt="">
-        <div class="dot dot1" data-idx="1" name="tv"
-            style="left: 180px; top: 241px; visibility: visible; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-        </div>
-        <div class="dot dot2" data-idx="2" name="tv"
-            style="left: 407px; top: 185px; visibility: visible; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-        </div>
-        <div class="dot dot3" data-idx="3" name="bottle"
-            style="left: 200px; top: 436px; visibility: visible; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-        </div>
-        <div class="dot dot4" data-idx="4" name="mouse"
-            style="left: 544px; top: 359px; visibility: visible; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-        </div>
-        <div class="dot dot5" data-idx="5" name="cup"
-            style="left: 295px; top: 502px; visibility: visible; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-        </div>
-        <div class="dot dot6" data-idx="6" name="keyboard"
-            style="left: 464px; top: 422px; visibility: visible; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-        </div>
-        <div class="dot dot7" data-idx="7" name="person"
-            style="left: 600px; top: 403px; visibility: visible; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-        </div>
-        <div class="card card-1" center-target="dot1" object-name="tv"
-            style="width: 150px; height: 150px; transform: translate(0px, 0px);z-index: 4;">
-            <div
-                class="main swiper-1 swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                <ul class="inner swiper-wrapper" id="swiper-wrapper-e869d10c3cf6cd4b9" aria-live="polite">
-                    <li class="swiper-slide swiper-slide-active" style="width: 150px;" role="group" aria-label="1 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M576 0H64C28.65 0 0 28.65 0 64v320c0 35.35 28.65 64 64 64h512c35.35 0 64-28.65 64-64V64C640 28.65 611.3 0 576 0zM608 384c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V64c0-17.64 14.36-32 32-32h512c17.64 0 32 14.36 32 32V384zM528 480h-416C103.2 480 96 487.2 96 496C96 504.8 103.2 512 112 512h416c8.838 0 16-7.164 16-16C544 487.2 536.8 480 528 480z">
-                                </path>
-                            </svg></div>
-                    </li>
-                    <li class="swiper-slide swiper-slide-next" style="width: 150px;" role="group" aria-label="2 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M576 0H64C28.65 0 0 28.65 0 64v320c0 35.35 28.65 64 64 64h512c35.35 0 64-28.65 64-64V64C640 28.65 611.3 0 576 0zM608 384c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V64c0-17.64 14.36-32 32-32h512c17.64 0 32 14.36 32 32V384zM528 480h-416C103.2 480 96 487.2 96 496C96 504.8 103.2 512 112 512h416c8.838 0 16-7.164 16-16C544 487.2 536.8 480 528 480z">
-                                </path>
-                            </svg></div>
-                    </li>
-                    <li class="swiper-slide" style="width: 150px;" role="group" aria-label="3 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv-music icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv-music" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M402.3 101.8c-8.625-6-19.62-7.438-29.5-3.688l-96 36C264.3 138.7 256 150.8 256 164v73.72C248.7 234.8 240.6 232.9 232 232.9c-30.88 0-56 21.53-56 48s25.12 48 56 48s56-21.53 56-48V164l96-35.97v77.72c-7.303-2.996-15.38-4.814-24-4.814c-30.88 0-56 21.53-56 48s25.12 48 56 48s56-21.53 56-48V128C416 117.5 410.8 107.7 402.3 101.8zM232 296.9c-12.78 0-24-7.469-24-16s11.22-16 24-16s24 7.469 24 16S244.8 296.9 232 296.9zM360 264.9c-12.78 0-24-7.469-24-16s11.22-16 24-16s24 7.469 24 16S372.8 264.9 360 264.9zM528 480h-416C103.2 480 96 487.2 96 496C96 504.8 103.2 512 112 512h416c8.838 0 16-7.164 16-16C544 487.2 536.8 480 528 480zM576 0H64C28.65 0 0 28.65 0 64v320c0 35.35 28.65 64 64 64h512c35.35 0 64-28.65 64-64V64C640 28.65 611.3 0 576 0zM608 384c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V64c0-17.64 14.36-32 32-32h512c17.64 0 32 14.36 32 32V384z">
-                                </path>
-                            </svg></div>
-                    </li>
-                    <li class="swiper-slide" style="width: 150px;" role="group" aria-label="4 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv-retro icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv-retro" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M448 96L299.2 96l79.17-67.86c6.719-5.75 7.5-15.84 1.75-22.55c-5.781-6.734-15.88-7.469-22.56-1.734L256 90.92L154.4 3.859c-6.656-5.734-16.75-5-22.56 1.734C126.1 12.3 126.9 22.39 133.6 28.14L212.8 96L64 96c-35.35 0-64 28.65-64 63.1v287.1C0 483.3 28.65 512 64 512h384c35.35 0 64-28.65 64-63.1V160C512 124.7 483.3 96 448 96zM480 448c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V160c0-17.64 14.36-32 32-32h384c17.64 0 32 14.36 32 32V448zM320.1 160L128.1 160c-35.35 0-64 28.65-64 64v160c0 35.35 28.65 64 64 64l191.1 .0002c35.35 0 64.01-28.65 64.01-64V224C384.1 188.7 355.4 160 320.1 160zM352 384c0 17.64-14.36 32-32 32H128c-17.64 0-32-14.36-32-32V224c0-17.64 14.36-32 32-32h192c17.64 0 32 14.36 32 32V384zM432 184c-13.25 0-24 10.74-24 24c0 13.25 10.75 24 24 24c13.26 0 24-10.75 24-24C456 194.7 445.3 184 432 184zM432 248c-13.25 0-24 10.74-24 24c0 13.25 10.75 24 24 24c13.26 0 24-10.75 24-24C456 258.7 445.3 248 432 248z">
-                                </path>
-                            </svg></div>
-                    </li>
-                </ul><button class="btn-direct swiper-button-prev btn-prev swiper-button-disabled" disabled=""
-                    tabindex="-1" aria-label="Previous slide" aria-controls="swiper-wrapper-e869d10c3cf6cd4b9"
-                    aria-disabled="true">
-                    <div class="svg-box"><svg class="svg-inline--fa fa-chevron-left" aria-hidden="true"
-                            focusable="false" data-prefix="far" data-icon="chevron-left" role="img"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg="">
-                            <path fill="currentColor"
-                                d="M206.7 464.6l-183.1-191.1C18.22 267.1 16 261.1 16 256s2.219-11.97 6.688-16.59l183.1-191.1c9.152-9.594 24.34-9.906 33.9-.7187c9.625 9.125 9.938 24.37 .7187 33.91L73.24 256l168 175.4c9.219 9.5 8.906 24.78-.7187 33.91C231 474.5 215.8 474.2 206.7 464.6z">
-                            </path>
-                        </svg></div>
-                </button><button class="btn-direct swiper-button-next btn-next" tabindex="0" aria-label="Next slide"
-                    aria-controls="swiper-wrapper-e869d10c3cf6cd4b9" aria-disabled="false">
-                    <div class="svg-box"><svg class="svg-inline--fa fa-chevron-right" aria-hidden="true"
-                            focusable="false" data-prefix="far" data-icon="chevron-right" role="img"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg="">
-                            <path fill="currentColor"
-                                d="M113.3 47.41l183.1 191.1c4.469 4.625 6.688 10.62 6.688 16.59s-2.219 11.97-6.688 16.59l-183.1 191.1c-9.152 9.594-24.34 9.906-33.9 .7187c-9.625-9.125-9.938-24.38-.7187-33.91l168-175.4L78.71 80.6c-9.219-9.5-8.906-24.78 .7187-33.91C88.99 37.5 104.2 37.82 113.3 47.41z">
-                            </path>
-                        </svg></div>
-                </button>
-                <div class="swiper-pagination swiper-pagination-fraction swiper-pagination-horizontal"><span
-                        class="swiper-pagination-current">1</span> / <span class="swiper-pagination-total">4</span>
-                </div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-            </div>
-            <div class="corner" style="position: absolute; left: 2px; top: 2px;"></div>
-        </div>
-        <div class="card card-1" center-target="dot2" object-name="tv"
-            style="width: 150px; height: 150px; transform: translate(0px, 0px);">
-            <div
-                class="main swiper-2 swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                <ul class="inner swiper-wrapper" id="swiper-wrapper-c615483a9aca2adf" aria-live="polite">
-                    <li class="swiper-slide swiper-slide-active" style="width: 150px;" role="group" aria-label="1 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M576 0H64C28.65 0 0 28.65 0 64v320c0 35.35 28.65 64 64 64h512c35.35 0 64-28.65 64-64V64C640 28.65 611.3 0 576 0zM608 384c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V64c0-17.64 14.36-32 32-32h512c17.64 0 32 14.36 32 32V384zM528 480h-416C103.2 480 96 487.2 96 496C96 504.8 103.2 512 112 512h416c8.838 0 16-7.164 16-16C544 487.2 536.8 480 528 480z">
-                                </path>
-                            </svg></div>
-                    </li>
-                    <li class="swiper-slide swiper-slide-next" style="width: 150px;" role="group" aria-label="2 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M576 0H64C28.65 0 0 28.65 0 64v320c0 35.35 28.65 64 64 64h512c35.35 0 64-28.65 64-64V64C640 28.65 611.3 0 576 0zM608 384c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V64c0-17.64 14.36-32 32-32h512c17.64 0 32 14.36 32 32V384zM528 480h-416C103.2 480 96 487.2 96 496C96 504.8 103.2 512 112 512h416c8.838 0 16-7.164 16-16C544 487.2 536.8 480 528 480z">
-                                </path>
-                            </svg></div>
-                    </li>
-                    <li class="swiper-slide" style="width: 150px;" role="group" aria-label="3 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv-music icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv-music" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M402.3 101.8c-8.625-6-19.62-7.438-29.5-3.688l-96 36C264.3 138.7 256 150.8 256 164v73.72C248.7 234.8 240.6 232.9 232 232.9c-30.88 0-56 21.53-56 48s25.12 48 56 48s56-21.53 56-48V164l96-35.97v77.72c-7.303-2.996-15.38-4.814-24-4.814c-30.88 0-56 21.53-56 48s25.12 48 56 48s56-21.53 56-48V128C416 117.5 410.8 107.7 402.3 101.8zM232 296.9c-12.78 0-24-7.469-24-16s11.22-16 24-16s24 7.469 24 16S244.8 296.9 232 296.9zM360 264.9c-12.78 0-24-7.469-24-16s11.22-16 24-16s24 7.469 24 16S372.8 264.9 360 264.9zM528 480h-416C103.2 480 96 487.2 96 496C96 504.8 103.2 512 112 512h416c8.838 0 16-7.164 16-16C544 487.2 536.8 480 528 480zM576 0H64C28.65 0 0 28.65 0 64v320c0 35.35 28.65 64 64 64h512c35.35 0 64-28.65 64-64V64C640 28.65 611.3 0 576 0zM608 384c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V64c0-17.64 14.36-32 32-32h512c17.64 0 32 14.36 32 32V384z">
-                                </path>
-                            </svg></div>
-                    </li>
-                    <li class="swiper-slide" style="width: 150px;" role="group" aria-label="4 / 4">
-                        <div class="svg-box"><svg class="svg-inline--fa fa-tv-retro icon m-icon" aria-hidden="true"
-                                focusable="false" data-prefix="fal" data-icon="tv-retro" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M448 96L299.2 96l79.17-67.86c6.719-5.75 7.5-15.84 1.75-22.55c-5.781-6.734-15.88-7.469-22.56-1.734L256 90.92L154.4 3.859c-6.656-5.734-16.75-5-22.56 1.734C126.1 12.3 126.9 22.39 133.6 28.14L212.8 96L64 96c-35.35 0-64 28.65-64 63.1v287.1C0 483.3 28.65 512 64 512h384c35.35 0 64-28.65 64-63.1V160C512 124.7 483.3 96 448 96zM480 448c0 17.64-14.36 32-32 32H64c-17.64 0-32-14.36-32-32V160c0-17.64 14.36-32 32-32h384c17.64 0 32 14.36 32 32V448zM320.1 160L128.1 160c-35.35 0-64 28.65-64 64v160c0 35.35 28.65 64 64 64l191.1 .0002c35.35 0 64.01-28.65 64.01-64V224C384.1 188.7 355.4 160 320.1 160zM352 384c0 17.64-14.36 32-32 32H128c-17.64 0-32-14.36-32-32V224c0-17.64 14.36-32 32-32h192c17.64 0 32 14.36 32 32V384zM432 184c-13.25 0-24 10.74-24 24c0 13.25 10.75 24 24 24c13.26 0 24-10.75 24-24C456 194.7 445.3 184 432 184zM432 248c-13.25 0-24 10.74-24 24c0 13.25 10.75 24 24 24c13.26 0 24-10.75 24-24C456 258.7 445.3 248 432 248z">
-                                </path>
-                            </svg></div>
-                    </li>
-                </ul><button class="btn-direct swiper-button-prev btn-prev swiper-button-disabled" disabled=""
-                    tabindex="-1" aria-label="Previous slide" aria-controls="swiper-wrapper-c615483a9aca2adf"
-                    aria-disabled="true">
-                    <div class="svg-box"><svg class="svg-inline--fa fa-chevron-left" aria-hidden="true"
-                            focusable="false" data-prefix="far" data-icon="chevron-left" role="img"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg="">
-                            <path fill="currentColor"
-                                d="M206.7 464.6l-183.1-191.1C18.22 267.1 16 261.1 16 256s2.219-11.97 6.688-16.59l183.1-191.1c9.152-9.594 24.34-9.906 33.9-.7187c9.625 9.125 9.938 24.37 .7187 33.91L73.24 256l168 175.4c9.219 9.5 8.906 24.78-.7187 33.91C231 474.5 215.8 474.2 206.7 464.6z">
-                            </path>
-                        </svg></div>
-                </button><button class="btn-direct swiper-button-next btn-next" tabindex="0" aria-label="Next slide"
-                    aria-controls="swiper-wrapper-c615483a9aca2adf" aria-disabled="false">
-                    <div class="svg-box"><svg class="svg-inline--fa fa-chevron-right" aria-hidden="true"
-                            focusable="false" data-prefix="far" data-icon="chevron-right" role="img"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg="">
-                            <path fill="currentColor"
-                                d="M113.3 47.41l183.1 191.1c4.469 4.625 6.688 10.62 6.688 16.59s-2.219 11.97-6.688 16.59l-183.1 191.1c-9.152 9.594-24.34 9.906-33.9 .7187c-9.625-9.125-9.938-24.38-.7187-33.91l168-175.4L78.71 80.6c-9.219-9.5-8.906-24.78 .7187-33.91C88.99 37.5 104.2 37.82 113.3 47.41z">
-                            </path>
-                        </svg></div>
-                </button>
-                <div class="swiper-pagination swiper-pagination-fraction swiper-pagination-horizontal"><span
-                        class="swiper-pagination-current">1</span> / <span class="swiper-pagination-total">4</span>
-                </div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-            </div>
-            <div class="corner" style="position: absolute; left: 2px; top: 2px;"></div>
-        </div>
+        
     </div>
 
     <div class="notice-popup">
@@ -393,11 +203,7 @@
             <button type="button" id="btn-yes">네</button>
             <button type="button" id="btn-no">아니오</button>
         </div>
-        <div class="loading-bar">
-            <div class="inner">
-                <div class="bar"></div>
-            </div>
-        </div>
+        <div class="loading-bar"><div class="inner"><div class="bar"></div></div></div>
     </div>
 
     <!-- script -->
@@ -406,5 +212,4 @@
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script src="./js/script.js"></script>
 </body>
-
 </html>

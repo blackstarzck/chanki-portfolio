@@ -739,6 +739,7 @@ class Dot {
         this.name = name;
         this.idx = idx;
 
+
         // console.log(`ratio: ${ratio}\nwidth: ${width} | height: ${height}\nx: ${x} | y: ${y}\ncenterX: ${(width / 2) + x} | centerY: ${(height / 2) + y}\nnew centerX: ${this.x} | new centerY: ${this.y}`)
     }
 
@@ -761,12 +762,15 @@ function createDot(obj){
     const width = document.querySelector(obj.target + " #selected-img").width;
     const offsetLeft = (obj.target === "#container") ? cont_img.offsetLeft : 0;
     const offsetTop = (obj.target === "#container") ? cont_img.offsetTop : 0;
+    const dotsArray = [];
     let ratio;
 
     // if(document.querySelectorAll(".container .dot").length > 0 || document.querySelectorAll(".container .card").length > 0){
     //     document.querySelectorAll(".container .dot").forEach((dot, i) => { dot.remove() });
     //     document.querySelectorAll(".container .card").forEach((card, i) => { card.remove() });
     // }
+
+    console.log(obj.result)
 
     obj.result.forEach(function(item, idx){
         ratio = Number((width / item.img_width).toFixed(2));
@@ -780,7 +784,33 @@ function createDot(obj){
             ratio
         );
         dot.create(obj.target);
+        dotsArray.push(dot);
     });
+
+    console.log(dotsArray);
+    
+    window.onresize = () => {
+        const new_width = document.querySelector(obj.target + " #selected-img").width;
+        const resizeState = (width / new_width) !== 1 ? true : false;
+        const ratio = (resizeState === true) ? Number((new_width / width).toFixed(2)) : 0;
+        const dots = document.querySelectorAll(obj.target + " .dot");
+        const cont_img = document.querySelector("#container #selected-img");
+        const offsetLeft = (obj.target === "#container") ? cont_img.offsetLeft : 0;
+        const offsetTop = (obj.target === "#container") ? cont_img.offsetTop : 0;
+        let x, y;
+        
+        if(resizeState === true){
+            dots.forEach((dot, i) => {
+                x = (dotsArray[i].x * ratio) + offsetLeft;
+                y = (dotsArray[i].y * ratio) + offsetTop;
+    
+                dot.style.left = `${x}px`;
+                dot.style.top = `${y}px`;
+                console.log("ratio: ", ratio)
+                console.log(x, y)
+            });
+        }
+    }
 
     const dots = document.querySelectorAll(obj.target + " .dot");
 
@@ -913,8 +943,7 @@ function handleMainAction(obj){
                 createDot({ 
                     target: "#container", 
                     result: detected,
-                    // func: getPos
-                    func: bindEventsD
+                    func: getPos
                 });
             }
         });
@@ -1631,7 +1660,11 @@ function getPos(){
         ease: "back.in",
         onStart: function(){ handleNotice({ stage: "finished" }) },
         onUpdate: function(){ animation_state = "processing" },
-        onComplete: function(){ animation_state = "waiting"; bindEventsB(); bindEventsD(); }
+        onComplete: function(){ 
+            animation_state = "waiting"; 
+            bindEventsB(); 
+            bindEventsD(); 
+        }
     });
 
     cards.forEach((item, idx) => {
