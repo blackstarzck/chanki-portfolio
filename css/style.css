@@ -55,7 +55,7 @@
 }
 /* loading */
 html.fontawesome-i2svg-complete .loading-container { opacity: 0;visibility: hidden; }
-.loading-container { position: absolute;left: 0;top: 0;z-index: 9999;min-height: 100vh;display: flex;justify-content: center;align-items: center;width: 100%;height: 100%;background-color: #2196f3;transition: .2s; }
+.loading-container { position: absolute;left: 0;top: 0;z-index: 9999;min-height: 100vh;display: flex;justify-content: center;align-items: center;width: 100%;height: 100%;background-color: #2196f3;transition: .4s; }
 .loader { position: relative;display: flex;}
 .loader span { width: 50px;height: 300px;margin: 0 20px;background-color: #2196f3;animation: animate 1.4s linear infinite; }
 .loader span:nth-child(1) { animation-delay: 0s; }
