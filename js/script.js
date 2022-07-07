@@ -10,7 +10,7 @@ document.body.addEventListener("click", (e) => {
 });
 
 window.onload = () => {
-    loadingAnimation({ sec: 2000 });
+    // loadingAnimation({ sec: 2000 });
     function loadingAnimation(obj){
         const html = document.getElementsByTagName("html")[0];
         const loading = document.querySelector(".loading-container");
