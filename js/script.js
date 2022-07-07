@@ -6,25 +6,21 @@ if(device !== "PC") document.body.classList.add("mobile");
 
 
 window.onload = () => {
-    let sec = 2000;
 
-    loadingAnimation();
-    function loadingAnimation(){
+    loadingAnimation({ sec: 2000 });
+    function loadingAnimation(obj){
         const html = document.getElementsByTagName("html")[0];
         const loading = document.querySelector(".loading-container");
-
         let timer = setTimeout(() => {
             if(html.classList.contains("fontawesome-i2svg-complete")){
-                console.log(1)
                 loading.classList.add("hide");
                 setTimeout(() => { loading.classList.add("dspl-n"); }, 600);
                 clearTimeout(timer);
             }else{
-                console.log(2);
                 sec = 1000;
                 loadingAnimation();
             }
-        }, sec);
+        }, obj.sec);
     }
 };
 
