@@ -1485,7 +1485,7 @@ function bindEventsC(){
 function bindEventsD(){
     const dots = document.querySelectorAll("#container .dot");
     const cards = document.querySelectorAll(".card");
-    if(device !== "PC") return false;
+    if(device === "PC") return false;
 
     dots.forEach((dot) => {
         dot.addEventListener("click", (e) => {
@@ -2177,22 +2177,23 @@ function detectSizes(){
 
     if(matchMedia("screen and (max-width: 767px)").matches){ 
         devi_size = "MOBILE";
-    }else if(matchMedia("screen and (max-width: 1023px)").matches){
-        devi_size = "TABLET";
-    }else if(matchMedia("screen and (min-width: 1024px)").matches){
-        devi_size = "PC";
     }else{
         devi_size = "undefined";
     }
     console.log(devi_size)
 
-    if(devi_size === "MOBILE" || devi_size === "TABLET"){
+    if(devi_size === "MOBILE"){
         menu.forEach((item) => { wrapper.appendChild(item) });
         wrapper.appendChild(indicator);
     }else{
-        parentElem.appendChild(rt_wrap);
-        parentElem.appendChild(elem);
-        parentElem.appendChild(lt_wrap);
+        menu.forEach((item, i) => {
+            if(i < 3){
+                lt_wrap.appendChild(item);
+                lt_wrap.appendChild(indicator);
+            }else{
+                rt_wrap.appendChild(item);
+            }
+        });
     }
 
     const btns = document.querySelectorAll(".pallette .menu-item.active");
