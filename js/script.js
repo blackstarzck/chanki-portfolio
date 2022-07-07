@@ -4,7 +4,7 @@ verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
 const device = detectDevice();
 let devi_size = "undefined";
 if(device !== "PC") document.body.classList.add("mobile");
-
+alert(new Date())
 document.body.addEventListener("click", (e) => {
     alert(e.target.className)
 });
