@@ -1,12 +1,15 @@
 
 verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
+
 const device = detectDevice();
 let devi_size = "undefined";
 if(device !== "PC") document.body.classList.add("mobile");
 
+document.body.addEventListener("click", (e) => {
+    alert(e.target.className)
+});
 
 window.onload = () => {
-
     loadingAnimation({ sec: 2000 });
     function loadingAnimation(obj){
         const html = document.getElementsByTagName("html")[0];
