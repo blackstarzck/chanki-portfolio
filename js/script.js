@@ -14,7 +14,10 @@ window.onload = () => {
         let timer = setTimeout(() => {
             if(html.classList.contains("fontawesome-i2svg-complete")){
                 loading.classList.add("hide");
-                setTimeout(() => { loading.classList.add("dspl-n"); }, 600);
+                setTimeout(() => { 
+                    loading.classList.add("dspl-n");
+                    loading.classList.remove("hide");
+                }, 600);
                 clearTimeout(timer);
             }else{
                 sec = 1000;
