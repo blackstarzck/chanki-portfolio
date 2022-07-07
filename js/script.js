@@ -4,6 +4,10 @@ const device = detectDevice();
 let devi_size = "undefined";
 if(device !== "PC") document.body.classList.add("mobile");
 
+window.onload = () => {
+    alert("load complete~!");
+}
+
 // window.onresize = () => { detectSizes() };
 if(matchMedia("screen and (max-width: 767px)").matches){ 
     devi_size = "MOBILE";
