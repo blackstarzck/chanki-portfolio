@@ -258,7 +258,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 .container .swiper-pagination { font-size: 1rem; }
 
 /* notice popup */
-.notice-popup { visibility: hidden;position: fixed;left: 0;right: 0; bottom: 80px;margin: auto;width: 60vw;text-align: center;background-color: var(--white-1);border-radius: 5px; box-shadow: 0 5px 5px 4px var(--black-blur-1);padding: 15px 0;z-index: 99; }
+.notice-popup { visibility: hidden;position: fixed;left: 0;right: 0; bottom: 80px;margin: auto;max-width: 370px;text-align: center;background-color: var(--white-1);border-radius: 5px; box-shadow: 0 5px 5px 4px var(--black-blur-1);padding: 15px 0;z-index: 99; }
 .notice-popup.show button { visibility: visible;color: var(--black-1); }
 .notice-popup span.text { display: block;font-size: 1.125rem;/*line-height: 50px;*/color: var(--black-1);padding: 0 15px;margin-bottom: 8px; }
 .notice-popup .btn-wrap { display: none; }
@@ -333,6 +333,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 /* mobile settings */
 body.mobile .container .card { visibility: hidden; }
 body.mobile .container .card.selected { visibility: visible; }
+body.mobile .notice-popup { width: 65vw; }
 
 @media (max-width: 767px) {
     html { font-size: 12px; }
