@@ -700,9 +700,7 @@ function handleHoverAnimation(obj){
                     stagger: 0.2,
                     ease: "elastic", 
                     force3D: true,
-                    onComplete: function(){
-                        gsap.set(item, { scale: 1, opacity: 1 });
-                    }
+                    onComplete: () => { gsap.set(item, { scale: 1, opacity: 1 }) }
                 });
             }
         }else{
@@ -857,7 +855,8 @@ function createDot(obj){
             onUpdate: function() { animation_state = "processing" },
             onComplete: function(){
                 animation_state = "waiting";
-
+                document.querySelectorAll(obj.target +" .dot").forEach((dot) => { dot.style.transform = "" });
+                
                 if(obj.target !== "#container"){
                     if( dev_size !== "MOBILE"){
                         setTimeout(() => { createList(obj) }, 850);

@@ -12,6 +12,7 @@ label,img,input,select,textarea,button,a {vertical-align:middle;}
 u,ins,a{text-decoration:none;}
 button { cursor: pointer;background-color: inherit; }
 img {vertical-align: top;}
+input, select, textarea, button, a, label {-webkit-tap-highlight-color:rgba(0,0,0,0);}
 
 /* Normalize */
 body { font-family: 'Noto Sans KR', sans-serif; }
