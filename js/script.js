@@ -1729,10 +1729,10 @@ class Card {
         const { innerHeight } = window; 
         const PI2 = Math.PI * 2;
         const angle = PI2 / this.points;
-        // const width = 150;
-        // const height = 150;
-        const width  = Math.round((innerHeight / 100) * 20);
-        const height = Math.round((innerHeight / 100) * 20);
+        const width = 150;
+        const height = 150;
+        // const width  = Math.round((innerHeight / 100) * 20);
+        // const height = Math.round((innerHeight / 100) * 20);
         let centerX, centerY, left, top;
         let elem = "";
         let icon;
