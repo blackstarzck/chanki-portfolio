@@ -241,10 +241,10 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 .container.vrt { /*width: 440px;*/width: 70vmin; }
 .container.hrz { /*width: 720px;*/width: 90vmin; }
 .container #selected-img { width: 100%;border-radius: 5px; }
-.container .card { opacity: 0;border-radius: 5px;background-color: var(--black-blur-2);outline: 1px solid var(--blue-1);position: absolute;font-size: 30px;color: var(--white-1);z-index: 17;backdrop-filter: blur(3px); }
+.container .card { opacity: 0;width: 20vmin !important;height: 20vmin !important; border-radius: 5px;background-color: var(--black-blur-2);outline: 1px solid var(--blue-1);position: absolute;font-size: 30px;color: var(--white-1);z-index: 17;backdrop-filter: blur(3px); }
 .container .card .btn-direct.active:active i {transition: .2s;color: var(--blue-1); }
 .container .card svg { transition: .3s;color: var(--white-1); }
-.container .card .main .swiper-slide .svg-box { width: 48px;height: 48px;cursor: pointer;margin: 35px auto;   }
+.container .card .main .swiper-slide .svg-box { width: 30%;height: 30%;cursor: pointer;margin: 35px auto;   }
 .container .card .main { width: 100%;height: 100%;overflow: hidden; }
 /* .container .card .main .inner li { display: flex;justify-content: center;align-items: center; } */
 .container .card .btn-direct { border: none;width: 40px;height: 40px;background-color: transparent;cursor: pointer; }
@@ -255,7 +255,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 .container .card .btn-direct.inactive i { color: #e5e5e5; }
 .container .card .btn-prev { position: absolute;left: 0;text-indent: -5px }
 .container .card .btn-next { position: absolute;right:0;text-indent: 5px }
-.container .swiper-pagination { font-size: 18px; }
+.container .swiper-pagination { font-size: 1rem; }
 
 /* notice popup */
 .notice-popup { visibility: hidden;position: fixed;left: 0;right: 0; bottom: 80px;margin: auto;width: 60vw;text-align: center;background-color: var(--white-1);border-radius: 5px; box-shadow: 0 5px 5px 4px var(--black-blur-1);padding: 15px 0;z-index: 99; }
@@ -304,27 +304,28 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 .pallette .menu-cont-wrapper { width: 380px;height: 100%;position: relative;display: flex;justify-content: center;align-items: center; }
 .user-ctrl .lt-btn-wrap,
 .user-ctrl .rt-btn-wrap { width: 170px; }
-.user-ctrl .lt-btn-wrap { justify-content: space-around; }
+.user-ctrl .lt-btn-wrap { position: relative;justify-content: space-around; }
 .user-ctrl .rt-btn-wrap { justify-content: center; }
 .user-ctrl .rt-btn-wrap .menu-item { margin: 0 10px; }
-.pallette .lt-btn-wrap .menu-item.active path { color: #ffffff }
-.user-ctrl .rt-btn-wrap .menu-item path { color: var(--grey-3); }
-.user-ctrl .rt-btn-wrap .menu-item:first-child.active path { color: var(--yellow-2);  }
-.user-ctrl .rt-btn-wrap .menu-item:last-child.active path { color: var(--blue-1);  }
+.pallette .lt-btn-wrap .menu-item.active svg { color: #ffffff }
+.user-ctrl .rt-btn-wrap .menu-item svg { color: var(--grey-3); }
+.user-ctrl .rt-btn-wrap .menu-item:first-child.active svg { color: var(--yellow-2);  }
+.user-ctrl .rt-btn-wrap .menu-item:last-child.active svg { color: var(--blue-1);  }
 .pallette .menu-cont { visibility: hidden;width: 100%; }
 .pallette .swiper-list { position: absolute;left: 20px;top: 0;height: 100%;overflow: hidden; }
 .pallette .swiper-list.show li.active svg { color: var(--blue-1); }
 
 .pallette .user-ctrl { display: flex;justify-content: center;align-items: center; }
-.pallette .user-ctrl .btn-wrap { position: relative;display: flex;  }
+.pallette .user-ctrl .btn-wrap { display: flex; }
 .pallette .menu-item { z-index: 1; }
+.user-ctrl .btn-wrapper { display: none; } 
 
-.indicator { position: absolute;left: 0;width: 50px;height: 50px;border-radius: 50%; transition: .2s;background-color: var(--blue-1); }
+.indicator { position: absolute;left: 0;top: 0;bottom: 0;margin: auto;z-index: -1;width: 50px;height: 50px;border-radius: 50%; transition: .2s;background-color: var(--blue-1); }
 .IroSlider { width: 100% !important;height: 10px !important; }
 .pallette .menu-cont.color-pick { padding-left: 20px;height: 100%;display: flex;justify-content: center;align-items: center; }
 .pallette .menu-cont.color-pick .IroColorPicker { width: 100%; }
 .pallette .menu-cont.color-pick svg { position: absolute;top: -38px;left: 0;bottom: 0;margin: auto; }
-.icons-container { width: 100%;height: 100%;border: 2px solid var(--black-1);border-radius: 40px;position: absolute;left: 0;top: 0;margin-left: 10px;overflow: hidden; }
+.icons-container { width: 100%;height: 100%;outline: 2px solid var(--black-1);border-radius: 40px;position: absolute;left: 0;top: 0;margin-left: 10px;overflow: hidden; }
 .icons-container li { width: 40px;height: 40px;display: flex;justify-content: center;align-items: center;margin-right: 30px;cursor: pointer; }
 .icons-container li svg { width: 60%;height: 60%; }
 .icons-container .list-wrap { align-items: center; }
@@ -332,8 +333,6 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 /* mobile settings */
 body.mobile .container .card { visibility: hidden; }
 body.mobile .container .card.selected { visibility: visible; }
-body.mobile .pallette .user-ctrl .btn-wrap { display: inline-block; }
-body.mobile .pallette .user-ctrl .menu-item { display: inline-block; }
 
 @media (max-width: 767px) {
     html { font-size: 12px; }
@@ -356,4 +355,18 @@ body.mobile .pallette .user-ctrl .menu-item { display: inline-block; }
 
     body.mobile #container .dot.selected::after { background-color: var(--blue-1); }
     body.mobile #container .dot.selected::before { background-color: var(--blue-1); }
+
+    .pallette .user-ctrl { display: block;width: 50vw;  }
+    .pallette .user-ctrl .btn-wrap { display: none; }
+    .user-ctrl .menu-item:nth-child(-n + 3) svg { color: var(--black-1) }
+    .user-ctrl .menu-item.active:nth-child(-n + 3) svg { color: #ffffff; }
+    .user-ctrl .menu-item:nth-child(n + 4) svg { color: var(--grey-3); }
+    .user-ctrl .menu-item.active:nth-child(4) svg { color: var(--yellow-2); }
+    .user-ctrl .menu-item.active:nth-child(5) svg { color: var(--blue-1) }
+    .user-ctrl .btn-wrapper { display: flex;justify-content: space-around;position: relative;margin-bottom: 20px; } 
+    .icons-container { margin-left: 0; }
+    .pallette .menu-cont-wrapper { width: 100%; }
+    .pallette .swiper-list { left: 0; }
+    .pallette .menu-cont.color-pick { padding-left: 0; }
+    .rotation-box .svg-codes { width: 50vmin;height: 50vmin; }
 }

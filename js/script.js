@@ -4,50 +4,17 @@ const device = detectDevice();
 let devi_size = "undefined";
 if(device !== "PC") document.body.classList.add("mobile");
 
-// detectSizes();
-
+// window.onresize = () => { detectSizes() };
 if(matchMedia("screen and (max-width: 767px)").matches){ 
     devi_size = "MOBILE";
-    if(!document.body.classList.contains("mobile")){
-        document.body.classList.add("mobile");
-        addResponsive();
-    }
 }else if(matchMedia("screen and (max-width: 1023px)").matches){
     devi_size = "TABLET";
-    if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
 }else if(matchMedia("screen and (min-width: 1024px)").matches){
     devi_size = "PC";
-    if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
 }else{
     devi_size = "undefined";
 }
-
-
-// window.onresize = () => { detectSizes() };
-
-// detectSizes();
-function detectSizes(){
-    if(matchMedia("screen and (max-width: 767px)").matches){ 
-        devi_size = "MOBILE";
-        if(!document.body.classList.contains("mobile")){
-            document.body.classList.add("mobile");
-            addResponsive();
-        }
-    }else if(matchMedia("screen and (max-width: 1023px)").matches){
-        devi_size = "TABLET";
-        if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
-    }else if(matchMedia("screen and (min-width: 1024px)").matches){
-        devi_size = "PC";
-        if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
-    }else{
-        devi_size = "undefined";
-    }
-    console.log(devi_size)
-    return devi_size;
-}
-
-
-
+console.log(devi_size)
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LEFT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 // 애니매이션 중 클릭 방지
@@ -845,7 +812,6 @@ function createDot(obj){
         const offsetTop = (obj.target === "#container") ? cont_img.offsetTop : 0;
         let x, y;
 
-        
         if(resizeState === true){
             dots.forEach((dot, i) => {
                 x = (dotsArray[i].x * ratio) + offsetLeft;
@@ -877,7 +843,7 @@ function createDot(obj){
                 document.querySelectorAll(obj.target +" .dot").forEach((dot) => { dot.style.transform = "" });
                 
                 if(obj.target !== "#container"){
-                    if( devi_size === "MOBILE") handleState({ stage: "finished" });
+                    if( device !== "PC") handleState({ stage: "finished" });
                     setTimeout(() => { createList(obj) }, 850);
                 }
 
@@ -910,10 +876,10 @@ function createList(obj){
     gsap.fromTo("#results-wrap li", { opacity: 0, y: -5 }, {
         opacity: 1, y: 0,
         duration: 0.8,
-        stagger: 0.3,
+        stagger: 0.2,
         ease: "back.in",
         onComplete: function(){
-            if( devi_size !== "MOBILE") handleState({ stage: "finished" })
+            if( device === "PC") handleState({ stage: "finished" })
         }
     });
 }
@@ -969,13 +935,9 @@ function handleMainAction(obj){
     if(state === "init"){
         container.classList.remove("dspl-n");
         container.classList.add("show");
-
-        if(devi_size === "MOBILE"){
-            canvas.classList.remove("active");
-        }else{
-            canvas.classList.add("active");
-        }
         container.style.height = img.height+"px";
+
+        canvas.classList.add("active");
         
         gsap.fromTo("#container", { opacity: 0, y: -10 }, {
             opacity: 1, y: 0,
@@ -1233,6 +1195,7 @@ function showAllUI(obj){
 
             beginSVGanimation({ delay: 500 });
             initPalletteSwiper({ state, show });
+            detectSizes();
             document.body.classList.remove("step2");
             document.body.classList.add("step3");
         }
@@ -1288,20 +1251,14 @@ function hideMainUIs(){
 function bindEventsA(){
     const btns_lt = document.querySelectorAll(".pallette .lt-btn-wrap li");
     const btns_rt = document.querySelectorAll(".pallette .rt-btn-wrap li");
-    const indicator_lt = document.querySelector(".lt-btn-wrap .indicator");
-    const indicator_rt = document.querySelector(".rt-btn-wrap .indicator");
-    const btns_menu = document.querySelectorAll(".pallette .menu-item button");
+    const indicator = document.querySelector(".indicator");
     const btn_copy = document.getElementById("btn-copy");
     const btn_dwn = document.getElementById("btn-dwn");
+    const btns = document.querySelectorAll(".pallette .menu-item.active");
     
     // EVENT
     btns_lt.forEach((btn) => {
-        let x = btn.offsetLeft;
-        if(btn.classList.contains("active")){
-            console.log(2, btn)
-            indicator_lt.style.transform = `transLateX(${x}px)`;
-        }
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", function(e){
             const swiper = document.querySelector(".icons-container");
             const color = document.querySelector(".menu-cont.color-pick");
             const svg = document.querySelector(".rotation-box li.show");
@@ -1309,6 +1266,7 @@ function bindEventsA(){
             const btn_code = btn.children[0].classList.contains("btn-show-code") ?  btn.children[0] : "";
             const btn_list = btn.children[0].classList.contains("btn-list") ?  btn.children[0] : "";
             const btn_color = btn.children[0].classList.contains("btn-color-pick") ?  btn.children[0] : "";
+            const x = this.offsetLeft;
             const callBackFunc = () => { code.classList.remove("show"); }
             const prc = animationProcessCheck();
             if(prc === true) return;
@@ -1316,7 +1274,7 @@ function bindEventsA(){
             btns_lt.forEach((btn) => { btn.classList.remove("active") });
     
             btn.classList.add("active");
-            indicator_lt.style.transform = `transLateX(${x}px)`;
+            indicator.style.transform = `transLateX(${x}px)`;
     
             if(btn_code && !code.classList.contains("show")){
                 code.children[0].innerText = svg.innerHTML; // svg코드 삽입
@@ -1527,7 +1485,7 @@ function bindEventsC(){
 function bindEventsD(){
     const dots = document.querySelectorAll("#container .dot");
     const cards = document.querySelectorAll(".card");
-    if(devi_size !== "MOBILE") return false;
+    if(device !== "PC") return false;
 
     dots.forEach((dot) => {
         dot.addEventListener("click", (e) => {
@@ -1768,53 +1726,16 @@ class Card {
     }
 
     createCard(){
+        const { innerHeight } = window; 
         const PI2 = Math.PI * 2;
         const angle = PI2 / this.points;
-        const width = 150;
-        const height = 150;
+        // const width = 150;
+        // const height = 150;
+        const width  = Math.round((innerHeight / 100) * 20);
+        const height = Math.round((innerHeight / 100) * 20);
         let centerX, centerY, left, top;
         let elem = "";
         let icon;
-
-        if(devi_size === "MOBILE"){
-            const card = document.createElement("div");
-            card.setAttribute("class", `card card-${this.numb}`);
-            card.setAttribute("center-target", `dot${this.numb}`);
-
-            card.style.width = `${width}px`;
-            card.style.height = `${height}px`;
-
-            elem = '<div class="main swiper-'+this.numb+'">';
-            elem +=     '<ul class="inner swiper-wrapper">';
-            for(let n = 0; n < this.icons.length; n++){
-                if(n < 10){
-                    icon = `fa-light ${this.icons[n]}`;
-                    elem += `<li class="swiper-slide"><div class="svg-box"><i class="${icon} icon m-icon"></i></div></li>`;
-                }
-            }
-            elem +=     '</ul>';
-            elem +=     '<button class="btn-direct swiper-button-prev btn-prev"><div class="svg-box"><i class="fa-regular fa-chevron-left"></i></div></button>';
-            elem +=     '<button class="btn-direct swiper-button-next btn-next"><div class="svg-box"><i class="fa-regular fa-chevron-right"></i></div></button>';
-            elem +=     '<div class="swiper-pagination"></div>';
-            elem += '</div>';
-
-            card.setAttribute("object-name", `${this.name}`);
-            this.container.appendChild(card);
-            card.innerHTML = elem;
-
-            const swiper = new Swiper(`.swiper-${this.numb}`, {
-                slidesPerView: 1,
-                pagination: {
-                    el: ".swiper-pagination",
-                    type: "fraction",
-                },
-                loop: false,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            });
-        }
 
         if(device === "PC"){
             for(let i = 0; i < this.points; i++){
@@ -2244,15 +2165,38 @@ function kakaoInit(){
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ RESPONSIVE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
-function addResponsive(){
+function detectSizes(){
     const elem = document.querySelector(".pallette .menu-cont-wrapper");
     const parentElem = document.querySelector(".user-ctrl");
     const step3 = document.body.classList.contains("step3") ? true : false;
+    const wrapper = document.querySelector(".user-ctrl .btn-wrapper");
+    const lt_wrap = document.querySelector(".user-ctrl .lt-btn-wrap");
+    const rt_wrap = document.querySelector(".user-ctrl .rt-btn-wrap");
+    const menu = document.querySelectorAll(".pallette .menu-item");
+    const indicator = document.querySelector(".indicator");
 
-    if(devi_size === "MOBILE" && step3){
-        parentElem.insertBefore(elem, parentElem.lastChild);
-
+    if(matchMedia("screen and (max-width: 767px)").matches){ 
+        devi_size = "MOBILE";
+    }else if(matchMedia("screen and (max-width: 1023px)").matches){
+        devi_size = "TABLET";
+    }else if(matchMedia("screen and (min-width: 1024px)").matches){
+        devi_size = "PC";
     }else{
-
+        devi_size = "undefined";
     }
+    console.log(devi_size)
+
+    if(devi_size === "MOBILE" || devi_size === "TABLET"){
+        menu.forEach((item) => { wrapper.appendChild(item) });
+        wrapper.appendChild(indicator);
+    }else{
+        parentElem.appendChild(rt_wrap);
+        parentElem.appendChild(elem);
+        parentElem.appendChild(lt_wrap);
+    }
+
+    const btns = document.querySelectorAll(".pallette .menu-item.active");
+    
+    console.log(2, btns[0].offsetLeft)
+    indicator.style.transform = `translateX(${btns[0].offsetLeft}px)`;
 }
