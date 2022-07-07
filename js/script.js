@@ -4,7 +4,29 @@ const device = detectDevice();
 let devi_size = "undefined";
 if(device !== "PC") document.body.classList.add("mobile");
 
-window.onload = () => { document.querySelector(".loading-container").classList.add("dspl-n") };
+
+window.onload = () => {
+    let sec = 2000;
+
+    loadingAnimation();
+    function loadingAnimation(){
+        const html = document.getElementsByTagName("html")[0];
+        const loading = document.querySelector(".loading-container");
+
+        let timer = setTimeout(() => {
+            if(html.classList.contains("fontawesome-i2svg-complete")){
+                console.log(1)
+                loading.classList.add("hide");
+                setTimeout(() => { loading.classList.add("dspl-n"); }, 600);
+                clearTimeout(timer);
+            }else{
+                console.log(2);
+                sec = 1000;
+                loadingAnimation();
+            }
+        }, sec);
+    }
+};
 
 // window.onresize = () => { detectSizes() };
 if(matchMedia("screen and (max-width: 767px)").matches){ 
