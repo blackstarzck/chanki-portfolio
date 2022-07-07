@@ -1442,10 +1442,6 @@ function bindEventsC(){
 
             active_wrap.forEach((icon, idx_b) => { if(icon.classList.contains("active")) curr_idx = idx_b; });
             
-            // console.log("prev-idx: ", prev_idx);
-            // console.log("curr-idx: ", curr_idx);
-            // console.log(curr_idx, "main_lists: ", main_lists)
-
             if(curr_idx > prev_idx){
                 // console.log("1. 왼쪽에서 오른쪽");
                 main_lists[curr_idx].classList.add("show");
@@ -1522,16 +1518,9 @@ function bindEventsD(){
                 dot.classList.remove("selected");
             }
 
-
-            const container = document.getElementById("container");
-            const { oiffsetLeft, offsetTop, clientWidth, clientHeight } = container;
-            const centerX = oiffsetLeft + (clientWidth  / 2);
-            const centerY = offsetTop + (clientHeight  / 2);
             const dotA = `dot${e.target.getAttribute("data-idx")}`;
             cards.forEach((card) => {
                 const dotB = card.getAttribute("center-target");
-                const x = centerX - card.clientWidth;
-                const y = centerX - card.clientHeight;
 
                 if(card.classList.contains("selected")){
                     gsap.to(card, {
@@ -1699,7 +1688,8 @@ function getPos(){
         loadingBar.style.width = `${proc}%`;
         if(proc === 100) handleNotice({ stage: "finished" });
     });
-    console.log(0)
+
+    bindEventsB();
     bindEventsD();
 
     if(device === "PC" && dev_size !== "MOBILE"){

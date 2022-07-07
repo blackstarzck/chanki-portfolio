@@ -82,7 +82,7 @@ svg + span { transition: all .1s ease-in }
 
 nav { position: absolute;top: 90px;left: 50%;transform: translate(-50%, 0); }
 nav .nav-wrapper { width: 816px; display: flex;justify-content: space-between; }
-nav .btn-nav-item { font-size: 20px;line-height: 1;font-weight: 700;color: var(--black-1);cursor: pointer }
+nav .btn-nav-item { font-size: 1.25rem;line-height: 1;font-weight: 700;color: var(--black-1);cursor: pointer }
 
 /* left, right controller */
 .lt-ctrller { width: 182px;height: 170px; text-align: center; position: absolute;left: 0;top: 0;bottom: 0;margin: auto; }
@@ -92,7 +92,7 @@ nav .btn-nav-item { font-size: 20px;line-height: 1;font-weight: 700;color: var(-
 .lt-ctrller .btn-down { left: 0;right: 0; top: inherit;bottom: 0;margin: auto; }
 .lt-ctrller .name-wrapper { width: 100%;height: 100%;overflow: hidden;display: flex;justify-content: center;align-items: center; }
 .lt-ctrller .name-wrapper .inner { height: 30px; }
-.lt-ctrller .m-item-name { display: inline-block;line-height: 30px;font-weight: 700;color: var(--black-1); }
+.lt-ctrller .m-item-name { display: inline-block;line-height: 30px;font-size: 1.375rem;font-weight: 700;color: var(--black-1); }
 .swiper-button-disabled svg { opacity: .3; }
 
 .rt-ctrller { position: absolute;right: 76px;top: 50%;transform: translate(0, -50%); }
@@ -103,9 +103,9 @@ nav .btn-nav-item { font-size: 20px;line-height: 1;font-weight: 700;color: var(-
 
 /* share */
 .ctrl-cont.share { position: absolute;right: 25px;top: 25px;transform: translate(0, 0); }
-.ctrl-cont.share span { font-size: 18px;margin-top: 5px;color: var(--black-1); }
+.ctrl-cont.share span { font-size: 1.125rem;font-weight: 600;margin-top: 5px;color: var(--black-1); }
 .ctrl-cont.share .btn-share { width: 50px;height: 50px;display: flex;flex-direction: column;align-items: center; }
-.ctrl-cont.goback span { font-size: 22px;font-weight: 500;color: var(--black-1); }
+.ctrl-cont.goback span { font-size: 1.375rem;font-weight: 600;color: var(--black-1); }
 .ctrl-cont.goback .ctrl-item,
 .ctrl-cont.share .ctrl-item { width: 100%; }
 
