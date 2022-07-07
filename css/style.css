@@ -181,7 +181,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg ) { wid
 }
 @keyframes width {
     0% { width: 27px; }
-    100% { width: 50%; }
+    100% { width: 60%; }
 }
 @keyframes text {
     0% { opacity: 0;transform: translateX(-3px); }
@@ -347,4 +347,5 @@ body.mobile .container .card.selected { visibility: visible; }
     .lt-cont .icon-wrap.default .svg-box + span { position: unset; }
     .lt-cont .icon-wrap.cstm { width: 80%; }
     .lt-cont label.btn-img-upload { width: 100%;margin: auto; }
+    .dot { width: 3vmin;height: 3vmin; }
 }

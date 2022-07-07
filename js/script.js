@@ -167,8 +167,6 @@ function handleState(data){
                 img_target = fade_in;
             }
 
-            // alert(`fade_out: ${fade_out}\nfade_in: ${fade_in}\nstagger_state: ${stagger_state}`);
-            
             fadeOut({ target: fade_out })
             .then(function(){
                 animation_state = "processing";
@@ -861,10 +859,11 @@ function createDot(obj){
                 animation_state = "waiting";
 
                 if(obj.target !== "#container"){
-                    setTimeout(() => {
-                        createList(obj);
-                    }, 850);
+                    if( dev_size !== "MOBILE"){
+                        setTimeout(() => { createList(obj) }, 850);
+                    }else handleState({ stage: "finished" });
                 }
+
                 if(obj.func !== undefined) obj.func();
             }
         });
@@ -885,7 +884,6 @@ function createList(obj){
     });
 
     const list = document.querySelectorAll("#results-wrap li");
-    // place.style.height = 0;
     if(list.length >= 4){
         place.style.height = "118px";
     }else{
@@ -893,14 +891,11 @@ function createList(obj){
     }
 
     gsap.fromTo("#results-wrap li", { opacity: 0, y: -5 }, {
-        opacity: 1,
-        y: 0,
+        opacity: 1, y: 0,
         duration: 0.8,
         stagger: 0.3,
         ease: "back.in",
-        onComplete: function(){
-            handleState({ stage: "finished" });
-        }
+        onComplete: function(){ handleState({ stage: "finished" }) }
     });
 }
 
