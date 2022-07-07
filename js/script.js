@@ -1510,10 +1510,18 @@ function bindEventsD(){
     const cards = document.querySelectorAll(".card");
     if(dev_size !== "MOBILE") return false;
 
-    dots.forEach((item) => {
-        item.addEventListener("click", (e) => {
+    dots.forEach((dot) => {
+        dot.addEventListener("click", (e) => {
             const prc = animationProcessCheck();
             if(prc === true) return;
+            
+            if(!dot.classList.contains("selected")){
+                dots.forEach((dot) => { dot.classList.remove("selected") });
+                dot.classList.add("selected");
+            }else{
+                dot.classList.remove("selected");
+            }
+
 
             const container = document.getElementById("container");
             const { oiffsetLeft, offsetTop, clientWidth, clientHeight } = container;
@@ -1565,6 +1573,7 @@ function bindEventsD(){
                 stagger: false,
                 func: () => { document.querySelector(".card.selected").classList.remove("selected") }
             });
+            dots.forEach((dot) => { dot.classList.remove("selected") });
         }
     });
 }

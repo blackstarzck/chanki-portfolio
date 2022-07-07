@@ -346,12 +346,12 @@ body.mobile .container .card.selected { visibility: visible; }
     .lt-cont .icon-wrap.wait .svg-box { margin-bottom: 0; }
     .lt-cont .icon-wrap.default .svg-box + span { position: unset; }
     .lt-cont .icon-wrap.cstm { width: 80%; }
-    .lt-cont label.btn-img-upload { width: 100%;margin: auto; }
+    .lt-cont label.btn-img-upload { width: 57%;margin: auto; }
     .dot { width: 3vmin;height: 3vmin; }
-    body.mobile #container .dot:active { background-color: #ffffff;transform: scale(1.1);transition: .2s; }
+    body.mobile #container .dot.selected { background-color: #ffffff;outline: 1px solid var(--blue-1);transition: .2s; }
     body.mobile #container .dot::after { content: "";display: block;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%); width: 50%;height: 10%;background-color: #ffffff;border-radius: 10px;transition: .2s }
     body.mobile #container .dot::before { content: "";display: block;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%); width: 10%;height: 50%;background-color: #ffffff;border-radius: 10px;transition: .2s }
 
-    body.mobile #container .dot:active::after { background-color: var(--blue-2); }
-    body.mobile #container .dot:active::before { background-color: var(--blue-2); }
+    body.mobile #container .dot.selected::after { background-color: var(--blue-1); }
+    body.mobile #container .dot.selected::before { background-color: var(--blue-1); }
 }
