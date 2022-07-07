@@ -1791,6 +1791,45 @@ class Card {
                 }
             }
         }
+        if(device !== "PC"){
+            const card = document.createElement("div");
+            card.setAttribute("class", `card card-${this.numb}`);
+            card.setAttribute("center-target", `dot${this.numb}`);
+
+            card.style.width = `${width}px`;
+            card.style.height = `${height}px`;
+
+            elem = '<div class="main swiper-'+this.numb+'">';
+            elem +=     '<ul class="inner swiper-wrapper">';
+            for(let n = 0; n < this.icons.length; n++){
+                if(n < 10){
+                    icon = `fa-light ${this.icons[n]}`;
+                    elem += `<li class="swiper-slide"><div class="svg-box"><i class="${icon} icon m-icon"></i></div></li>`;
+                }
+            }
+            elem +=     '</ul>';
+            elem +=     '<button class="btn-direct swiper-button-prev btn-prev"><div class="svg-box"><i class="fa-regular fa-chevron-left"></i></div></button>';
+            elem +=     '<button class="btn-direct swiper-button-next btn-next"><div class="svg-box"><i class="fa-regular fa-chevron-right"></i></div></button>';
+            elem +=     '<div class="swiper-pagination"></div>';
+            elem += '</div>';
+
+            card.setAttribute("object-name", `${this.name}`);
+            this.container.appendChild(card);
+            card.innerHTML = elem;
+
+            const swiper = new Swiper(`.swiper-${this.numb}`, {
+                slidesPerView: 1,
+                pagination: {
+                    el: ".swiper-pagination",
+                    type: "fraction",
+                },
+                loop: false,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+        }
     }
 
     checkCollision(card_target){
