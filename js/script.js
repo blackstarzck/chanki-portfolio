@@ -1,30 +1,51 @@
 
 verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
 const device = detectDevice();
-let dev_size;
+let devi_size = "undefined";
+if(device !== "PC") document.body.classList.add("mobile");
+
+// detectSizes();
 
 if(matchMedia("screen and (max-width: 767px)").matches){ 
-    dev_size = "MOBILE";
-    if(!document.body.classList.contains("mobile")) document.body.classList.add("mobile");
+    devi_size = "MOBILE";
+    if(!document.body.classList.contains("mobile")){
+        document.body.classList.add("mobile");
+        addResponsive();
+    }
 }else if(matchMedia("screen and (max-width: 1023px)").matches){
-    dev_size = "TABLET";
+    devi_size = "TABLET";
     if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
 }else if(matchMedia("screen and (min-width: 1024px)").matches){
-    dev_size = "PC";
+    devi_size = "PC";
     if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
+}else{
+    devi_size = "undefined";
 }
-window.onresize = () => {
+
+
+// window.onresize = () => { detectSizes() };
+
+// detectSizes();
+function detectSizes(){
     if(matchMedia("screen and (max-width: 767px)").matches){ 
-        dev_size = "MOBILE";
-        if(!document.body.classList.contains("mobile")) document.body.classList.add("mobile");
+        devi_size = "MOBILE";
+        if(!document.body.classList.contains("mobile")){
+            document.body.classList.add("mobile");
+            addResponsive();
+        }
     }else if(matchMedia("screen and (max-width: 1023px)").matches){
-        dev_size = "TABLET";
+        devi_size = "TABLET";
         if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
     }else if(matchMedia("screen and (min-width: 1024px)").matches){
-        dev_size = "PC";
+        devi_size = "PC";
         if(document.body.classList.contains("mobile")) document.body.classList.remove("mobile");
+    }else{
+        devi_size = "undefined";
     }
+    console.log(devi_size)
+    return devi_size;
 }
+
 
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LEFT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
@@ -814,8 +835,6 @@ function createDot(obj){
         dotsArray.push(dot);
     });
 
-    console.log(dotsArray);
-    
     window.onresize = () => {
         const new_width = document.querySelector(obj.target + " #selected-img").width;
         const resizeState = (width / new_width) !== 1 ? true : false;
@@ -825,6 +844,7 @@ function createDot(obj){
         const offsetLeft = (obj.target === "#container") ? cont_img.offsetLeft : 0;
         const offsetTop = (obj.target === "#container") ? cont_img.offsetTop : 0;
         let x, y;
+
         
         if(resizeState === true){
             dots.forEach((dot, i) => {
@@ -833,10 +853,9 @@ function createDot(obj){
     
                 dot.style.left = `${x}px`;
                 dot.style.top = `${y}px`;
-                console.log("ratio: ", ratio)
-                console.log(x, y)
             });
         }
+        detectSizes();
     }
 
     const dots = document.querySelectorAll(obj.target + " .dot");
@@ -858,9 +877,8 @@ function createDot(obj){
                 document.querySelectorAll(obj.target +" .dot").forEach((dot) => { dot.style.transform = "" });
                 
                 if(obj.target !== "#container"){
-                    if( dev_size !== "MOBILE"){
-                        setTimeout(() => { createList(obj) }, 850);
-                    }else handleState({ stage: "finished" });
+                    if( devi_size === "MOBILE") handleState({ stage: "finished" });
+                    setTimeout(() => { createList(obj) }, 850);
                 }
 
                 if(obj.func !== undefined) obj.func();
@@ -894,7 +912,9 @@ function createList(obj){
         duration: 0.8,
         stagger: 0.3,
         ease: "back.in",
-        onComplete: function(){ handleState({ stage: "finished" }) }
+        onComplete: function(){
+            if( devi_size !== "MOBILE") handleState({ stage: "finished" })
+        }
     });
 }
 
@@ -917,8 +937,8 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
         const id = e.target.getAttribute("id");
 
         if(id === "btn-yes"){
-            document.body.classList.remove("step1-img-detect");
-            document.body.classList.add("step2-detect-result");
+            document.body.classList.remove("step1");
+            document.body.classList.add("step2");
 
             setTimeout(() => {
                 gsap.to(".cont-wrapper", {
@@ -950,16 +970,15 @@ function handleMainAction(obj){
         container.classList.remove("dspl-n");
         container.classList.add("show");
 
-        if(device === "PC" && dev_size !== "MOBILE"){
+        if(devi_size === "MOBILE"){
+            canvas.classList.remove("active");
+        }else{
             canvas.classList.add("active");
-
         }
         container.style.height = img.height+"px";
         
-
         gsap.fromTo("#container", { opacity: 0, y: -10 }, {
-            opacity: 1,
-            y: 0,
+            opacity: 1, y: 0,
             duration: 0.5,
             ease: "back.in",
             onUpdate: function(){ animation_state = "processing" },
@@ -999,6 +1018,8 @@ function handleMainAction(obj){
 
                 canvas.width = "";
                 canvas.height = "";
+                canvas.classList.remove("active");
+
                 container.classList.add("dspl-n");
                 container.classList.remove("show");
                 container.style.height = "";
@@ -1212,6 +1233,8 @@ function showAllUI(obj){
 
             beginSVGanimation({ delay: 500 });
             initPalletteSwiper({ state, show });
+            document.body.classList.remove("step2");
+            document.body.classList.add("step3");
         }
     });
     initColorPicker();
@@ -1504,7 +1527,7 @@ function bindEventsC(){
 function bindEventsD(){
     const dots = document.querySelectorAll("#container .dot");
     const cards = document.querySelectorAll(".card");
-    if(dev_size !== "MOBILE") return false;
+    if(devi_size !== "MOBILE") return false;
 
     dots.forEach((dot) => {
         dot.addEventListener("click", (e) => {
@@ -1642,7 +1665,7 @@ function initPalletteSwiper(obj){
 
 let flag_c = false;
 $(function(){
-    if(device === "PC" && dev_size !== "MOBILE"){
+    if(device === "PC"){
         $(document).on("mousemove", ".card", function(e){
             const prc = animationProcessCheck();
             if(prc === true) return;
@@ -1692,7 +1715,7 @@ function getPos(){
     bindEventsB();
     bindEventsD();
 
-    if(device === "PC" && dev_size !== "MOBILE"){
+    if(device === "PC"){
         gsap.fromTo(".card", { opacity: 0, y: -10 }, {
             opacity: 1,
             y: 0,
@@ -1753,7 +1776,7 @@ class Card {
         let elem = "";
         let icon;
 
-        if(dev_size === "MOBILE"){
+        if(devi_size === "MOBILE"){
             const card = document.createElement("div");
             card.setAttribute("class", `card card-${this.numb}`);
             card.setAttribute("center-target", `dot${this.numb}`);
@@ -1793,7 +1816,7 @@ class Card {
             });
         }
 
-        if(device === "PC" && dev_size !== "MOBILE"){
+        if(device === "PC"){
             for(let i = 0; i < this.points; i++){
                 centerX = this.radius * Math.cos(angle * i) + (this.centerX - this.container.offsetLeft);
                 centerY = this.radius * Math.sin(angle * i) + (this.centerY - this.container.offsetTop);
@@ -1826,7 +1849,6 @@ class Card {
                 card.setAttribute("object-name", `${this.name}`);
 
                 if(this.initNumb === (i+1) && this.complete === false){
-                    // console.log(`%c◀◀◀◀◀◀◀◀◀◀◀◀ [step1-추가] dot-numb: ${this.numb} | initNumb: ${this.initNumb} | complete: ${this.complete} ▶▶▶▶▶▶▶▶▶▶`, "background: black;color: aqua");
                     this.container.appendChild(card);
                     card.innerHTML = elem;
                     const swiper = new Swiper(`.swiper-${this.numb}`, {
@@ -2194,6 +2216,7 @@ btn_share.addEventListener("click", () => {
 });
 
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ KAKAO ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+
 function kakaoInit(){
     Kakao.Link.sendDefault({
         objectType: 'feed',
@@ -2217,4 +2240,19 @@ function kakaoInit(){
         ],
         installTalk: true,
     })
+}
+
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ RESPONSIVE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+
+function addResponsive(){
+    const elem = document.querySelector(".pallette .menu-cont-wrapper");
+    const parentElem = document.querySelector(".user-ctrl");
+    const step3 = document.body.classList.contains("step3") ? true : false;
+
+    if(devi_size === "MOBILE" && step3){
+        parentElem.insertBefore(elem, parentElem.lastChild);
+
+    }else{
+
+    }
 }
