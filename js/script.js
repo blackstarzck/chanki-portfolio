@@ -4,9 +4,7 @@ const device = detectDevice();
 let devi_size = "undefined";
 if(device !== "PC") document.body.classList.add("mobile");
 
-window.onload = () => {
-    alert("load complete~!");
-}
+window.onload = () => { document.querySelector(".loading-container").classList.add("dspl-n") };
 
 // window.onresize = () => { detectSizes() };
 if(matchMedia("screen and (max-width: 767px)").matches){ 
