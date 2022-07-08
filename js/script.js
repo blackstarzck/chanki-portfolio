@@ -1581,6 +1581,11 @@ function bindEventsD(){
     });
     document.getElementById("container").addEventListener("click", (e) => {
         const selected = document.querySelector(".card.selected") || null;
+
+        if(device === "PC") return false;
+
+        alert(e.target.className);
+        
         if(e.target.getAttribute("id") === "selected-img" && selected !== null){
             fadeOut({ 
                 target: ".card.selected", 
@@ -2263,7 +2268,6 @@ function detectSizes(){
     }else{
         devi_size = "undefined";
     }
-    console.log(devi_size)
 
     if(devi_size === "MOBILE"){
         if(wrapper.children.length === 0){
@@ -2284,7 +2288,5 @@ function detectSizes(){
     }
 
     const btns = document.querySelectorAll(".pallette .menu-item.active");
-    
-    console.log(2, btns[0].offsetLeft)
     indicator.style.transform = `translateX(${btns[0].offsetLeft}px)`;
 }
