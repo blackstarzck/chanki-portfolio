@@ -1169,6 +1169,8 @@ function addAnimationSVG(){
         path.innerHTML = "<animate id='animate"+i+"' attributeName='stroke-dashoffset' begin='indefinite' dur='"+Math.round(pathLength/speed)+"s' to='0' fill='freeze'/>";
     });
 }
+const nav = document.querySelector(".nav-ctrller");
+const share = document.querySelector(".ctrl-cont.share .btn-share");
 
 function showAllUI(obj){
     const { state, show } = obj;
@@ -1177,7 +1179,6 @@ function showAllUI(obj){
     const code_box = document.querySelector(".rotation-box .svg-codes");
     const slide_wraps = document.querySelectorAll(".rotation-box .main-slides .slide-wrap");
     const swiper_lists = document.querySelectorAll(".icons-container .swiper-list");
-    
     ctrl.forEach((item) => { item.classList.remove("dspl-n") });
     bindEventsA();
 
@@ -1215,30 +1216,38 @@ function showAllUI(obj){
 
     ctrl_items.forEach((item) => { item.classList.remove("hide"); });
 
-    gsap.fromTo(".ctrl-item", { opacity: 0, y: -10 }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "back.in",
-        onComplete: function(){
-            slide_wraps.forEach((item, idx) => {
-                let obj_nm = item.getAttribute("object-name");
-                if(obj_nm === show){
-                    mSwiper.slideTo(idx, 500);
-                    item.classList.add("show");
-                    item.children[0].classList.add("show");
-                }
-            });
-            ctrl_items.forEach((item) => { item.style.zIndex = 10 });
-
-            beginSVGanimation({ delay: 500 });
-            initPalletteSwiper({ state, show });
-            detectSizes();
-            document.body.classList.remove("step2");
-            document.body.classList.add("step3");
-        }
-    });
+    setTimeout(() => {
+        gsap.fromTo(".ctrl-item", { opacity: 0, y: -10 }, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "back.in",
+            onstart: function(){
+                nav.classList.add("reveal");
+                share.classList.add("reveal");
+            },
+            onComplete: function(){
+                slide_wraps.forEach((item, idx) => {
+                    let obj_nm = item.getAttribute("object-name");
+                    if(obj_nm === show){
+                        mSwiper.slideTo(idx, 500);
+                        item.classList.add("show");
+                        item.children[0].classList.add("show");
+                    }
+                });
+                ctrl_items.forEach((item) => { item.style.zIndex = 10 });
+    
+                beginSVGanimation({ delay: 500 });
+                initPalletteSwiper({ state, show });
+                detectSizes();
+                document.body.classList.remove("step2");
+                document.body.classList.add("step3");
+                
+            }
+        });
+    }, 400);
+    
     initColorPicker();
 }
 function hideMainUIs(){
@@ -1255,13 +1264,6 @@ function hideMainUIs(){
     fst_cont.classList.add("show");
     animation_state = "processing";
 
-
-    // reset
-    // dots.forEach((item) => { item.remove(); });
-    // cards.forEach((item) => { item.remove(); });
-    // test_imgs.forEach((item) => { item.src = ""; });
-    // lists.innerHTML = "";
-
     seq.fromTo(".ctrl-item", { opacity: 1, y: 0 }, {
         opacity: 0, y: -10,
         duration: 0.5,
@@ -1271,6 +1273,8 @@ function hideMainUIs(){
             ctrl_items.forEach((item) => { 
                 item.style.zIndex = "";
                 item.classList.remove("hide");
+                nav.classList.remove("reveal");
+                share.classList.remove("reveal");
             });
             
         }
