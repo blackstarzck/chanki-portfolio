@@ -428,6 +428,7 @@ body.mobile .notice-popup { width: 65vw; }
     .nav-ctrller li.active .icon { transform: translateY(24px); }
     .nav-ctrller .icon { line-height: 40px; }
 
+    .rt-cont .loading-box { bottom: 7px;left: 10px; }
     .rt-cont .prc-wrap.show-img .img-box.hrz ~ #results-wrap,
     .rt-cont .prc-wrap.show-img .img-box.hrz { width: 72vmin; }
     .rt-cont .prc-wrap.show-img .img-box.vrt ~ #results-wrap,
