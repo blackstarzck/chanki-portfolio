@@ -1615,7 +1615,7 @@ function initColorPicker(){
         handleRadius: 8,
         // activeHandleRadius: "",
         handleSvg: '#handle',
-        handleProps: { x: 0, y: -9 },
+        handleProps: { x: 0, y: 0 },
         layout: [{
             component: iro.ui.Slider,
             options: {
