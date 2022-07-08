@@ -409,6 +409,7 @@ body.mobile .notice-popup { width: 65vw; }
 }
 
 @media (max-width: 410px) {
+    .notice-popup { width: 90vw; }
     .lt-ctrller .m-item-name,
     nav .btn-nav-item { font-size: 1.125rem; }
     .lt-ctrller .btn-direct { width: 30px;height: 30px; }
