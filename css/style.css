@@ -304,8 +304,8 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg, .nav-c
 .notice-popup.card-proc-popup .loading-bar .bar { width: 1%;height: 10px; background-color: var(--blue-1);border-radius: 50px;transition:  .3s; }
 .notice-popup.show-result-popup { padding-bottom: 0; }
 /* rotate slide */
-.rotation-box { /*width: 300px;height: 300px;*/width: 40vmin;height: 40vmin; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);overflow: hidden; }
-.rotation-box .main-slides { width: 100%;height: 100%;position: relative; }
+.rotation-box { /*width: 300px;height: 300px;*/width: 40vmin;height: 40vmin; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%); }
+.rotation-box .main-slides { width: 100%;height: 100%;position: relative;overflow: hidden; }
 .rotation-box ul.slide-wrap { visibility: hidden; width: 100%;height: 100%;position: absolute;left: 0;top: 0; }
 .rotation-box li { width: 100%;height: 100%;position: absolute;top: 0;left: 0;visibility: hidden; }
 .rotation-box li svg path { fill: transparent;stroke: var(--black-1);stroke-width: 2px; }
