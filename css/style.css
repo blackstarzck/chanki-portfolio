@@ -288,7 +288,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg, .nav-c
 .container .swiper-pagination { font-size: 1rem; }
 
 /* notice popup */
-.notice-popup { visibility: hidden;position: fixed;left: 0;right: 0; bottom: 80px;margin: auto;max-width: 370px;text-align: center;background-color: var(--white-1);border-radius: 5px; box-shadow: 0 5px 5px 4px var(--black-blur-1);padding: 15px 0;z-index: 99; }
+.notice-popup { visibility: hidden;position: fixed;left: 0;right: 0; bottom: 80px;margin: auto;width: 370px;text-align: center;background-color: var(--white-1);border-radius: 5px; box-shadow: 0 5px 5px 4px var(--black-blur-1);padding: 15px 0;z-index: 99; }
 .notice-popup.show button { visibility: visible;color: var(--black-1); }
 .notice-popup span.text { display: block;font-size: 1.125rem;/*line-height: 50px;*/color: var(--black-1);padding: 0 15px;margin-bottom: 8px; }
 .notice-popup .btn-wrap { display: none; }
@@ -304,7 +304,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg, .nav-c
 .notice-popup.card-proc-popup .loading-bar .bar { width: 1%;height: 10px; background-color: var(--blue-1);border-radius: 50px;transition:  .3s; }
 .notice-popup.show-result-popup { padding-bottom: 0; }
 /* rotate slide */
-.rotation-box { /*width: 300px;height: 300px;*/width: 40vmin;height: 40vmin; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%); }
+.rotation-box { /*width: 300px;height: 300px;*/width: 40vmin;height: 40vmin; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);overflow: hidden; }
 .rotation-box .main-slides { width: 100%;height: 100%;position: relative; }
 .rotation-box ul.slide-wrap { visibility: hidden; width: 100%;height: 100%;position: absolute;left: 0;top: 0; }
 .rotation-box li { width: 100%;height: 100%;position: absolute;top: 0;left: 0;visibility: hidden; }
@@ -427,4 +427,9 @@ body.mobile .notice-popup { width: 65vw; }
     .nav-ctrller li.active .text { transform: translateY(-10px); }
     .nav-ctrller li.active .icon { transform: translateY(24px); }
     .nav-ctrller .icon { line-height: 40px; }
+
+    .rt-cont .prc-wrap.show-img .img-box.hrz ~ #results-wrap,
+    .rt-cont .prc-wrap.show-img .img-box.hrz { width: 72vmin; }
+    .rt-cont .prc-wrap.show-img .img-box.vrt ~ #results-wrap,
+    .rt-cont .prc-wrap.show-img .img-box.vrt { width: 43vmin; }
 }
