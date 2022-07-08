@@ -102,7 +102,7 @@ svg + span { transition: all .1s ease-in }
 .nav-ctrller a { position: relative;display: flex;justify-content: center;align-items: center;flex-direction: column;width: 100%;text-align: center;font-weight: 500; }
 .nav-ctrller .icon { position: relative;display: block;line-height: 75px;font-size: 1.5rem;text-align: center;transition: .5s; }
 .nav-ctrller .icon svg { color:#ffffff;fill: #ffffff; }
-.nav-ctrller li.active .icon { transform: translateY(33px); }
+.nav-ctrller li.active .icon { transform: translateY(38px); }
 .nav-ctrller .text { position: absolute;color: #ffffff;font-weight: 400;font-size: 0.75rem;letter-spacing: 0.05em;transition: .5s;opacity: 0;transform: translateY(-28px); }
 .nav-ctrller li.active .text { opacity: 1;transform: translateY(-17px); }
 .nav-ctrller .indicator { position: absolute;top: 50%;width: 70px;height: 70px;background-color: var(--blue-2);border-radius: 50%;border: 6px solid var(--white-1);transition: .3s; }
