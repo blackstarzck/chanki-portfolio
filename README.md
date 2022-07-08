@@ -27,7 +27,7 @@
 이때 물체들끼리 충돌하지 않고 사용자에게 온전히 보여주기 위해 출동방지 로직을 구현했다. 기능구현은 하였으나 충돌과정을 체크할때 렌더링이 많이 일어날 수 있어
 사용자에게 최종 결과를 보여주기까지 시간이 걸릴 수 있다. 속도가 느려 사용자의 이탈을 방지하기 위해 로딩애니메이션을 넣었다.
 
-<img width="300" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc68y2z%2FbtrEBsQnjzR%2FYwR0XKM0dRPIEMUPn2ghTk%2Fimg.png"><img width="300" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Feshv6K%2FbtrEw612wfQ%2FfaBYlx53RinLLHHD9slBzK%2Fimg.png">
+<img width="300" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc68y2z%2FbtrEBsQnjzR%2FYwR0XKM0dRPIEMUPn2ghTk%2Fimg.png">  <img width="300" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Feshv6K%2FbtrEw612wfQ%2FfaBYlx53RinLLHHD9slBzK%2Fimg.png">
 
 
 4. 캔버스 애니메이션
