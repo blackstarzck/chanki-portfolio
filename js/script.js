@@ -2262,17 +2262,21 @@ function detectSizes(){
     console.log(devi_size)
 
     if(devi_size === "MOBILE"){
-        menu.forEach((item) => { wrapper.appendChild(item) });
-        wrapper.appendChild(indicator);
+        if(wrapper.children.length === 0){
+            menu.forEach((item) => { wrapper.appendChild(item) });
+            wrapper.appendChild(indicator);
+        }
     }else{
-        menu.forEach((item, i) => {
-            if(i < 3){
-                lt_wrap.appendChild(item);
-                lt_wrap.appendChild(indicator);
-            }else{
-                rt_wrap.appendChild(item);
-            }
-        });
+        if(wrapper.children.length !== 0){
+            menu.forEach((item, i) => {
+                if(i < 3){
+                    lt_wrap.appendChild(item);
+                    lt_wrap.appendChild(indicator);
+                }else{
+                    rt_wrap.appendChild(item);
+                }
+            });
+        }
     }
 
     const btns = document.querySelectorAll(".pallette .menu-item.active");
