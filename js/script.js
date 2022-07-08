@@ -8,7 +8,7 @@ if(device !== "PC") document.body.classList.add("mobile");
 // alert(window.innerWidth);
 
 window.onload = () => {
-    loadingAnimation({ sec: 2000 });
+    // loadingAnimation({ sec: 2000 });
     function loadingAnimation(obj){
         const html = document.getElementsByTagName("html")[0];
         const loading = document.querySelector(".loading-container");
@@ -38,7 +38,22 @@ if(matchMedia("screen and (max-width: 767px)").matches){
 }else{
     devi_size = "undefined";
 }
-console.log(devi_size)
+console.log(devi_size);
+
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ NAVIGATION ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+
+const list = document.querySelectorAll(".btn-nav-item");
+
+function activeLink(){
+    list.forEach((item) => {
+        item.classList.remove("active");
+    });
+    this.classList.add("active");
+}
+list.forEach((item) => {
+    item.addEventListener("click", activeLink);
+});
+
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LEFT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 // 애니매이션 중 클릭 방지
@@ -1275,7 +1290,7 @@ function hideMainUIs(){
 function bindEventsA(){
     const btns_lt = document.querySelectorAll(".pallette .lt-btn-wrap li");
     const btns_rt = document.querySelectorAll(".pallette .rt-btn-wrap li");
-    const indicator = document.querySelector(".indicator");
+    const indicator = document.querySelector(".pallette .indicator");
     const btn_copy = document.getElementById("btn-copy");
     const btn_dwn = document.getElementById("btn-dwn");
     const btns = document.querySelectorAll(".pallette .menu-item.active");
@@ -2236,7 +2251,7 @@ function detectSizes(){
     const lt_wrap = document.querySelector(".user-ctrl .lt-btn-wrap");
     const rt_wrap = document.querySelector(".user-ctrl .rt-btn-wrap");
     const menu = document.querySelectorAll(".pallette .menu-item");
-    const indicator = document.querySelector(".indicator");
+    const indicator = document.querySelector(".pallette .indicator");
 
     if(matchMedia("screen and (max-width: 767px)").matches){ 
         devi_size = "MOBILE";

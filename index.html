@@ -26,7 +26,7 @@
 
 </head>
 <body class="step1">
-    <div class="loading-container">
+    <div class="loading-container dspl-n">
         <div class="loader">
             <span></span>
             <span></span>
@@ -38,16 +38,41 @@
         </div>
     </div>
 
-    <nav class="ctrl-cont dspl-n nav-ctrller">
+    <div class="ctrl-cont nav-ctrller  dspl-n ">
         <ul class="nav-wrapper">
-            <li class="btn-nav-item ctrl-item hide" id="btn-flow-chart">Flow-chart</li>
-            <li class="btn-nav-item ctrl-item hide" id="btn-crafts">Crafts</li>
-            <li class="btn-nav-item ctrl-item hide" id="btn-about">About</li>
-            <li class="btn-nav-item ctrl-item hide" id="btn-t-Story">T-Story</li>
-            <li class="btn-nav-item ctrl-item hide" id="btn-github">Github</li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-flow-chart">
+                <a href="#">
+                    <span class="text" data-short="chart" data-long="Flow-chart"></span>
+                    <span class="icon"><i class="fa-solid fa-diagram-project"></i></span>
+                </a>
+            </li>
+            <li class="btn-nav-item ctrl-item active hide" id="btn-crafts">
+                <a href="#">
+                    <span class="text">Crafts</span>
+                    <span class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></span>
+                </a>
+            </li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-about">
+                <a href="#">
+                    <span class="text">About</span>
+                    <span class="icon"><i class="fa-solid fa-user"></i></span>
+                </a>
+            </li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-t-Story">
+                <a href="#">
+                    <span class="text">T-Story</span>
+                    <span class="icon"><svg style="height: 1em;vertical-align: -0.125em" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><g><circle class="cls-1" cx="58.18" cy="58.18" r="58.18"/><circle class="cls-1" cx="204.2" cy="58.18" r="58.18"/><circle class="cls-1" cx="204.2" cy="204.2" r="58.18"/><circle class="cls-1" cx="204.2" cy="350.22" r="58.18"/><circle class="cls-1" cx="350.22" cy="58.18" r="58.18"/></g></svg></span>
+                </a>
+            </li>
+            <li class="btn-nav-item ctrl-item hide" id="btn-github">
+                <a href="#">
+                    <span class="text">Github</span>
+                    <span class="icon"><i class="fa-brands fa-github"></i></span>
+                </a>
+            </li>
+            <div class="indicator"></div>
         </ul>
-    </nav>
-
+    </div>
     <div class="ctrl-cont dspl-n lt-ctrller ctrl-m-item">
         <div class="name-wrapper swiperIntro">
             <ul class="ctrl-item hide inner swiper-wrapper">
@@ -78,7 +103,7 @@
 
     <div class="ctrl-cont dspl-n share">
         <button type="button" class="btn-share">
-            <div class="ctrl-item hide  df-c"><i class="icon fa-regular fa-share"></i></div>
+            <div class="ctrl-item hide  df-c"><i class="fa-solid fa-share-nodes"></i></div>
             <span class="ctrl-item hide" >Share</span>
         </button>
     </div>
