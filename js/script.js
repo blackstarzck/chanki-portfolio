@@ -1298,6 +1298,7 @@ function bindEventsA(){
     // EVENT
     btns_lt.forEach((btn) => {
         btn.addEventListener("click", function(e){
+            console.log("?")
             const swiper = document.querySelector(".icons-container");
             const color = document.querySelector(".menu-cont.color-pick");
             const svg = document.querySelector(".rotation-box li.show");
@@ -1615,7 +1616,7 @@ function initColorPicker(){
         handleRadius: 8,
         // activeHandleRadius: "",
         handleSvg: '#handle',
-        handleProps: { x: 0, y: 0 },
+        handleProps: { x: 0, y: -15 },
         layout: [{
             component: iro.ui.Slider,
             options: {

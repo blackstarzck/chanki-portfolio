@@ -100,9 +100,9 @@ svg + span { transition: all .1s ease-in }
 .nav-ctrller li { position: relative;list-style: none;width: 70px;height: 70px;z-index: 1; }
 .nav-ctrller a { position: relative;display: flex;justify-content: center;align-items: center;flex-direction: column;width: 100%;text-align: center;font-weight: 500; }
 .nav-ctrller .icon { position: relative;display: block;line-height: 75px;font-size: 1.5rem;text-align: center;transition: .5s; }
-.nav-ctrller .icon svg { color:var(--white-1);fill: var(--white-1); }
+.nav-ctrller .icon svg { color:#ffffff;fill: #ffffff; }
 .nav-ctrller li.active .icon { transform: translateY(33px); }
-.nav-ctrller .text { position: absolute;color: var(--white-1);font-weight: 400;font-size: 0.75rem;letter-spacing: 0.05em;transition: .5s;opacity: 0;transform: translateY(-28px); }
+.nav-ctrller .text { position: absolute;color: #ffffff;font-weight: 400;font-size: 0.75rem;letter-spacing: 0.05em;transition: .5s;opacity: 0;transform: translateY(-28px); }
 .nav-ctrller li.active .text { opacity: 1;transform: translateY(-17px); }
 .nav-ctrller .indicator { position: absolute;top: 50%;width: 70px;height: 70px;background-color: var(--blue-2);border-radius: 50%;border: 6px solid var(--white-1);transition: .3s; }
 .nav-ctrller .indicator:before { content: "";position: absolute;bottom: 58%;left: -20px;width: 20px;height: 20px;background-color: transparent;border-bottom-right-radius: 20px;box-shadow: 1px 10px 0 0 var(--white-1);transition: inherit; }
@@ -349,7 +349,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg, .nav-c
 .pallette .user-ctrl .btn-wrap { display: flex; }
 .pallette .menu-item { z-index: 1; }
 .user-ctrl .btn-wrapper { display: none; } 
-
+#handle circle { stroke: var(--white-1) }
 .pallette .indicator { position: absolute;left: 0;top: 0;bottom: 0;margin: auto;z-index: -1;width: 50px;height: 50px;border-radius: 50%; transition: .2s;background-color: var(--blue-1); }
 .IroSlider { width: 100% !important;height: 10px !important; }
 .pallette .menu-cont.color-pick { padding-left: 20px;height: 100%;display: flex;justify-content: center;align-items: center; }
