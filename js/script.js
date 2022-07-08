@@ -976,7 +976,7 @@ function handleMainAction(obj){
         container.classList.add("show");
         container.style.height = img.height+"px";
 
-        canvas.classList.add("active");
+        if(device === "PC") canvas.classList.add("active");
         
         gsap.fromTo("#container", { opacity: 0, y: -10 }, {
             opacity: 1, y: 0,
@@ -1581,8 +1581,6 @@ function bindEventsD(){
     });
     document.getElementById("container").addEventListener("click", (e) => {
         const selected = document.querySelector(".card.selected") || null;
-
-        if(device === "PC") return false;
 
         alert(e.target.className);
         
