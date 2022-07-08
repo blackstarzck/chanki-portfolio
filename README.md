@@ -8,11 +8,11 @@
 설명: 위 이미지에 표시된 물체들은 사용자가 직접 물체의 위치를 선택하는 방식이다. 사용자가 일일이 작업해야하는 수고를 덜어 AI학습을 통해 
 오늘의집 DB를 조회하여 자동으로 표시해주면 사용자로 하여금 작업시간을 많이 줄어줄 수 있을거라고 생각해 위 프로젝트를 진행하였다.
 
-핵심기능: 물체인식 → tensorflow.js(라이브러리)
-애니메이션: gsap.js(라이브러리)
-카카오톡으로 링크를 공유할 수 있습니다.
-반응형 레이아웃입니다.
-모바일과 PC에서 감지된 결과를 보여주는 레이아웃이 조금 다릅니다.
+핵심기능: 물체인식 → tensorflow.js(라이브러리)<br>
+애니메이션: gsap.js(라이브러리)<br>
+카카오톡으로 링크를 공유할 수 있습니다.<br>
+반응형 레이아웃입니다.<br>
+모바일과 PC에서 감지된 결과를 보여주는 레이아웃이 조금 다릅니다.<br>
 
 오늘의집 DB를 가지고 있지 않기 때문에 감지된 물체를 어떻게 표현할지 고민한 결과 사용자가에게 시각적인 재미를 제공하기 위해 SVG 애니메이션을 사용해 결과를 표현하였다.
 또한 SVG 코드를 복사할 수 있고 다운받을 수도있도록 UI를 구성하였다.
@@ -27,8 +27,7 @@
 이때 물체들끼리 충돌하지 않고 사용자에게 온전히 보여주기 위해 출동방지 로직을 구현했다. 기능구현은 하였으나 충돌과정을 체크할때 렌더링이 많이 일어날 수 있어
 사용자에게 최종 결과를 보여주기까지 시간이 걸릴 수 있다. 속도가 느려 사용자의 이탈을 방지하기 위해 로딩애니메이션을 넣었다.
 
-<img width="300" src="https://user-images.githubusercontent.com/65368411/177926848-daf827e4-4b72-4a02-9f46-844d88786452.png)
-](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc68y2z%2FbtrEBsQnjzR%2FYwR0XKM0dRPIEMUPn2ghTk%2Fimg.png">
+<img width="300" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc68y2z%2FbtrEBsQnjzR%2FYwR0XKM0dRPIEMUPn2ghTk%2Fimg.png">
 <img width="300" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Feshv6K%2FbtrEw612wfQ%2FfaBYlx53RinLLHHD9slBzK%2Fimg.png">
 
 4. 캔버스 애니메이션
