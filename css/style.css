@@ -292,7 +292,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg, .nav-c
 .notice-popup.show button { visibility: visible;color: var(--black-1); }
 .notice-popup span.text { display: block;font-size: 1.125rem;/*line-height: 50px;*/color: var(--black-1);padding: 0 15px;margin-bottom: 8px; }
 .notice-popup .btn-wrap { display: none; }
-.notice-popup.show-result-popup .btn-wrap { display: flex;justify-content: space-around; }
+.notice-popup.show-result-popup .btn-wrap { display: flex; }
 .notice-popup button { width: calc(100% / 2); font-size: 1rem;line-height: 45px;color: var(--white-1);transition: .2s }
 .notice-popup button:hover { color: var(--blue-1); }
 .notice-popup.card-proc-popup .btn-wrap,
@@ -363,7 +363,7 @@ svg:not(.card .btn-direct svg, .icon-bg svg, .btn-dwn svg, .btn-copy svg, .nav-c
 /* mobile settings */
 body.mobile .container .card { visibility: hidden; }
 body.mobile .container .card.selected { visibility: visible; }
-body.mobile .notice-popup { width: 65vw; }
+/* body.mobile .notice-popup { width: 65vw; } */
 
 @media (max-width: 767px) {
     html { font-size: 12px; }
