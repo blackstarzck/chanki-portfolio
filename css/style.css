@@ -370,6 +370,7 @@ body.mobile .notice-popup { width: 65vw; }
     nav .nav-wrapper { width: 90vw; }
     .lt-ctrller { width: 30vw; }
     .rt-ctrller { right: 10px; }
+    .lt-cont .icon-wrap.wait .svg-box + span { margin-bottom: -40px; }
     .cont-wrapper { /*width: 400px;*/width: 90vw;flex-direction: column; }
     .lt-cont, .rt-cont { width: 100%;height: calc((100vh / 2) - 80px);border-radius: 0; }
     .lt-cont { border-top-left-radius: 10px;border-top-right-radius: 10px;  }
