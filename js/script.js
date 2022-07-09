@@ -1581,8 +1581,6 @@ function bindEventsD(){
     });
     document.getElementById("container").addEventListener("click", (e) => {
         const selected = document.querySelector(".card.selected") || null;
-
-        alert(e.target.className);
         
         if(e.target.getAttribute("id") === "selected-img" && selected !== null){
             fadeOut({ 
