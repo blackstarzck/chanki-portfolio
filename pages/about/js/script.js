@@ -730,8 +730,9 @@
     document.querySelector('.loading').addEventListener('transitionend', (e) => { // (transition end)매개변수=이벤트 객체, e.currentTarget은 위에 loading을 가르킨다. !!트렌지션이 끝나고 loading요소가 사라져서 메인 페이지가 비로소 보이고 클릭할 수 있다.
         // console.log(e.target)
         // console.log(e.currentTarget)
+        console.log("트랜지션 끝")
         // document.querySelector('.loading').style.opacity = "1";
-        document.body.removeChild(e.currentTarget);
+        // document.body.removeChild(e.currentTarget);
     });
     setCanvasImages();
 })();
