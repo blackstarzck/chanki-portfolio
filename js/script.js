@@ -1289,6 +1289,10 @@ function hideMainUIs(){
     })
 }
 
+function handleImgHistory(){
+    
+}
+
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BIND EVENTS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 function bindEventsA(){
@@ -1579,6 +1583,7 @@ function bindEventsD(){
             })
         });
     });
+
     document.getElementById("container").addEventListener("click", (e) => {
         const selected = document.querySelector(".card.selected") || null;
         
@@ -1586,7 +1591,7 @@ function bindEventsD(){
             fadeOut({ 
                 target: ".card.selected", 
                 stagger: false,
-                func: () => { document.querySelector(".card.selected").classList.remove("selected") }
+                func: () => { document.querySelector(".card.selected")?.classList.remove("selected") }
             });
             dots.forEach((dot) => { dot.classList.remove("selected") });
         }
