@@ -248,11 +248,14 @@
             imgElem = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem.src = `./video/IMG/IMG_${0001 + i}.jpg`;
             sceneInfo[0].objs.videoImages.push(imgElem);
-            cnt++;
-            console.log(Math.round((cnt / total) * 100))
 
-            txt.innerText = Math.round((cnt / total) * 100) + "%";
-            bar.style.width = Math.round((cnt / total) * 100) + "%";
+            imgElem.onload = () => {
+                cnt++;
+                console.log(Math.round((cnt / total) * 100));
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
+            }
+
         }
         let imgElem2;
         for(let i = 0; i < sceneInfo[2].values.videoImageCount; i++){
@@ -260,33 +263,39 @@
             imgElem2 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem2.src = `./video/video3/IMG_${001 + i}.jpg`;
             sceneInfo[2].objs.videoImages.push(imgElem2);
-            cnt++;
-            console.log(Math.round((cnt / total) * 100))
 
-            txt.innerText = Math.round((cnt / total) * 100) + "%";
-            bar.style.width = Math.round((cnt / total) * 100) + "%";
+            imgElem2.onload = () => {
+                cnt++;
+                console.log(Math.round((cnt / total) * 100));
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
+            }
         }
         let imgElem3;
         for(let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++){
             imgElem3 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem3.src = sceneInfo[3].objs.imagesPath[i];
             sceneInfo[3].objs.images.push(imgElem3);
-            cnt++;
-            console.log(Math.round((cnt / total) * 100))
 
-            txt.innerText = Math.round((cnt / total) * 100) + "%";
-            bar.style.width = Math.round((cnt / total) * 100) + "%";
+            imgElem3.onload = () => {
+                cnt++;
+                console.log(Math.round((cnt / total) * 100));
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
+            }
         }
         let imgElem4;
         for(let i = 0; i < sceneInfo[4].objs.imagesPath.length; i++){
             imgElem4 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem4.src = sceneInfo[4].objs.imagesPath[i];
             sceneInfo[4].objs.images.push(imgElem4);
-            cnt++;
-            console.log(Math.round((cnt / total) * 100))
 
-            txt.innerText = Math.round((cnt / total) * 100) + "%";
-            bar.style.width = Math.round((cnt / total) * 100) + "%";
+            imgElem4.onload = () => {
+                cnt++;
+                console.log(Math.round((cnt / total) * 100));
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
+            }
         }
     }
     
@@ -676,7 +685,7 @@
     
     // 모든 이벤트 리스너들은 로드 후에 사용할 수 있어야 한다.
     window.addEventListener('load', () => {  // 페이지 리프레쉬(F5) 시 현재 머물러 있는 씬을 확인/ body에 바로 적용
-        document.body.classList.remove('before-load'); // 투명도만 0이 되었음. 뒤에 바탕이 아무것도 안눌러짐.
+        setTimeout(() => { document.body.classList.remove('before-load'); }, 600);  // 투명도만 0이 되었음. 뒤에 바탕이 아무것도 안눌러짐.
         setLayout();
         sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
         window.addEventListener('resize', () => {
@@ -732,7 +741,7 @@
         // console.log(e.currentTarget)
         console.log("트랜지션 끝")
         // document.querySelector('.loading').style.opacity = "1";
-        // document.body.removeChild(e.currentTarget);
+        document.body.removeChild(e.currentTarget);
     });
     setCanvasImages();
 })();
