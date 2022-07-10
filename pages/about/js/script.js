@@ -298,7 +298,7 @@
 
 
                     window.onload = () => {
-                        if(cnt === total) setTimeout(() => { document.body.classList.remove('before-load'); }, 1000);  // 투명도만 0이 되었음. 뒤에 바탕이 아무것도 안눌러짐.
+                        if(cnt === total) setTimeout(() => { document.body.classList.remove('before-load'); }, 1000);
                     }
                 }
             }            
