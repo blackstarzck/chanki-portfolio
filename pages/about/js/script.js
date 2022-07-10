@@ -297,7 +297,7 @@
                         console.log(cnt, total)
                         if(cnt === total) setTimeout(() => { 
                             document.body.classList.remove('before-load');
-                            setTimeout(() => { document.body.removeChild(e.currentTarget), 700});
+                            setTimeout(() => { document.querySelector(".loading"), 700});
                         }, 1000);
                     }
                 }
