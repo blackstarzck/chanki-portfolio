@@ -240,6 +240,7 @@
         let total = sceneInfo[0].values.videoImageCount + sceneInfo[2].values.videoImageCount + sceneInfo[3].objs.imagesPath.length + sceneInfo[4].objs.imagesPath.length;
         let cnt = 0;
         let imgElem;
+        const txt = document.querySelector(".loading .count");
         const bar = document.querySelector(".loading .bar .inner");
 
         for(let i = 0; i < sceneInfo[0].values.videoImageCount; i++){
@@ -249,6 +250,8 @@
             sceneInfo[0].objs.videoImages.push(imgElem);
             cnt++;
             console.log(Math.round((cnt / total) * 100))
+
+            txt.innerText = Math.round((cnt / total) * 100) + "%";
             bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
         let imgElem2;
@@ -259,6 +262,8 @@
             sceneInfo[2].objs.videoImages.push(imgElem2);
             cnt++;
             console.log(Math.round((cnt / total) * 100))
+
+            txt.innerText = Math.round((cnt / total) * 100) + "%";
             bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
         let imgElem3;
@@ -268,6 +273,8 @@
             sceneInfo[3].objs.images.push(imgElem3);
             cnt++;
             console.log(Math.round((cnt / total) * 100))
+
+            txt.innerText = Math.round((cnt / total) * 100) + "%";
             bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
         let imgElem4;
@@ -277,6 +284,8 @@
             sceneInfo[4].objs.images.push(imgElem4);
             cnt++;
             console.log(Math.round((cnt / total) * 100))
+
+            txt.innerText = Math.round((cnt / total) * 100) + "%";
             bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
     }
