@@ -940,6 +940,8 @@ document.querySelectorAll(".notice-popup button").forEach((button) => {
 
     button.addEventListener("click", function(e){
         const id = e.target.getAttribute("id");
+        const prc = animationProcessCheck();
+        if(prc === true) return;
 
         if(id === "btn-yes"){
             document.body.classList.remove("step1");
