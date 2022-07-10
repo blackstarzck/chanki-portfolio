@@ -5,6 +5,80 @@
 마진, 패딩, 높이는 em
 */
 
+/* fonts */
+/* @font-face {
+    font-family: "Noto Sans KR";
+    src: url("/pages/about/fonts/NotoSansKR-Light.otf") format("opentype"), url("/pages/about/fonts/NotoSansKR-Light.otf") format("opentype");
+    font-weight: 300;
+}
+@font-face {
+    font-family: "Noto Sans KR";
+    src: url("/pages/about/fonts/NotoSansKR-Regular.otf") format("opentype"), url("/pages/about/fonts/NotoSansKR-Regular.otf") format("opentype");
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Noto Sans KR";
+    src: url("/pages/about/fonts/NotoSansKR-Medium.otf") format("opentype"), url("/pages/about/fonts/NotoSansKR-Medium.otf") format("opentype");
+    font-weight: 500;
+}
+@font-face {
+    font-family: "Noto Sans KR";
+    src: url("/pages/about/fonts/NotoSansKR-Bold.otf") format("opentype"), url("/pages/about/fonts/NotoSansKR-Bold.otf") format("opentype");
+    font-weight: 700;
+}
+@font-face {
+    font-family: "Noto Sans KR";
+    src: url("/pages/about/fonts/NotoSansKR-Black.otf") format("opentype"), url("/pages/about/fonts/NotoSansKR-Black.otf") format("opentype");
+    font-weight: 900;
+} */
+
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-Thin.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-Thin.ttf") format("truetype");
+    font-weight: 100;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-ExtraLight.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-ExtraLight.ttf") format("truetype");
+    font-weight: 200;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-Light.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-Light.ttf") format("truetype");
+    font-weight: 300;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-Regular.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-Medium.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-Medium.ttf") format("truetype");
+    font-weight: 500;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-SemiBold.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-Bold.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-Bold.ttf") format("truetype");
+    font-weight: 700;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-ExtraBold.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/pages/about/fonts/Montserrat-Black.ttf") format("truetype"), url("/pages/about/fonts/Montserrat-Black.ttf") format("truetype");
+    font-weight: 900;
+}
+
 /* General */
 html {
     font-family: 'Noto Sans KR', sans-serif;
@@ -252,6 +326,8 @@ a {
     padding-top: 50vh;
 }
 #scroll-section-0 strong {
+    /* font-family: "Nanum Myeongjo"; */
+    font-weight: 900;
     color: red;
 }
 #scroll-section-0 h1 {

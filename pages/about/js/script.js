@@ -242,7 +242,9 @@
         let imgElem;
         const txt = document.querySelector(".loading .count");
         const bar = document.querySelector(".loading .bar .inner");
+
         window.addEventListener("DOMContentLoaded", () => {
+            alert(1)
             for(let i = 0; i < sceneInfo[0].values.videoImageCount; i++){
                 //imgElem = document.createElement('img');
                 imgElem = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
@@ -739,14 +741,8 @@
         window.addEventListener('orientationchange', ()=>{ // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다. 그래서 setTimeout으로 0.5초 뒤 작동할 수 있게함
             setTimeout(setLayout, 500);
         }); // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다.
-    });
 
-    document.querySelector('.loading').addEventListener('transitionend', (e) => { // (transition end)매개변수=이벤트 객체, e.currentTarget은 위에 loading을 가르킨다. !!트렌지션이 끝나고 loading요소가 사라져서 메인 페이지가 비로소 보이고 클릭할 수 있다.
-        // console.log(e.target)
-        // console.log(e.currentTarget)
-
+        alert(2)
     });
     setCanvasImages();
 })();
-
-
