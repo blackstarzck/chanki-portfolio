@@ -5,13 +5,7 @@ const device = detectDevice();
 let devi_size = "undefined";
 if(device !== "PC") document.body.classList.add("mobile");
 
-// alert(window.innerWidth);
-window.onresize = () => {
-    console.log(window.innerWidth)
-}
 window.onload = () => {
-    alert(window.innerWidth);
-
     loadingAnimation({ sec: 2000 });
     function loadingAnimation(obj){
         const html = document.getElementsByTagName("html")[0];
