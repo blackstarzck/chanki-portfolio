@@ -1,0 +1,38 @@
+header {
+    padding: 15px;
+    position: fixed;
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid #eee;
+}
+header .brand-name a {
+    color: #000;
+}
+header .navbar {
+    position: absolute;
+    background-color: #fff;
+    width: 100%;
+    left: 0;
+    top: 60px;
+    padding: 15px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    display: none;
+}
+header .navbar.show {
+    display: block;
+}
+.ham-burger .fa {
+    display: inline-block;
+}
+header .navbar ul li {
+    display: block;
+    margin-left: 0;
+}
+header .navbar ul li a {
+    line-height: 42px;
+    color: #000;
+}
+header .navbar ul li a::before {
+    background-color: #febd01;
+}

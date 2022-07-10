@@ -1,0 +1,144 @@
+/*네비*/
+nav {
+    z-index: 10; 
+    position: absolute;
+    left: -360px; top: 0;
+    width: 360px; height: 100%;
+    padding: 40px 20px 0;
+    background-color: rgba(0,0,0,.8);
+    transition: .5s;
+}
+nav.active {
+    left: 0;
+}
+/*바*/
+nav>.audio {
+    width: 40px; height: 40px;
+    background-image: url('../img/frame/sound_white.png');
+    background-size: 100%;
+    background-position: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 80px;
+    cursor: pointer;
+}
+nav>.audio.active {background-image: url('../img/frame/sound_orange.png');}
+nav>.audio:hover {background-image: url('../img/frame/sound_orange.png');}
+nav>.bar {
+    position: absolute;
+    top: 20px; right: -70px;
+    width: 50px; height: 50px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+nav>.bar span {
+    display: block;
+    top: 30px;
+    width: 100%; height: 3px;
+    background: #fff;
+    position: absolute;
+    transition: .3s;
+}
+nav>.bar span::before {
+    content: " ";
+    position: absolute;
+    top: -15px;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    transition: .3s ease;
+}
+nav>.bar span::after {
+    content: " ";
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    transition: .3s ease;
+}
+nav>.bar:hover span,
+nav>.bar:hover span::before,
+nav>.bar:hover span::after {background: #ff9933;}
+nav>.bar.toggle span {
+    background: transparent;
+}
+nav>.bar.toggle span::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+nav>.bar.toggle span::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
+/*메뉴*/
+nav>.menu {
+    width: 100%;
+    margin-bottom: 200px;
+}
+
+nav>.menu>li>a {
+    position: relative;
+    display: block;
+    width: 116px;
+    height: 40px;
+    margin-bottom: 20px;
+    background-image: url(../img/image_replace.png);
+    color: transparent;
+}
+nav>.menu>li:hover>a::before {
+    content: '';
+    display: block;
+    width: 130px; height: 25px;
+    background-color: #ff9933;
+    position: absolute;
+    left: 0; bottom: 0;
+    z-index: -1;
+    animation: underline .3s;
+}
+@keyframes underline {
+    from {width: 0;}
+    to {width: 130px;}
+}
+nav>.menu>li:nth-child(1)>a {background-position: -550px 0px;}
+nav>.menu>li:nth-child(2)>a {background-position: 0px 0px;}
+nav>.menu>li:nth-child(3)>a {background-position: -135px 0px;}
+nav>.menu>li:nth-child(4)>a {background-position: -413px 0px;}
+nav>.menu>li:nth-child(5)>a {background-position: -273px 0px; margin-bottom: 0;}
+
+nav>.menu>li {
+    position: relative;
+}
+nav>.menu>li>div.active {
+    position: absolute;
+    width: 0px; height: 25px;
+    left: 0; bottom: 0;
+    background-color: #ff9933;
+    z-index: -1;
+}
+
+
+
+/*경계선*/
+nav>.border {
+    width: 100%; height: 52px;
+    background-image: url('../img/frame/header_image.png');
+    margin-bottom: 40px;
+}
+
+/*영화관*/
+nav>.theater {
+    width: 100%; height: 80px;
+    display: flex; justify-content: space-between;
+    align-items: center;
+}
+nav>.theater>li>a {
+    color: transparent;
+    display: block;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+nav>.theater>li:nth-child(1)>a {width: 80px; height: 35px; background-image: url('../img/theater/cgv.png');}
+nav>.theater>li:nth-child(2)>a {width: 70px; height: 70px; background-image: url(../img/theater/megabox.png);}
+nav>.theater>li:nth-child(3)>a {width: 140px; height: 25px; background-image: url('../img/theater/lotte.png');}

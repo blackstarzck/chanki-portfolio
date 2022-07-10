@@ -1,0 +1,1332 @@
+@charset 'utf-8';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;900&display=swap');
+@import url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap');
+/*
+폰트사이즈는 rem
+마진, 패딩, 높이는 em
+*/
+
+/* General */
+html {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    scroll-behavior: smooth;
+}
+body {
+    color: #000;
+    letter-spacing: -0.05em !important;
+    background-color: #fff;
+}
+.container {
+    position: relative;
+    overflow-x: hidden; /*가로스크롤 제거*/
+}
+p {
+    line-height: 1.6;
+}
+a {
+    color: #000;
+    text-decoration: none;
+}
+.scroll-section {
+    position: relative; /*섹션3 캔버스 이미지의 offsetTop(위치)값을 알기 위해 position: relative값을 주었다. */
+    padding-top: 50vh;
+}
+.wrapper {
+    width: 1000px;
+    margin: 0 auto;
+    background-color: red;
+}
+.main-message {
+    top: 60vh;
+    height: 3em;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0;
+}
+.main-message .context {
+    padding: 0 10px;
+}
+.main-message .context h2 {
+    font-size: 4vw;
+    line-height: 1.2;
+    opacity: 0;
+    color: #fff;
+}
+.main-message .context p {
+    margin-top: 10px;
+    font-size: 1.5vw;
+    line-height: 1.4;
+    font-weight: 400;
+    color: #f2f2fc;
+}
+.main-message p {
+    font-size: 4vw;
+    line-height: 1.2;
+    font-weight: bold;
+    opacity: 0;
+}
+.sticky-elem {
+    width: 100%;
+    display: none;
+    position: fixed;
+}
+/*섹션이 바뀔때 마다 sticky-elem이 보여진다.*/
+#show-scene-0 #scroll-section-0 .sticky-elem,
+#show-scene-1 #scroll-section-1 .sticky-elem,
+#show-scene-2 #scroll-section-2 .sticky-elem {
+    display: block;
+    will-change: transform, opacity; /*애니메이션 효과의 성능을 개선시키기 위해*/
+}
+#show-scene-3 #scroll-section-4 .banner img {
+    display: none;
+}
+/* 캔버스 모음 */
+.sticky-elem-canvas { /*canvas의 container이다.*/
+    top: 0;
+    height: 100%;
+}
+.sticky-elem-canvas canvas {
+    position: absolute;
+    top: 50%; left: 50%;
+/*    transform: translate(-50%, -50%); 스크립트에서 이미 transform을 건드리고 있어서 작동이 안된다. 그렇기 때문에 스크립트에서 왼쪽 내용도 추가해야 한다. */
+}
+.image-blend-canvas.sticky { /*섹션3의 캔버스 조정*/
+    z-index: 3;
+    position: fixed;
+    top: 0;
+}
+
+/* 네비 */
+.global-nav {
+    position: absolute;
+    background-color: #f2f2fc;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	width: 100%;
+	height: 44px;
+	padding: 0 1rem;
+}
+.global-nav-links {
+	max-width: 1000px;
+	height: 100%;
+	margin: 0 auto;
+}
+.global-nav-links a {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    float: right;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 44px;
+    letter-spacing: 0;
+    transition: all .3s ease;
+    color: #666;
+}
+.global-nav-links a:hover {
+    color: #000;
+}
+.local-nav {
+    z-index: 11;
+    position: absolute;
+    top: 44px; left: 0;
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 0 1rem;
+}
+.local-nav-sticky .local-nav {
+    position: fixed;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: saturate(180%) blur(15px);
+    backdrop-filter: saturate(180%) blur(15px);
+}
+.local-nav-menu {
+    max-width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.local-nav-sections {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+}
+.local-nav-sections li a {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: capitalize;
+    margin-left: 25px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+.local-nav-sections li a:hover {
+    color: #11bead;
+}
+.logo {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    background-image: url('../images/blend-image-2.jpg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    border: 2px solid black;
+    -webkit-animation: animation 1s infinite linear alternate;
+    animation: animation 1s infinite linear alternate;
+    -webkit-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+@keyframes animation {
+    from {
+        -webkit-transform: rotateY(-20deg);
+        transform: rotateY(-20deg);
+    }
+    to {
+        -webkit-transform: rotateY(20deg);
+        transform: rotateY(20deg);
+    }
+}
+@-webkit-keyframes animation {
+    from {
+        -webkit-transform: rotateY(-20deg);
+        transform: rotateY(-20deg);
+    }
+    to {
+        -webkit-transform: rotateY(20deg);
+        transform: rotateY(20deg);
+    }
+}
+.local-nav .logo div {
+    position: absolute;
+    width: 40px; height: 40px;
+    background-size: cover;
+    background-position: center;
+}
+.local-nav .logo .me {
+    width: 40px; height: 40px;
+    margin: auto;
+    left: 0; right: -10px; bottom: 0;
+    -webkit-transform: translateZ(20px);
+    transform: translateZ(20px);
+    background-image: url('../images/logo.png');
+}
+.local-nav .logo .rose {
+    width: 20px; height: 20px;
+    left: -5px; top: 5px;
+    -webkit-transform: translateZ(10px);
+    transform: translateZ(10px);
+    background-image: url('../images/rose.png');
+}
+.local-nav .logo .pink {
+    width: 20px; height: 20px;
+    left: 0; top: 12px;
+    -webkit-transform: translateZ(15px);
+    transform: translateZ(15px);
+    background-image: url('../images/pink.png');
+}
+.local-nav .logo .click {
+    color: #fff;
+    font-weight: 500;
+    width: 75px; height: 20px;
+    left: 5px; bottom: 0;
+    left: 0; right: -20px; bottom: -5px;
+    -webkit-transform: translateZ(40px);
+    transform: translateZ(40px);
+    letter-spacing: 0.08em;
+}
+.color.change {color: #11bead;}
+
+/* 섹션0 */
+#scroll-section-0 {
+    padding-top: 50vh;
+}
+#scroll-section-0 strong {
+    color: red;
+}
+#scroll-section-0 h1 {
+    position: relative; /* canvas가 position: absolute라서 h1이 보이지가 않는데, relative를 주면 보임. */
+    color: #fff;
+    display: block;
+    width: 1000px;
+    margin: 0 auto;
+    z-index: 5; /* relative와 반드시 같이 사용해야 적용된다. */
+    font-size: 6rem;
+    top: -10vh; /* 창 크기에 맞게 변화를 줘야 하기 때문에 vh*/
+    padding-left: 10px;
+}
+/* 섹션1 */
+#scroll-section-1  {
+}
+.cont {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.section-title {
+    max-width: 100%;
+    margin-bottom: 80px;
+    flex: 0 0 100%;
+    text-align: center;
+}
+.section-title h2 {
+    font-size: 3vw;
+    text-transform: uppercase;
+}
+.wrap {
+    width: 100%;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    flex-wrap: wrap;
+}
+.wrap .box {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+}
+.wrap .box .item {
+    -webkit-flex: 50%;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 5px;
+    transition: all .5s ease;
+}
+.wrap .box .inner {
+    position: relative;
+    overflow: hidden;
+}
+.wrap .box .item:hover .img {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+.wrap .box .item .img {
+    width: 100%;
+    display: block;
+    transition: .8s ease;
+}
+.wrap .box .item .desc_img {
+    display: none;
+}
+.overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,.5);
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.5s ease 0s;
+}
+.wrap .box .item:hover {
+    -webkit-box-shadow: 0 0 20px rgba(48, 46, 77, .15);
+    box-shadow: 0 0 20px rgba(48, 46, 77, .15);
+}
+.wrap .box .item:hover .overlay {
+    opacity: 1;
+}
+.overlay .fa {
+    font-size: 1.5rem;
+    height: 50px;
+    width: 50px;
+    background-color: #333;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    line-height: 53px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.wrap .box .item:hover .overlay .fa  {
+    -webkit-animation: icon .8s ease;
+    animation: icon .8s ease;
+}
+.wrap .box .item .overlay .fa:hover {
+    background-color: #fff;
+    color: #000;
+}
+@keyframes text {
+    0% {-webkit-transform: translateY(20px); opacity: 0;}
+    100% {-webkit-transform: translateY(0); opacity: 1;}
+}
+@-webkit-keyframes text {
+    0% {-webkit-transform: translateY(20px); opacity: 0;}
+    100% {-webkit-transform: translateY(0); opacity: 1;}
+}
+@keyframes icon {
+    0% {-webkit-transform: translateY(-20px); opacity: 0;}
+    100% {-webkit-transform: translateY(0); opacity: 1;}
+}
+@-webkit-keyframes icon {
+    0% {-webkit-transform: translateY(-20px); opacity: 0;}
+    100% {-webkit-transform: translateY(0); opacity: 1;}
+}
+.overlay .go_site {
+    display: block;
+    position: absolute;
+    text-align: center;
+    margin: auto;
+    width: 40%;
+    bottom: 10px; left: 0; right: 0;
+    padding: 1em 0;
+    font-size: 1.2rem; /*14px*/
+    line-height: 1;
+    font-weight: bold;
+    background-color: #444;
+    color: #fff;
+    border-radius: 5px;
+}
+.overlay .go_site:hover {
+    background-color: #fff;
+    color: #000;
+}
+.counters {
+    position: relative;
+    margin-top: 80px;
+    padding: 60px 0 60px;;
+}
+.counters>.contain {
+    width: 100%;
+}
+.counters .contain ul {
+    width: 100%;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    justify-content: space-between;
+}
+.counters .contain ul li {
+    -webkit-flex: 0 0 25%;
+    -ms-flex: 0 0 25%;
+    max-width: 25%;
+    padding: 0 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+.counters .contain li .icon {
+    width: 40px; height: 40px;
+    margin: 10px auto;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.counters .contain li:nth-child(1) .icon {
+    background-image: url(../images/icon/html5.png);
+} 
+.counters .contain li:nth-child(2) .icon {
+    background-image: url(../images/icon/css.png);
+}
+.counters .contain li:nth-child(3) .icon {
+    background-image: url(../images/icon/JavaScript.png);
+} 
+.counters .contain li:nth-child(4) .icon {
+    background-image: url(../images/icon/jQuery.png);
+} 
+
+.counters .contain li .anim {
+    margin-top: 15px;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.counters .contain li .anim::after {
+    content: '';
+    position: absolute;
+    background-color: #999;
+    width: 40%; height: 2px;
+    margin: auto;
+    bottom: -40px; left: 0; right: 0;
+}
+.counters .contain li .anim h3 {
+    font-size: 4rem;
+    line-height: 4rem;
+}
+.counters .contain li .anim span {
+    margin-left: 5px;
+    font-size: 1.6rem;
+    line-height: 3.2;
+}
+.counters .contain li h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 1;
+    padding-bottom: 5px;
+}
+/*팝업*/
+.lightbox {
+    position: fixed;
+    left: 0; top: 0; right: 0; bottom: 0;
+    z-index: 100;
+    background-color: rgba(0,0,0,.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.lightbox.show {
+    display: flex;
+}
+.lightbox.hide {
+    display: none;
+}
+.lightbox .close-lightbox {
+    height: 35px; width: 35px;
+    background-color: #fff;
+    text-align: center;
+    line-height: 35px;
+    position: absolute;
+    right: 10px; top: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 101;
+    color: #333;
+}
+.lightbox .main_img {
+    max-width: 80%;
+}
+
+.mid-message {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    font-size: 2.5vw;
+    line-height: 1.2;
+    color: #666;
+    text-align: center;
+    margin-bottom: 80px;
+}
+.mid-message strong {
+    color: #000;
+}
+.canvas-caption {
+    max-width: 1000px;
+    margin: -24rem auto 0;
+    font-size: 1.2rem;
+    padding: 0 1rem;
+    color: #888;
+}
+
+/* 섹션 2 */
+#scroll-section-2 .main-message {
+    top: 44vh;
+    font-size: 3.5rem;
+    text-align: center;
+}
+#scroll-section-2 .main-message p {
+    color: #fff;
+}
+#scroll-section-2 .b {
+    top: 10%; left: 62%;
+}
+#scroll-section-2 .c {
+    top: 50%; left: 10%;
+}
+.desc-message {
+    width: 30%;
+    background-color: rgba(0,0,0,.3);
+    padding: 10px 30px 0;
+    text-align: center;
+    opacity: 0;
+}
+.experience,
+.education {
+}
+.experience .title,
+.education .title {
+    color: #fff;
+    font-size: 3rem;
+    line-height: 1.5;
+    font-weight: 900;
+}
+.part .timeline-box {}
+.part .timeline-box .timeline-item {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.part .timeline-box .timeline-item .time-date {
+    color: #f2f2fc;
+    position: relative;
+    font-size: 2rem;
+    line-height: 1.5;
+    font-weight: 600;
+}
+.part .timeline-box .timeline-item .timeline-title {
+    color: #f2f2fc;
+    font-size: 1.8rem;
+    font-weight: 500;
+    padding-bottom: 5px;
+}
+.part .timeline-box .timeline-item .timeline-text {
+    color: #fdf9ff;
+    font-size: 1.4rem;
+    font-weight: 100;
+    line-height: 1.8;
+}
+
+/* 섹션 3 */
+#scroll-section-3 {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    align-items: center;
+}
+/* 추천 */
+.testimonial {
+    width: 100%;
+    padding: 100px 15px;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    flex-wrap: wrap;
+}
+.testimonial .container {
+    overflow: hidden;
+/*    width: 1000px;*/
+    width: 100%;
+    margin: auto;
+}
+.testimonial .title {
+    margin-bottom: 60px;
+}
+.testimonial .title .who-am-i {
+    text-align: center;
+    color: #000;
+    text-transform: uppercase;
+    font-size: 2.5rem;
+    margin: 0;
+}
+.testimonial .slider {
+    border: 1px solid #333;
+    width: 840px;
+    margin: auto;
+    text-align: center;
+    padding: 30px;
+}
+.testimonial .slider .slide {
+    display: none;
+}
+section .slider .slide.active {
+    display: block;
+    -webkit-animation: slide 1s ease;
+    animation: slide 1s ease;
+}
+@keyframes slide {
+    from {opacity: 0; -webkit-transform: translateX(-15px);}
+    to {opacity: 1; -webkit-transform: translateX(0);}
+}
+@-webkit-keyframes slide {
+    from {opacity: 0; -webkit-transform: translateX(-15px);}
+    to {opacity: 1; -webkit-transform: translateX(0);}
+}
+.testimonial .slider p {
+    font-size: 1.4rem;
+    color: #444;
+    word-spacing: 2px;
+}
+.testimonial .slider .client-info h3 {
+    font-weight: bold;
+    color: #000;
+    font-size: 1.6rem;
+    margin: 30px 0 10px;
+}
+.testimonial .slider .client-info span {
+    display: block;
+    font-size: 1.14rem;
+    color: #11bead;
+}
+.testimonial .container .slider-indicator {
+    text-align: center;
+    padding-top: 30px;
+}
+.testimonial .container .slider-indicator img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 8px;
+    opacity: .2;
+    border: 4px solid #fff;
+    transition: opacity 1s ease;
+    cursor: pointer;
+}
+.testimonial .container .slider-indicator img.active {
+    opacity: 1;
+}
+/* 섹션 4 */
+#scroll-section-4 {
+    padding-top: 0;
+}
+#scroll-section-4 .banner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#scroll-section-4 .banner.stickyyY {
+    position: fixed;
+    top: 0; left: 0;
+}
+#scroll-section-4 .banner .bg {
+    z-index: 10;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: none;
+    background: #fff url('../images/circle.png');
+    -webkit-background-size: 100px;
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    mix-blend-mode: screen;
+}
+/* 섹션 5 */
+#scroll-section-5 {
+    padding-top: 0;
+    background-color: #000;
+}
+.color-change {
+    position: relative;
+    height: 100%;
+}
+.section {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100vh;
+}
+.stickyy {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+.stickyy.stickyyY {
+    position: fixed;
+    top: 0;
+}
+.black {
+    background-color: #000;
+}
+.white {
+    z-index: 3;
+    -webkit-clip-path: inset(100% 0px 0px);
+    clip-path: inset(100% 0px 0px0px);
+    background-color: #fff;
+}
+.red {
+    z-index: 4;
+    -webkit-clip-path: inset(100% 0px 0px);
+    clip-path: inset(100% 0px 0px);
+    background-color: red;
+}
+.contents {
+    position: absolute;
+    width: 450px;
+    margin: auto;
+    top: 30%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.contents .text {
+    width: 100%;
+    color: #000;
+    margin-bottom: 80px;
+}
+h3 {
+    text-transform: uppercase;
+}
+.device {
+    position: absolute;
+    margin: auto;
+    left: 0; right: 0; bottom: -2px;
+    text-align: center;
+    width: 100%;
+}
+.section .text h3,
+.section .text h4 {font-size: 3.2rem;}
+
+.black .text h3 {color: #fff;}
+.white .text h3 {color: #8b8b99;}
+.red .text h3 {color: #e57571;}
+
+.black .text h4 {color: transparent;}
+.white .text h4 {color: #000;}
+.red .text h4 {color: #e57571;}
+.black .text h4 span {color: transparent;}
+.white .text h4 span {color: transparent;}
+.red .text h4 span {color: #fff;}
+
+/* 로딩 */
+body.before-load {
+    overflow: hidden; 
+}
+.before-load .container {
+    display: none;
+}
+.before-load .loading {
+    opacity: 1;
+}
+.loading {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: 999;
+    background-color: #fff;
+    opacity: 0;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+.bars {
+    position: absolute;
+    top: 50%; left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+}
+.bars li {
+    list-style: none;
+    width: 6px;
+    height: 20px;
+    background-color: #262626;
+    margin: 0 4px;
+    -webkit-animation: animate .7s infinite alternate;
+    animation: animate .7s infinite alternate;
+}
+@keyframes animate {
+    0% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    25% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    50% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    75% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    100% {-webkit-transform: scaleY(3); -ms-transform: scaleY(3); transform: scaleY(3);}
+}
+@-webkit-keyframes animate {
+    0% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    25% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    50% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    75% {-webkit-transform: scaleY(1); -ms-transform: scaleY(1); transform: scaleY(1);}
+    100% {-webkit-transform: scaleY(3); -ms-transform: scaleY(3); transform: scaleY(3);}
+}
+.bars li:nth-child(1){animation-delay: .1s; -webkit-animation-delay: .1s;}
+.bars li:nth-child(2){animation-delay: .2s; -webkit-animation-delay: .2s;}
+.bars li:nth-child(3){animation-delay: .3s; -webkit-animation-delay: .3s;}
+.bars li:nth-child(4){animation-delay: .4s; -webkit-animation-delay: .4s;}
+.bars li:nth-child(5){animation-delay: .5s; -webkit-animation-delay: .5s;}
+.bars li:nth-child(6){animation-delay: .6s; -webkit-animation-delay: .6s;}
+#load {
+    position:absolute;
+    width:600px;
+    height:36px;
+    left:50%;
+    top:40%;
+    margin-left:-300px;
+    overflow:visible;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    cursor:default;
+}
+
+#load div {
+    position:absolute;
+    width:20px;
+    height:36px;
+    opacity:0;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    animation:move 2s linear infinite;
+    -webkit-animation:move 2s linear infinite;
+    transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+    color:#11bead;
+}
+
+#load div:nth-child(2) {
+    animation-delay:0.2s;
+    -webkit-animation-delay:0.2s;
+}
+#load div:nth-child(3) {
+    animation-delay:0.4s;
+    -webkit-animation-delay:0.4s;
+}
+#load div:nth-child(4) {
+    animation-delay:0.6s;
+    -webkit-animation-delay:0.6s;
+}
+#load div:nth-child(5) {
+    animation-delay:0.8s;
+    -webkit-animation-delay:0.8s;
+}
+#load div:nth-child(6) {
+    animation-delay:1s;
+    -webkit-animation-delay:1s;
+}
+#load div:nth-child(7) {
+    animation-delay:1.2s;
+    -webkit-animation-delay:1.2s;
+}
+@keyframes move {
+    0% {
+        left:0;
+        opacity:0;
+    }
+    35% {
+    	left: 41%; 
+    	-webkit-transform:rotate(0deg);
+    	transform:rotate(0deg);
+    	opacity:1;
+    }
+    65% {
+    	left:59%; 
+    	-webkit-transform:rotate(0deg); 
+    	transform:rotate(0deg); 
+    	opacity:1;
+    }
+    100% {
+    	left:100%; 
+    	-webkit-transform:rotate(-180deg); 
+    	transform:rotate(-180deg);
+    	opacity:0;
+    }
+}
+@-webkit-keyframes move {
+	0% {
+		left:0; 
+		opacity:0;
+	}
+	35% {
+		left:41%; 
+		-webkit-transform:rotate(0deg); 
+		transform:rotate(0deg); 
+		opacity:1;
+	}
+	65% {
+		left:59%; 
+		-webkit-transform:rotate(0deg); 
+		transform:rotate(0deg); 
+		opacity:1;
+	}
+	100% {
+		left:100%;
+		-webkit-transform:rotate(-180deg); 
+		transform:rotate(-180deg); 
+		opacity:0;
+	}
+}
+/* 컨택섹션 */
+.contact {
+    z-index: 15;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    -webkit-backdrop-filter: saturate(180%) blur(15px);
+    backdrop-filter: saturate(180%) blur(15px);
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    display: none;
+}
+.contact.active {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+}
+.contact .container {
+    position: relative;
+    background-color: #f7f7f9;
+    width: 1000px;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-radius: 5px;
+    padding: 40px 15px;
+}
+.contact .close {
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 50px; height: 50px;
+    text-align: center;
+}
+.contact .close i {
+    font-size: 2.5rem;
+    line-height: 50px;
+    cursor: pointer;
+    color: #444;
+    transition: all .3s ease;
+} 
+.contact .close i:hover {
+    color: #000;
+}
+.contact .container .contact-box {
+    -webkit-flex: 0 0 50%;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 40px 0;
+}
+.contact .container .contact-box h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-bottom: 2rem;
+}
+.contact .container .contact-box p {
+    font-size: 1rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+.contact .container .contact-box .contact-info li+li {
+    margin-top: 1rem;
+}
+.contact .container .message-box {
+    -webkit-flex: 0 0 50%;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 40px 0;
+}
+.contact .row {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.message-box .col-6 {
+    width: calc(50% - 10px);
+}
+.message-box .col-12 {
+    width: 100%;
+}
+.message-box .control {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #55595c;
+    padding: 15px 0;
+    background-color: #fff;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+}
+.message-box button {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.2;
+    border: 0;
+    padding: 20px 25px;
+    background-color: #444;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all .3s ease;
+}
+.message-box button:hover {
+    background-color: #000;
+}
+.contact .mainT svg {
+     -webkit-flex: 0 0 50%;
+     -ms-flex: 0 0 50%;
+     flex: 0 0 50%;
+     max-width: 100%;
+ }
+
+.contact .mainT svg .st4 {
+     fill: none;
+     stroke: #000;
+     stroke-width: 1;
+     stroke-linecap: round;
+     stroke-linejoin: round;
+     stroke-dasharray: 1000;
+     stroke-dashoffset: 1000;
+     -webkit-animation: animate1 3s linear .8s 1 both running;
+     animation: animate1 3s linear .8s 1 both running;
+ }
+.contact .mainT svg .st5 {
+     fill: none;
+     stroke: #000;
+     stroke-width: 1;
+     stroke-linecap: round;
+     stroke-linejoin: round;
+     stroke-dasharray: 280;
+     stroke-dashoffset: 280;
+     -webkit-animation: animate2 1s linear 1.8s 1 both;
+     animation: animate2 1s linear 1.8s 1 both;
+ }
+.contact .mainT svg .st6 {
+     fill: none;
+     stroke-width: 1;
+     stroke-linecap: round;
+     stroke-linejoin: round;
+     stroke-dasharray: 9;
+     stroke-dashoffset: 9;
+     -webkit-animation: dott 1s linear 3.3s 1 both;
+     animation: dott 1s linear 3.3s 1 both;
+ }
+ @keyframes animate1 {
+     to {
+         stroke-dashoffset: 200;
+     }
+ }
+ @keyframes animate2 {
+     to {
+         stroke-dashoffset: 40;
+     }
+ }
+ @keyframes dott {
+     to {
+         stroke-dashoffset: .5;
+     }
+ }
+ @-webkit-keyframes animate1 {
+     to {
+         stroke-dashoffset: 200;
+     }
+ }
+ @-webkit-keyframes animate2 {
+     to {
+         stroke-dashoffset: 40;
+     }
+ }
+ @-webkit-keyframes dott {
+     to {
+         stroke-dashoffset: .5;
+     }
+ }
+
+@media (max-width: 991px){
+    .contact .container {
+        width: 790px;
+    }
+    #scroll-section-0 h1 {
+        top: -10vh;
+        font-size: 5rem;
+    }
+    .main-message {
+        top: 65vh;
+    }
+    .wrap .box .item {
+        max-width: 100%;
+        -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        padding: 10px 20px;
+    }
+    .lightbox .main_img {
+        max-width: 90%;
+    }
+    .desc-message {
+        width: 35%;
+    }
+    .part .title {
+        font-size: 1.6rem;
+    }
+    .part .timeline-box .timeline-item .time-date {
+        font-size: 1.2rem;
+    }
+    .part .timeline-box .timeline-item .timeline-title {
+        font-size: 1.2rem;
+    }
+    .part .timeline-box .timeline-item .timeline-text {
+        font-size: 1rem;
+    }
+    .testimonial .slider {
+        width: 720px;
+    }
+}
+@media (max-width: 768px){
+    .local-nav-sections li a {
+        font-size: 1rem;
+    }
+    .contact .container {
+        width: 710px;
+    }
+    #scroll-section-0 h1 {
+        font-size: 4rem;
+    }
+    .main-message .context p {
+        font-size: 2.5vw;
+    }
+    .message-box .col-6:first-child {
+        margin-bottom: 30px;
+    }
+    .message-box .col-6 {
+        -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .part .title {
+        font-size: 2rem;
+    }
+    .part .timeline-box .timeline-item .time-date {
+        margin-top: 10px;
+        font-size: 1.6rem;
+    }
+    .part .timeline-box .timeline-item .timeline-text {
+        width: 96%;
+    }
+    .testimonial .slider {
+        width: 600px;
+    }
+}
+@media (max-width: 479px){
+    .contact .container {
+        width: 310px;
+    }
+    .contact .container .message-box {
+        display: none;
+    }
+    .contact .container .contact-box {
+        -webkit-flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .global-nav-links {
+        text-align: center;
+    }
+    .global-nav-links a {
+        float: none;
+    }
+    .local-nav {
+        border: none;
+    }
+    .local-nav-sections {
+        display: none;
+    }
+    #scroll-section-0 h1 {
+        font-size: 2rem;
+    }
+    .main-message .context h2 {
+        font-size: 1.6rem;
+    }
+    .main-message .context p {
+        font-size: 1.2rem;
+    }
+    .wrap .box .overlay .go_site {
+        width: 50%;
+        font-size: 1.2rem;
+    }
+    .counters .contain li h4 {
+        font-size: 1rem;
+    }
+    .counters .contain li .anim h3 {
+        font-size: 2.4rem;
+    }
+    .counters .contain li .anim span {
+        font-size: 1.2rem;
+        line-height: 4;
+    }
+    .counters .contain li .anim::after {
+        display: none;
+    }
+    .counters {
+        background-color: #fdf9ff;
+    }
+    .counters::before {
+        content: '';
+        position: absolute;
+        margin: auto;
+        top: 0; left: 0; right: 0;
+        width: 90%;
+        border-top: 1px solid #dfdfdf;
+    }
+    .counters::after {
+        content: '';
+        position: absolute;
+        margin: auto;
+        bottom: 0; left: 0; right: 0;
+        width: 90%;
+        border-bottom: 1px solid #dfdfdf;
+    }
+    .main-message p {
+        font-size: 2rem;
+    }
+    .part .title {
+        font-size: 2rem;
+        line-height: 1;
+    }
+    .part .timeline-box .timeline-item .time-date,
+    .part .timeline-box .timeline-item .timeline-title,
+    .part .timeline-box .timeline-item .timeline-text{
+        font-size: 1rem;
+    }
+    .desc-message {
+        width: 80%;
+    }
+    #scroll-section-2 .b,
+    #scroll-section-2 .c {
+        left: 10%;
+        text-align: center;
+    }
+    .mid-message {
+        font-size: 1.2rem;
+    }
+    .testimonial .title .who-am-i {
+        font-size: 2rem;
+    }
+    .testimonial .slider {
+        width: 310px;
+    }
+    .testimonial .slider p {
+        font-size: 1rem;
+    }
+    .testimonial .slider .client-info h3 {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+    .testimonial .container .slider-indicator img {
+        width: 70px; height: 70px;
+        margin: 0;
+    }
+    .contents {
+        width: 300px;
+    }
+}

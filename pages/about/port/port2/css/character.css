@@ -1,0 +1,353 @@
+@import url('all.css');
+
+body {background-color: #000;}
+.character {
+    padding-top: 40px;
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../img/blur_background/still_03.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.character>section {
+/*    display: none;*/
+    margin: 0 auto;
+    width: 1200px;
+}
+.character>section>h2>a {
+    margin: 0 auto;
+    display: block;
+    width: 180px;
+    height: 80px;
+    background-image: url('../img/image_replace.png');
+    background-position: -165px -70px;
+    cursor: pointer;
+}
+.character>section>.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 80px;
+    width: 100%;
+}
+/*아티클1*/
+.character>section>.container>.art1 {
+    width: 400px;
+    height: 640px;
+}
+.character>section>.container>.art1>ul {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.character>section>.container>.art1>ul>li {
+    position: relative;
+    width: calc(33.33% - 10px);
+    margin-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.character>section>.container>.art1>ul>li>.pic {
+    width: 100px; height: 120px;
+    background-color: #fff;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-size: cover;
+}
+.character>section>.container>.art1>ul>li>.hv.active {
+    position: absolute;
+    width: 100px; height: 120px;
+    background-color: rgba(0,0,0,.8);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.character>section>.container>.art1>ul>li:hover>.hv {
+    display: none;
+}
+
+
+
+
+.character>section>.container>.art1>ul>li:nth-child(1),
+.character>section>.container>.art2>.mb_wrap>.mb1>.n1>.nb {background-color: #6600ff;}
+
+.character>section>.container>.art1>ul>li:nth-child(2),
+.character>section>.container>.art2>.mb_wrap>.mb2>.n1>.nb {background-color: #336666;}
+
+.character>section>.container>.art1>ul>li:nth-child(3),
+.character>section>.container>.art2>.mb_wrap>.mb3>.n1>.nb{background-color: #3366ff;}
+
+.character>section>.container>.art1>ul>li:nth-child(4),
+.character>section>.container>.art2>.mb_wrap>.mb4>.n1>.nb{background-color: #009966;}
+
+.character>section>.container>.art1>ul>li:nth-child(5),
+.character>section>.container>.art2>.mb_wrap>.mb5>.n1>.nb{background-color: #cc0000;}
+
+.character>section>.container>.art1>ul>li:nth-child(6),
+.character>section>.container>.art2>.mb_wrap>.mb6>.n1>.nb{background-color: #cc3399;}
+
+.character>section>.container>.art1>ul>li:nth-child(7),
+.character>section>.container>.art2>.mb_wrap>.mb7>.n1>.nb{background-color: #cc99ff;}
+
+.character>section>.container>.art1>ul>li:nth-child(8),
+.character>section>.container>.art2>.mb_wrap>.mb8>.n1>.nb{background-color: #ff0066;}
+
+.character>section>.container>.art1>ul>li:nth-child(9),
+.character>section>.container>.art2>.mb_wrap>.mb9>.n1>.nb{background-color: #ffcc33;}
+
+.character>section>.container>.art1>ul>li:nth-child(10),
+.character>section>.container>.art2>.mb_wrap>.mb10>.n1>.nb{background-color: #ff6633;}
+
+.character>section>.container>.art1>ul>li:nth-child(11),
+.character>section>.container>.art2>.mb_wrap>.mb11>.n1>.nb{background-color: #333333;}
+
+.character>section>.container>.art1>ul>li:nth-child(12),
+.character>section>.container>.art2>.mb_wrap>.mb12>.n1>.nb{background-color: #ffcccc;}
+
+.character>section>.container>.art1>ul>li:nth-child(13),
+.character>section>.container>.art2>.mb_wrap>.mb13>.n1>.nb{background-color: #33cccc; margin-bottom: 0;}
+
+/*아티클2*/
+.character>section>.container>.art2 {
+    overflow: hidden;
+    position: relative;
+    width: 680px; height: 630px;
+}
+.character>section>.container>.art2>.mb_wrap {
+    position: relative;
+    width: calc(100% * 13);
+    display: flex;
+}
+.character>section>.container>.art2>.mb_wrap>li {
+    width: 680px; height: 630px;
+    border-radius: 10px;
+/*    display: none;*/
+}
+.character>section>.container>.art2>.mb_wrap>.mb1 {
+/*    margin-left: -680px;*/
+}
+.character>section>.container>.art2>.mb_wrap>li.active {
+    display: block;
+}
+
+/*아티클2 - 페이지1(name box)*/
+.character>section>.container>.art2>.mb_wrap>li>.n1 {
+    width: 100%; height: 100%;
+}
+.character>section>.container>.art2>.mb_wrap>li>.n1>.nb {
+    position: relative;
+    width: 100%;
+    height: 100px;
+}
+.character>section>.container>.art2>.mb_wrap>li>.n1>.nb>.nm {
+    position: absolute;
+    margin: auto;
+    left: 0; right: 0; top: 0; bottom: 0;
+    width: 500px; height: 79px;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/*아티클2 - 페이지1(image box) - */
+.character>section>.container>.art2>.mb_wrap>li>.n1>.ib {
+    position: relative;
+    width: 100%; height: calc(100% - 100px);
+    background-color: #000;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.character>section>.container>.art2>.btn {
+    z-index: 5;
+    position: absolute;
+    margin: auto;
+    top: 50px; bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    width: 100%; height: 40px;
+}
+.character>section>.container>.art2>.btn>.lt,
+.character>section>.container>.art2>.btn>.rt {
+    font-size: 40px; line-height: 40px; cursor: pointer; text-shadow: 2px 2px 4px #000000;
+}
+.character>section>.container>.art2>.mb_wrap>li>.pg>.ib>.txt {
+    position: absolute;
+    width: 130px; height: 30px;
+    bottom: 10px; right: 10px;
+    background-image: url('../img/bottom_btn.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+
+
+/*이미지 박스*/
+.character>.img_box {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0,0,0,.8);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+.character>.img_box>.content {
+    position: relative;
+    background-color: #000;
+    width: 1000px;
+}
+.character>.img_box>.content>.close {
+    float: right;
+    margin: 10px;
+    height: 30px; width: 30px; line-height: 40px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    background-image: url('../img/frame/cancel_white.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.character>.img_box>.content>.items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 40px;
+}
+.character>.img_box>.content>.items>.seg {
+    margin: 0 10px;
+    width: 280px;
+    text-align: center;
+}
+.character>.img_box>.content>.items>.seg:hover {outline: 3px solid #f4b226}
+.character>.img_box>.content>.items>.seg.active {outline: 3px solid #f4b226}
+
+.character>.img_box>.content>.items>.seg>p>.red {color: #ff3333; font-weight: bold; line-height: 30px;}
+.character>.img_box>.content>.items>.seg>.img {
+    width: 100%; height: 250px;
+    margin-bottom: 10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.character>.img_box>.content>.items>.n1>.img {background-image: url('../img/poster/ironman.jpg');}
+.character>.img_box>.content>.items>.n2>.img {background-image: url('../img/poster/Avengers.jpg');}
+.character>.img_box>.content>.items>.n3>.img {background-image: url('../img/poster/SherlockHolmes.jpg');}
+.character>.img_box>.content>.items>.seg>h3 {font-size: 18px; line-height: 18px; font-weight: bold;}
+.character>.img_box>.content>.trailer {height: 500px;}
+.character>.img_box>.content>.trailer>video {width: 100%; height: 100%;}
+.character>.img_box>.content>.trailer>iframe {width: 100%; height: 100%;}
+
+
+.character>.img_box>li {display: none;}
+.character>.img_box>li.active {display: block;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*배우 썸네일*/
+.character>section>.container>.art1>ul>.box1>.pic {background-image: url('../img/actors/cast_robert.jpg');}
+.character>section>.container>.art1>ul>.box2>.pic {background-image: url('../img/actors/cast_rami.jpg');}
+.character>section>.container>.art1>ul>.box3>.pic {background-image: url('../img/actors/cast_marion.jpg');}
+.character>section>.container>.art1>ul>.box4>.pic {background-image: url('../img/actors/cast_Emma.jpg');}
+.character>section>.container>.art1>ul>.box5>.pic {background-image: url('../img/actors/cast_John.jpg')}
+.character>section>.container>.art1>ul>.box6>.pic {background-image: url('../img/actors/cast_Octavia.jpg')}
+.character>section>.container>.art1>ul>.box7>.pic {background-image: url('../img/actors/cast_Selena.jpg')}
+.character>section>.container>.art1>ul>.box8>.pic {background-image: url('../img/actors/cast_Kumail.jpg')}
+.character>section>.container>.art1>ul>.box9>.pic {background-image: url('../img/actors/cast_tomh.jpg')}
+.character>section>.container>.art1>ul>.box10>.pic {background-image: url('../img/actors/cast_Craig.jpg')}
+.character>section>.container>.art1>ul>.box11>.pic {background-image: url('../img/actors/cast_antonio.jpg')}
+.character>section>.container>.art1>ul>.box12>.pic {background-image: url('../img/actors/cast_Ralph.jpg')}
+.character>section>.container>.art1>ul>.box13>.pic {background-image: url('../img/actors/cast_Michael.jpg')}
+
+
+
+
+/*배우이름 경로*/
+.character>section>.container>.art2>.mb_wrap>.mb1>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/dolittle.png');
+}
+.character>section>.container>.art2>.mb_wrap>.mb2>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Chee-chee.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb3>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Tutu.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb4>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Poly.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb5>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Yoshi.png');
+}
+.character>section>.container>.art2>.mb_wrap>.mb6>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Dab-dab.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb7>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Besty.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb8>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Plimpton.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb9>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Jip.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb10>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Kevin.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb11>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Rassouli.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb12>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Barry.png')
+}
+.character>section>.container>.art2>.mb_wrap>.mb13>.n1>.nb>.nm {
+    background-image: url('../img/characters/names/Mudfly.png')
+}
+
+/*배우이름 매인 이미지 경로*/
+
+.character>section>.container>.art2>.mb_wrap>.mb1>.n1>.ib {background-image: url('../img/characters/dolittle.jpg'); background-size: cover;}
+.character>section>.container>.art2>.mb_wrap>.mb2>.n1>.ib {background-image: url('../img/characters/cheechee.png');}
+.character>section>.container>.art2>.mb_wrap>.mb3>.n1>.ib {background-image: url('../img/characters/tutu.jpg');
+background-size: 20%;}
+.character>section>.container>.art2>.mb_wrap>.mb4>.n1>.ib {background-image: url('../img/characters/poly.png');}
+.character>section>.container>.art2>.mb_wrap>.mb5>.n1>.ib {background-image: url('../img/characters/yoshi.png');}
+.character>section>.container>.art2>.mb_wrap>.mb6>.n1>.ib {background-image: url('../img/characters/dabdab.png'); background-size: 50%;}
+.character>section>.container>.art2>.mb_wrap>.mb7>.n1>.ib {background-image: url('../img/characters/betsy.png');}
+.character>section>.container>.art2>.mb_wrap>.mb8>.n1>.ib {background-image: url('../img/characters/plimpton.png');}
+.character>section>.container>.art2>.mb_wrap>.mb9>.n1>.ib {background-image: url('../img/characters/jip.png');}
+.character>section>.container>.art2>.mb_wrap>.mb10>.n1>.ib {background-image: url('../img/characters/kevin.png');}
+.character>section>.container>.art2>.mb_wrap>.mb11>.n1>.ib {background-image: url('../img/characters/rassouli.jpg'); background-size: cover;}
+.character>section>.container>.art2>.mb_wrap>.mb12>.n1>.ib {background-image: url('../img/characters/barry.jpg'); background-size: cover;}
+.character>section>.container>.art2>.mb_wrap>.mb13>.n1>.ib {background-image: url('../img/characters/Mudfly.jpg'); background-size: cover;}

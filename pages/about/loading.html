@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>loading</title>
+    <style>
+        body{
+            margin: 0; padding: 0;
+        }
+        .preload {
+            background-color: #fff;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(80deg, #110e1f, #1b1730);
+            position: fixed;
+            top: 0; left: 0; z-index: 999;
+        }
+        .text {
+            width: 100%;
+            height: 100vh;
+            background-image: url('images/picture03.jpg');
+            -webkit-background-size: 100%;
+            background-size: 100%;
+            background-position: center;
+            font-size: 6rem;
+            font-weight: 600;
+            line-height: 650px;
+            text-align: center;
+            position: absolute;
+            top: 55%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #d2006b;
+            -webkit-background-clip: text;
+            pointer-events: none;
+            animation: anim1 1s infinite, anim2 10s forwards;
+        }
+        @keyframes anim1{
+            0%{background-image: url('images/picture01.jpg');;}
+            10%{background-image: url('images/picture02.jpg');;}
+            20%{background-image: url('images/picture03.jpg');;}
+            30%{background-image: url('images/picture04.jpg');;}
+            40%{background-image: url('images/picture05.jpg');;}
+            50%{background-image: url('images/picture06.jpg');;}
+            60%{background-image: url('images/picture07.jpg');;}
+            70%{background-image: url('images/picture08.jpg');;}
+            80%{background-image: url('images/picture01.jpg');;}
+            90%{background-image: url('images/picture02.jpg');;}
+            100%{background-image: url('images/picture03.jpg');;}
+        }
+        @keyframes anim2{
+            from{color: #fff;}
+            to{color: transparent;}
+        }
+        .title {
+            font-family: monospace;
+            font-family: 1rem;
+            color: #fff;
+            letter-spacing: 5px;
+            position: absolute;
+            top: 60%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .bar {
+            width: 80px;
+            height: 2px;
+            background-color: #282246;
+            position: absolute;
+            top: 63%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+        }
+        #fill {
+            width: 0%;
+            height: 100%;
+            background-color: #fff;
+            position: relative;
+            top: 0; left: 0; 
+        }
+    </style>
+</head>
+<body>
+    <div class="preload">
+        <div class="text">Creative</div>
+        <div class="title">DAFT CREATION</div>
+        <div class="bar">
+            <div id="fill"></div>
+        </div>
+    </div>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        var progress = 0;
+        document.onreadystatechange = function(){
+            if(document.readyState == "interactive"){
+                var allElement = $("*");
+                console.log(allElement);
+                var length = allElement.length;
+                for(var i = 0; i < length; i++){
+                    set_element(20, 20);
+                }
+            }
+        }
+        function set_element(element, totalElement){
+            var percentage = 100 / totalElement;
+            if($(element).length == 1){
+               $('#fill').animate({width: progress + percentage + "%"}, 100, function(){
+                   if(document.getElementById('fill').style.width == "100%"){
+                       $('.preload').fadeOut(500);
+                   }
+               });
+                progress = progress + percentage;
+               }
+        }
+    </script>
+</body>
+</html>

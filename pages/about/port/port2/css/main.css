@@ -1,0 +1,167 @@
+/*메인*/
+body {
+    background-color: #000;
+    position: relative;
+}
+.audio {
+    z-index: 5;
+    position: absolute;
+    right: 40px; bottom: 40px;
+    width: 40px; height: 40px;
+    background-image: url('../img/frame/sound_white.png');
+    background-size: 100%;
+    background-position: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.audio.active {background-image: url('../img/frame/sound_orange.png');}
+.audio:hover {background-image: url('../img/frame/sound_orange.png');}
+
+.main {
+    color: transparent;
+    position: absolute;
+    left: 0; right: 0;
+    margin: auto;
+    width: 1200px;
+    padding: 0 10px;
+}
+.main>header {
+    position: absolute;
+    margin: auto; left: 0; right: 0; bottom: 80px;
+    width: calc(100% - 20px);
+}
+h1 {
+    position: absolute;
+    width: 300px;
+    height: 150px;
+    left: 20px; top: 40px;
+    background-image: url('../img/name.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.main>header>.Mmenu {
+    margin-top: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.main>header>.Mmenu>li {
+    position: relative;
+    background-color: #000;
+    position: relative;
+    width: calc((100%/4) - 20px);
+    height: 200px;
+    border: 1px solid #ffcc99;
+    background-size: 140%;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: .6s;
+}
+.main>header>.Mmenu>li::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.8);
+}
+.main>header>.Mmenu>li:hover {
+    background-size: 160%;
+}
+.main>header>.Mmenu>li:hover::before {
+    background-color: transparent;
+}
+.main>header>.Mmenu>li a {
+    position: absolute;
+    background-color: rgba(0,0,0,.5);
+    margin: 0 auto; left: 0; right: 0; bottom: 20px;
+    width: 160px; height: 60px;
+    color: transparent;
+    display: block;
+    border: 1px solid #ffcc99;
+}
+.main>header>.Mmenu>li:nth-child(1) {background-image: url('../img/still_01.jpg');}
+.main>header>.Mmenu>li:nth-child(2) {background-image: url('../img/still_02.jpg');}
+.main>header>.Mmenu>li:nth-child(3) {background-image: url('../img/still_03.jpg');}
+.main>header>.Mmenu>li:nth-child(4) {background-image: url('../img/still_05.jpg');}
+
+.main>header>.Mmenu>li:nth-child(1) a {
+    background-image: url('../img/image_replace.png');
+    background-position: 22px 10px;
+}
+.main>header>.Mmenu>li:nth-child(2) a {
+    background-image: url('../img/image_replace.png');
+    background-position: -115px 10px;
+}
+.main>header>.Mmenu>li:nth-child(3) a {
+    background-image: url('../img/image_replace.png');
+    background-position: -252px 10px;
+}
+.main>header>.Mmenu>li:nth-child(4) a {
+    background-image: url('../img/image_replace.png');
+    background-position: -390px 10px;
+}
+.main>p {
+    position: absolute;
+    margin: auto;
+    bottom: 0; left: 0; right: 0;
+    padding-right: 10px;
+    width: 100%;
+    color: #fff;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: right;
+}
+/*비디오 배경*/
+.banner {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.banner>video {
+    position: absolute;
+    top: 0; left: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    
+}
+
+
+/*sns*/
+.sns {
+    position: absolute;
+    width: 257px;
+    height: 50px;
+    right: 20px; top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.sns>li {}
+.sns>li>a {
+    color: transparent;
+    display: block;
+    width: 50px; height: 50px;
+    background-color: #666;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.sns>li:nth-child(1)>a {
+    background-image: url(../img/sns/facebook_white.png);
+}
+.sns>li:nth-child(2)>a {
+    background-image: url(../img/sns/instagram_white.png);
+}
+.sns>li:nth-child(3)>a {
+    background-image: url(../img/sns/twitter_white.png);
+}
+.sns>li:nth-child(4)>a {
+    background-size: cover;
+    background-image: url(../img/sns/naver.png);
+}

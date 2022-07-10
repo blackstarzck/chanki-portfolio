@@ -1,0 +1,215 @@
+@import url('all.css');
+
+.main {
+    position: relative;
+    padding-top: 40px;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+}
+.main>section {
+    display: none;
+    height: 100%;
+}
+.main>section.on {
+    display: block;
+}
+.main>section>div {
+    width: 1200px;
+    margin: 0 auto;
+}
+.main>section>div>h2 {
+    margin: 0 auto;;
+    width: 180px;
+    height: 80px;
+    background-image: url('../img/image_replace.png');
+    background-position: -520px -71px;
+    cursor: pointer;
+}
+.main>section>.big {
+    position: relative;
+    height: 500px;
+} 
+.main>section>.big>.prev {
+    z-index: 5;
+    text-align: center;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    left: 0; top: 0; bottom: 0;
+    margin-left: 20px;
+    cursor: pointer;
+    display: none;
+} 
+.main>section>.big>.next {
+    z-index: 5;
+    text-align: center;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    right: 0; top: 0; bottom: 0;
+    margin-right: 20px;
+    cursor: pointer;
+    display: none;
+}
+.main>section>.big>div>.fas {
+    font-size: 50px; line-height: 50px;
+    color: #fff;
+}
+.main>section>.big>.container {
+    position: relative;
+    margin: 0 auto;
+    width: 400px;
+    height: 100%;
+    overflow: hidden;
+}
+.main>section>.big>.container>.wrapper {
+    position: absolute;
+    display: flex;
+} 
+/*포스터 big*/
+.main>.poster>.big>.container>.wrapper>.photo {
+    width: 400px;
+    text-align: center;
+} 
+.main>.poster>.big>.container>.wrapper>.photo>img {
+    max-height: 520px;
+    cursor: pointer;
+}
+/*스틸컷 big*/
+.main>.still>.big>.container {
+    position: relative;
+    margin: 0 auto;
+    width: 800px;
+    height: 100%;
+    overflow: hidden;
+}
+.main>.still>.big>.container>.wrapper>.photo {
+    width: 800px;
+    text-align: center;
+} 
+.main>.still>.big>.container>.wrapper>.photo>img {
+    max-height: 520px;
+    cursor: pointer;
+}
+
+
+.main>section>.small {
+    position: relative;
+    background-color: #222;
+    width: 100%;
+    height: 25%;
+} 
+.main>section>.small>.prev {
+    z-index: 5;
+    font-size: 40px;
+    text-align: center;
+    position: absolute;
+    width: 60px;
+    height: 100%; line-height: 250px;
+    margin: auto;
+    left: 0; top: 0; bottom: 0;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgba(0,0,0,.8);
+    display: none;
+}
+.main>section>.small>.prev.on {
+    display: block;
+}
+.main>section>.small>.next {
+    z-index: 5;
+    font-size: 40px;
+    text-align: center;
+    position: absolute;
+    width: 60px;
+    height: 100%; line-height: 250px;
+    margin: auto;
+    right: 0; top: 0; bottom: 0;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgba(0,0,0,.8);
+} 
+.main>section>.small>.wrapper {
+    padding-top: 25px;
+    position: absolute;
+    display: flex;
+}
+.main>section>.small>.wrapper>.photo {
+    margin: 0 5px;
+    text-align: center;
+    opacity: .5
+} 
+.main>section>.small>.wrapper>.photo>img {
+    vertical-align: bottom;
+    max-height: 180px;
+    cursor: pointer;
+    
+}
+.main>section>.small>.wrapper>.photo.active {
+    border: 2px solid #f4b226;
+    opacity: 1;
+}
+
+.main>section>.switch {
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px 0;
+    text-align: center;
+}
+.main>section>.switch>div {
+    color: #fff;
+    width: 150px;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 40px;
+    display: inline-block;
+    border: 2px solid;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.main>section>.switch>div:last-child {
+    margin-left: 20px;
+}
+.main>section>.switch>div.active {color: #ff6666;}
+.main>section>.switch>div:hover {color: #ff6666;}
+
+.main>.imgBox {
+    position: absolute;
+    left: 0; top: 0;
+    z-index: 15;
+    background-color: rgba(0,0,0,.9);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+.main>.imgBox.open {
+    display: flex;
+}
+.main>.imgBox>.contents {
+    position: relative;
+    border: 2px solid #f4b226;
+    box-sizing: content-box;
+}
+.main>.imgBox>.contents>.close {
+    position: absolute;
+    right: -52px; top: -2px;
+    width: 50px; height: 50px;
+    background-color: #f4b226;
+    background-image: url('../img/frame/cancel_white.png');
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: center;
+    cursor: pointer;
+}
+
+.main>.imgBox>.contents>img {
+    width: 100%;
+    vertical-align: bottom;
+}

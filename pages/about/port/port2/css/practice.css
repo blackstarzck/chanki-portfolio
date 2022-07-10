@@ -1,0 +1,24 @@
+.container {
+    background-color: crimson;
+    width: 1000px; height: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ul {
+    outline: 1px solid yellow;
+    list-style: none;
+    width: 100%;
+}
+ul>li {
+    width: 100%;
+    outline: 1px solid blue;
+}
+ul>li>iframe {
+    width: 100%;
+}
+
+.bx1 li:first-child>iframe {
+    width: 500px; height: 500px;
+    display: none;
+}
