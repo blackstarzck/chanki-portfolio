@@ -2104,25 +2104,49 @@ function detectDevice(){
     let device = "";
 
     if ( navigator.platform ) {
-        if ( filter.indexOf( navigator.platform.toLowerCase() ) < 0) {
-            if(detectAndroid > -1){
-                if(navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1 || navigator.userAgent.indexOf("SamsungBrowser") > -1 || (detectWV == -1 && navigator.userAgent.indexOf("Chrome"))){
-                    // alert('[안드로이드] 웹 입니다');
-                    device = "AND-WEB";
-                }else{
-                    // alert('[안드로이드] 앱 입니다');
-                    device = "AND-APP";
-                }
-            }else if(detectIPhone > -1 || detectIPad > -1){
-                if(navigator.userAgent.indexOf("Safari") > -1 || navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1){
-                    // alert('[IOS] 웹 입니다');
-                    device = "iOS-WEB";
-                }else{
-                    // alert('[IOS] 앱 입니다');
-                    device = "iOS-APP";
-                }
+        // 1
+        // if ( filter.indexOf( navigator.platform.toLowerCase() ) < 0) {
+        //     if(detectAndroid > -1){
+        //         if(navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1 || navigator.userAgent.indexOf("SamsungBrowser") > -1 || (detectWV == -1 && navigator.userAgent.indexOf("Chrome"))){
+        //             alert('[안드로이드] 웹 입니다');
+        //             device = "AND-WEB";
+        //         }else{
+        //             alert('[안드로이드] 앱 입니다');
+        //             device = "AND-APP";
+        //         }
+        //     }else if(detectIPhone > -1 || detectIPad > -1){
+        //         if(navigator.userAgent.indexOf("Safari") > -1 || navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1){
+        //             alert('[IOS] 웹 입니다');
+        //             device = "iOS-WEB";
+        //         }else{
+        //             alert('[IOS] 앱 입니다');
+        //             device = "iOS-APP";
+        //         }
+        //     }
+        // }else{
+        //     alert("PC")
+        //     device = "PC";
+        // }
+
+        // 2
+        if(detectAndroid > -1){
+            if(navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1 || navigator.userAgent.indexOf("SamsungBrowser") > -1 || (detectWV == -1 && navigator.userAgent.indexOf("Chrome"))){
+                alert('[안드로이드] 웹 입니다');
+                device = "AND-WEB";
+            }else{
+                alert('[안드로이드] 앱 입니다');
+                device = "AND-APP";
+            }
+        }else if(detectIPhone > -1 || detectIPad > -1){
+            if(navigator.userAgent.indexOf("Safari") > -1 || navigator.userAgent.indexOf("CriOS") > -1 || navigator.userAgent.indexOf("DaumApps") > -1 || navigator.userAgent.indexOf("NAVER") > -1 || navigator.userAgent.indexOf("EdgiOS") > -1 || navigator.userAgent.indexOf("KAKAOTALK") > -1){
+                alert('[IOS] 웹 입니다');
+                device = "iOS-WEB";
+            }else{
+                alert('[IOS] 앱 입니다');
+                device = "iOS-APP";
             }
         }else{
+            alert("PC")
             device = "PC";
         }
         return device;
