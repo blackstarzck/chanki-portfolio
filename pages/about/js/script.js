@@ -294,6 +294,7 @@
 
 
                     window.onload = () => {
+                        console.log(cnt, total)
                         if(cnt === total) setTimeout(() => { document.body.classList.remove('before-load'); }, 1000);
                     }
                 }
