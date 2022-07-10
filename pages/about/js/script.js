@@ -732,7 +732,7 @@
         }
         })
         window.addEventListener('orientationchange', ()=>{ // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다. 그래서 setTimeout으로 0.5초 뒤 작동할 수 있게함
-            setTimeout(setLayout, 500);
+            setTimeout(setLayout, 900);
         }); // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다.
     });
 
