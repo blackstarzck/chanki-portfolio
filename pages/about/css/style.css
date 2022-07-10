@@ -808,6 +808,9 @@ body.before-load {
     opacity: 0;
     -webkit-transition: 0.5s;
     transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .bars {
     position: absolute;
@@ -948,6 +951,39 @@ body.before-load {
 		transform:rotate(-180deg); 
 		opacity:0;
 	}
+}
+/* new loading */
+.loading .text-wrap {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.loading .text-wrap .text {
+    font-family: "Montserrat";
+    display: block;
+    font-size: 5vw;
+    font-weight: 600;
+    color: #b30000;
+    margin-bottom: 10px;
+}
+.loading .text-wrap .count {
+    font-family: "Montserrat";
+    font-size: 8vw;
+    color: #b30000;
+    font-weight: 900;
+}
+.loading .bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e7e7e7;
+    border-radius: 10px;
+    padding: 2px;
+}
+.loading .bar .inner {
+    background-color: #b30000;
+    width: 1%;
+    height: 100%;
+    border-radius: 10px;
+    transition: .3s;
 }
 /* 컨택섹션 */
 .contact {

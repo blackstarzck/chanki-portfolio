@@ -237,12 +237,19 @@
         }
     }
     function setCanvasImages(){ // sceneInfo(섹션 1 & 2) 배열에 이미지를 넣는다.
+        let total = sceneInfo[0].values.videoImageCount + sceneInfo[2].values.videoImageCount + sceneInfo[3].objs.imagesPath.length + sceneInfo[4].objs.imagesPath.length;
+        let cnt = 0;
         let imgElem;
+        const bar = document.querySelector(".loading .bar .inner");
+
         for(let i = 0; i < sceneInfo[0].values.videoImageCount; i++){
 //            imgElem = document.createElement('img');
             imgElem = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem.src = `./video/IMG/IMG_${0001 + i}.jpg`;
             sceneInfo[0].objs.videoImages.push(imgElem);
+            cnt++;
+            console.log(Math.round((cnt / total) * 100))
+            bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
         let imgElem2;
         for(let i = 0; i < sceneInfo[2].values.videoImageCount; i++){
@@ -250,18 +257,27 @@
             imgElem2 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem2.src = `./video/video3/IMG_${001 + i}.jpg`;
             sceneInfo[2].objs.videoImages.push(imgElem2);
+            cnt++;
+            console.log(Math.round((cnt / total) * 100))
+            bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
         let imgElem3;
         for(let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++){
             imgElem3 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem3.src = sceneInfo[3].objs.imagesPath[i];
             sceneInfo[3].objs.images.push(imgElem3);
+            cnt++;
+            console.log(Math.round((cnt / total) * 100))
+            bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
         let imgElem4;
         for(let i = 0; i < sceneInfo[4].objs.imagesPath.length; i++){
             imgElem4 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
             imgElem4.src = sceneInfo[4].objs.imagesPath[i];
             sceneInfo[4].objs.images.push(imgElem4);
+            cnt++;
+            console.log(Math.round((cnt / total) * 100))
+            bar.style.width = Math.round((cnt / total) * 100) + "%";
         }
     }
     
@@ -703,8 +719,9 @@
     });
 
     document.querySelector('.loading').addEventListener('transitionend', (e) => { // (transition end)매개변수=이벤트 객체, e.currentTarget은 위에 loading을 가르킨다. !!트렌지션이 끝나고 loading요소가 사라져서 메인 페이지가 비로소 보이고 클릭할 수 있다.
-        console.log(e.target)
-        console.log(e.currentTarget)
+        // console.log(e.target)
+        // console.log(e.currentTarget)
+        // document.querySelector('.loading').style.opacity = "1";
         document.body.removeChild(e.currentTarget);
     });
     setCanvasImages();
