@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="kor">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>typing animation test</title>
+    <style>
+        :root {
+            --ti-cursor-margin-left: 0.1em;
+            --ti-cursor-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="target">
+    </h1>
+    <script src="https://unpkg.com/typeit@8.6.0/dist/index.umd.js"></script>
+    <script>
+        const target = document.getElementById("target");
+
+        new TypeIt("#target", {
+            speed: 50,
+            waitUntilVisible: true,
+        })
+        .type("웹 퍼블리셔", { delay: 1100 })
+        .delete(6, { delay: 900 })
+        .type("프론트앤드 개발자")
+        .go();
+    </script>
+</body>
+</html>

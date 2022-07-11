@@ -11,17 +11,18 @@
     <meta property="description" content="Get to know me~!">
     <link rel="shortcut icon" href="./images/new-logo.png">
     <title>찬기의 포트폴리오</title>
-    <link rel="preload" href="/pages/about/fonts/NotoSansKR-Thin.otf" as="font" type="font/woff" crossorigin>
+    <!-- <link rel="preload" href="/pages/about/fonts/NotoSansKR-Thin.otf" as="font" type="font/woff" crossorigin>
     <link rel="preload" href="/pages/about/fonts/NotoSansKR-Light.otf" as="font" type="font/woff" crossorigin>
     <link rel="preload" href="/pages/about/fonts/NotoSansKR-Medium.otf" as="font" type="font/woff" crossorigin>
     <link rel="preload" href="/pages/about/fonts/NotoSansKR-Regular.otf" as="font" type="font/woff" crossorigin>
     <link rel="preload" href="/pages/about/fonts/NotoSansKR-Bold.otf" as="font" type="font/woff" crossorigin>
-    <link rel="preload" href="/pages/about/fonts/NotoSansKR-Black.otf" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="/pages/about/fonts/NotoSansKR-Black.otf" as="font" type="font/woff" crossorigin> -->
     <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"> -->
     <!-- <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="css/default.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://unpkg.com/typeit@8.6.0/dist/index.umd.js"></script>
 </head>
 
 <body class="before-load">
@@ -39,7 +40,7 @@
     </div>
     <!--로딩 애니메이션 끝-->
     <!--글로벌 네브 시작-->
-    <div class="container">
+    <div class="main-container">
         <nav class="global-nav">
             <div class="global-nav-links">
                 <a href="#">contact info</a>
@@ -113,7 +114,7 @@
         <!--로컬 네브 끝-->
         <!--섹션 0 시작-->
         <section class="scroll-section" id="scroll-section-0">
-            <h1>전 여행업 종사자<br><strong>"웹 퍼블리셔" </strong>되다!!</h1>
+            <h1>전 여행업 종사자<br><strong id="target"></strong>되다!!</h1>
             <div class="sticky-elem sticky-elem-canvas">
                 <canvas id="video-canvas-0" width="1920" height="1080"></canvas>
             </div>
@@ -134,7 +135,7 @@
                 <div class="sticky-elem main-message c">
                     <div class="context">
                         <h2>노력하는 사람.</h2>
-                        <p>- 국비지원 교육과정 수료 후 지속적으로 웹사이트를 디자인 제작/코딩.<br>- 실무 투입 시 효율적으로 팀원과 협업 가능<br>- 목표: Advanced JavaScript Skill(React.js) Java</p>
+                        <p>- 국비지원 교육과정 수료 후 지속적으로 웹사이트를 디자인 제작/코딩.<br>- 실무 투입 시 효율적으로 팀원과 협업 가능<br>- 목표: Advanced JavaScript Skill(React.js)</p>
                     </div>
                 </div>
                 <div class="sticky-elem main-message d">
@@ -434,6 +435,7 @@
         </section>
         <!--섹션 5 끝-->
     </div>
+
     <script src="js/script.js"></script>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/testimonials.js"></script>

@@ -1,4 +1,6 @@
 //console.log(window.innerHeight); // 969px. 사용자의 크롬의 기준치이다.
+
+
 (() => {
     let yOffset = 0; // window.pageYOffset 대신 쓸 변수
     let prevScrollHeight = 0; // 현재 스크롤위치(yOffset)보다 이전에 위치한 스크롤 섹션들의 스크롤 높이값의 합
@@ -183,6 +185,18 @@
         }
     }
     ];
+    // typing animation
+    function handleTypeAnimation(){
+        new TypeIt("#target", {
+            speed: 50,
+            waitUntilVisible: true,
+        })
+        .type("웹 퍼블리셔 ", { delay: 1100 })
+        .delete(7, { delay: 900 })
+        .type("프론트앤드 개발자 ")
+        .go();
+    }
+
     //contact
     contactPop.addEventListener('click', ()=>{
         toggle();
@@ -227,6 +241,7 @@
     sceneInfo[3].objs.container.scrollHeight;
     sceneInfo[4].objs.container.scrollHeight;
     
+    console.log("?", sceneInfo[1].objs.container.scrollHeight)
     
 
     function checkMenu(){
@@ -243,66 +258,64 @@
         const txt = document.querySelector(".loading .count");
         const bar = document.querySelector(".loading .bar .inner");
 
-        window.addEventListener("DOMContentLoaded", () => {
-            for(let i = 0; i < sceneInfo[0].values.videoImageCount; i++){
-                //imgElem = document.createElement('img');
-                imgElem = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
-                imgElem.src = `./video/IMG/IMG_${0001 + i}.jpg`;
-                sceneInfo[0].objs.videoImages.push(imgElem);
-    
-                imgElem.onload = () => {
-                    cnt++;
-                    txt.innerText = Math.round((cnt / total) * 100) + "%";
-                    bar.style.width = Math.round((cnt / total) * 100) + "%";
-                }
-    
+
+        for(let i = 0; i < sceneInfo[0].values.videoImageCount; i++){
+            //imgElem = document.createElement('img');
+            imgElem = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
+            imgElem.src = `./video/IMG/IMG_${0001 + i}.jpg`;
+            sceneInfo[0].objs.videoImages.push(imgElem);
+
+            imgElem.onload = () => {
+                cnt++;
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
             }
-            let imgElem2;
-            for(let i = 0; i < sceneInfo[2].values.videoImageCount; i++){
-                //imgElem = document.createElement('img');
-                imgElem2 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
-                imgElem2.src = `./video/video3/IMG_${001 + i}.jpg`;
-                sceneInfo[2].objs.videoImages.push(imgElem2);
-    
-                imgElem2.onload = () => {
-                    cnt++;
-                    txt.innerText = Math.round((cnt / total) * 100) + "%";
-                    bar.style.width = Math.round((cnt / total) * 100) + "%";
-                }
+
+        }
+        let imgElem2;
+        for(let i = 0; i < sceneInfo[2].values.videoImageCount; i++){
+            //imgElem = document.createElement('img');
+            imgElem2 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
+            imgElem2.src = `./video/video3/IMG_${001 + i}.jpg`;
+            sceneInfo[2].objs.videoImages.push(imgElem2);
+
+            imgElem2.onload = () => {
+                cnt++;
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
             }
-            let imgElem3;
-            for(let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++){
-                imgElem3 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
-                imgElem3.src = sceneInfo[3].objs.imagesPath[i];
-                sceneInfo[3].objs.images.push(imgElem3);
-    
-                imgElem3.onload = () => {
-                    cnt++;
-                    txt.innerText = Math.round((cnt / total) * 100) + "%";
-                    bar.style.width = Math.round((cnt / total) * 100) + "%";
-                }
+        }
+        let imgElem3;
+        for(let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++){
+            imgElem3 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
+            imgElem3.src = sceneInfo[3].objs.imagesPath[i];
+            sceneInfo[3].objs.images.push(imgElem3);
+
+            imgElem3.onload = () => {
+                cnt++;
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
             }
-            let imgElem4;
-            for(let i = 0; i < sceneInfo[4].objs.imagesPath.length; i++){
-                imgElem4 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
-                imgElem4.src = sceneInfo[4].objs.imagesPath[i];
-                sceneInfo[4].objs.images.push(imgElem4);
-    
-                imgElem4.onload = () => {
-                    cnt++;
-                    txt.innerText = Math.round((cnt / total) * 100) + "%";
-                    bar.style.width = Math.round((cnt / total) * 100) + "%";
+        }
+        let imgElem4;
+        for(let i = 0; i < sceneInfo[4].objs.imagesPath.length; i++){
+            imgElem4 = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
+            imgElem4.src = sceneInfo[4].objs.imagesPath[i];
+            sceneInfo[4].objs.images.push(imgElem4);
+
+            imgElem4.onload = () => {
+                cnt++;
+                txt.innerText = Math.round((cnt / total) * 100) + "%";
+                bar.style.width = Math.round((cnt / total) * 100) + "%";
 
 
-                    window.onload = () => {
-                        if(cnt === total) setTimeout(() => { 
-                            document.body.classList.remove('before-load');
-                            setTimeout(() => { document.querySelector(".loading").remove(), 700});
-                        }, 1000);
-                    }
-                }
-            }            
-        });
+                if(cnt === total) setTimeout(() => { 
+                    document.body.classList.remove('before-load');
+                    handleTypeAnimation();
+                    setTimeout(() => { document.querySelector(".loading").remove(), 700});
+                }, 1000);
+            }
+        }
     }
     
     function setLayout(){
@@ -310,8 +323,10 @@
             if(sceneInfo[i].type === 'sticky'){
                sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight; //각 섹션의 높이 세팅. 사용자의 브라우저의 높이에 따른(scrollHeight값 구하기 → 969 * 5(heightNum))
             }else if(sceneInfo[i].type === 'normal'){
-               sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight; // 해당 컨텐츠의 알맹이. 컨텐츠 자체 높이
+                console.log(sceneInfo[i].objs.container.offsetHeight)
+                sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight; // 해당 컨텐츠의 알맹이. 컨텐츠 자체 높이
             }
+
             sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`; // 각 section(=컨테이너)의 높이를 scrollHeight값으로 넣기. 결과로는, 브라우저에 출력되어지는 윈도우의 크기가 커졌다!! scrollHeight(4845px) * 4만큼)
         }
         

@@ -79,6 +79,11 @@
     font-weight: 900;
 }
 
+:root {
+    --ti-cursor-margin-right: 1.5rem;
+    --ti-cursor-color: white;
+}
+
 /* General */
 html {
     font-family: 'Noto Sans KR', sans-serif;
@@ -326,7 +331,8 @@ a {
     padding-top: 50vh;
 }
 #scroll-section-0 strong {
-    /* font-family: "Nanum Myeongjo"; */
+    /* display: inline-block;
+    width: 412px; */
     font-weight: 900;
     color: red;
 }
@@ -868,8 +874,11 @@ h3 {
 body.before-load {
     overflow: hidden; 
 }
-.before-load .container {
-    display: none;
+.before-load .main-container {
+    visibility: none;
+}
+.main-container {
+    visibility: visible;
 }
 .before-load .loading {
     opacity: 1;
