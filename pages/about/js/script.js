@@ -244,7 +244,6 @@
         const bar = document.querySelector(".loading .bar .inner");
 
         window.addEventListener("DOMContentLoaded", () => {
-            alert(1)
             for(let i = 0; i < sceneInfo[0].values.videoImageCount; i++){
                 //imgElem = document.createElement('img');
                 imgElem = new Image(); // 위와 같음. image객체가 생성되어 속성들을 추가할수 있음
@@ -296,7 +295,6 @@
 
 
                     window.onload = () => {
-                        console.log(cnt, total)
                         if(cnt === total) setTimeout(() => { 
                             document.body.classList.remove('before-load');
                             setTimeout(() => { document.querySelector(".loading").remove(), 700});
@@ -741,8 +739,6 @@
         window.addEventListener('orientationchange', ()=>{ // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다. 그래서 setTimeout으로 0.5초 뒤 작동할 수 있게함
             setTimeout(setLayout, 500);
         }); // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다.
-
-        alert(2)
     });
     setCanvasImages();
 })();
