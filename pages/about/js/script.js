@@ -217,7 +217,6 @@
     const galleryItem = document.querySelectorAll('.item');
 
     galleryItem.forEach(function(element){
-        console.log(element.querySelector('.fa-plus'))
         element.querySelector('.fa-plus').addEventListener('click', function(){
             lightbox.classList.remove('hide');
             lightbox.classList.add('show');
@@ -254,7 +253,7 @@
     }
     function setCanvasImages(){ // sceneInfo(섹션 1 & 2) 배열에 이미지를 넣는다.
         let total = sceneInfo[0].values.videoImageCount + sceneInfo[2].values.videoImageCount + sceneInfo[3].objs.imagesPath.length + sceneInfo[4].objs.imagesPath.length;
-        let cnt = 0;
+        let cnt = 1;
         let imgElem;
         const txt = document.querySelector(".loading .count");
         const bar = document.querySelector(".loading .bar .inner");
@@ -309,7 +308,7 @@
                 txt.innerText = Math.round((cnt / total) * 100) + "%";
                 bar.style.width = Math.round((cnt / total) * 100) + "%";
 
-
+                console.log(cnt, total)
                 if(cnt === total) setTimeout(() => { 
                     document.body.classList.remove('before-load');
                     handleTypeAnimation();
