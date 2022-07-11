@@ -822,8 +822,6 @@ function createDot(obj){
         document.querySelectorAll(".container .card").forEach((card, i) => { card.remove() });
     }
 
-    console.log(obj.result)
-
     obj.result.forEach(function(item, idx){
         ratio = Number((width / item.img_width).toFixed(2));
         let dot = new Dot(
@@ -1197,7 +1195,6 @@ function showAllUI(obj){
                 const data_b = { state: "prev", current: swiper_lists[idx], prev: swiper_lists[idx+1]};
                 
                 if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
-                console.log("prev-idx: ", idx );
                 handleMainSlide(data_a);
                 handlePalleteSlide(data_b);
             },
@@ -1207,7 +1204,6 @@ function showAllUI(obj){
                 const data_b = { state: "next", current: swiper_lists[idx], prev: swiper_lists[idx-1]};
                 
                 if(code_box.classList.contains("show")) fadeOut({ target: ".rotation-box .svg-codes", stagger: false });
-                console.log("next-idx: ", idx );
                 handleMainSlide(data_a);
                 handlePalleteSlide(data_b);
             }
@@ -1306,7 +1302,6 @@ function bindEventsA(){
     // EVENT
     btns_lt.forEach((btn) => {
         btn.addEventListener("click", function(e){
-            console.log("?")
             const swiper = document.querySelector(".icons-container");
             const color = document.querySelector(".menu-cont.color-pick");
             const svg = document.querySelector(".rotation-box li.show");
