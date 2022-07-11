@@ -214,10 +214,10 @@
     const closeLightbox = document.querySelector('.close-lightbox');
     const lightbox =  document.querySelector('.lightbox');
     const lightboxImage = lightbox.querySelector('.main_img');
-    const gallery = document.querySelector('.box');
-    const galleryItem = gallery.querySelectorAll('.item');
+    const galleryItem = document.querySelectorAll('.item');
 
     galleryItem.forEach(function(element){
+        console.log(element.querySelector('.fa-plus'))
         element.querySelector('.fa-plus').addEventListener('click', function(){
             lightbox.classList.remove('hide');
             lightbox.classList.add('show');
@@ -234,6 +234,7 @@
             lightbox.classList.add('hide');
         }
     })
+
     
     const AA = sceneInfo[0].objs.container.scrollHeight + 
     sceneInfo[1].objs.container.scrollHeight + 
