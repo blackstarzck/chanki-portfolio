@@ -80,7 +80,7 @@
 }
 
 :root {
-    --ti-cursor-margin-right: 1.5rem;
+    --ti-cursor-margin-right: 8px;
     --ti-cursor-color: white;
 }
 
