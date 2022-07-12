@@ -188,7 +188,7 @@
     // typing animation
     function handleTypeAnimation(){
         new TypeIt("#target", {
-            speed: 50,
+            speed: 100,
             waitUntilVisible: true,
         })
         .type("웹 퍼블리셔 ", { delay: 1100 })
