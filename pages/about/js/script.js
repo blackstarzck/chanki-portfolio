@@ -313,9 +313,7 @@
                 })
 
                 if(cnt >= total-5 ){
-                    alert(1)
                     setTimeout(() => { 
-                        alert(2)
                         document.body.classList.remove('before-load');
                         handleTypeAnimation();
                         setTimeout(() => { document.querySelector(".loading").remove(), 1000});
@@ -761,7 +759,6 @@
         window.addEventListener('orientationchange', ()=>{ // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다. 그래서 setTimeout으로 0.5초 뒤 작동할 수 있게함
             setTimeout(setLayout, 500);
         }); // orientationchange: 스마트폰을 포트레잇 -> 랜드스케이프 또는 반대로 바꿀때. 스마트폰에서 캔버스 이미지가 제대로 작동하지 않았다.
-        alert(3)
     });
     setCanvasImages();
 })();
