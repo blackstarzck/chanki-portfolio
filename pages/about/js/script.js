@@ -309,7 +309,7 @@
                 bar.style.width = Math.round((cnt / total) * 100) + "%";
 
                 // console.log(cnt, total, Math.round((cnt / total) * 100))
-                if(cnt >= total-5 || Math.round((cnt / total) * 100) === 100 ){
+                if(Math.round((cnt / total) * 100) === 100 || cnt >= total-5 ){
                     setTimeout(() => { 
                         document.body.classList.remove('before-load');
                         handleTypeAnimation();
