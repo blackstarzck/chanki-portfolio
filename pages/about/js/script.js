@@ -314,7 +314,6 @@
 
                 if(Math.round((cnt / total) * 100) === 100 || cnt >= total-5 ){
                     setTimeout(() => { 
-                        alert(1)
                         document.body.classList.remove('before-load');
                         handleTypeAnimation();
                         setTimeout(() => { document.querySelector(".loading").remove(), 700});
