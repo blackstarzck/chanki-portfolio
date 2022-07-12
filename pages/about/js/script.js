@@ -108,16 +108,16 @@
             canvas_opacity_out: [1, 0, {start: 0.95, end: 1}],
             messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
             messageB_translateY_in: [30, 0, { start: 0.4, end: 0.45 }],
-            messageC_translateY_in: [30, 0, { start: 0.6, end: 0.65 }],
+            messageC_translateY_in: [30, 0, { start: 0.5, end: 0.55 }],
             messageA_opacity_in: [0, 1, { start: 0.15, end: 0.2 }],
             messageB_opacity_in: [0, 1, { start: 0.4, end: 0.45 }],
-            messageC_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
+            messageC_opacity_in: [0, 1, { start: 0.5, end: 0.65 }],
             messageA_translateY_out: [0, -20, { start: 0.33, end: 0.38 }],
             messageB_translateY_out: [0, -20, { start: 0.58, end: 0.63 }],
             messageC_translateY_out: [0, -20, { start: 0.8, end: 0.85 }],
             messageA_opacity_out: [1, 0, { start: 0.33, end: 0.38 }],
             messageB_opacity_out: [1, 0, { start: 0.58, end: 0.63 }],
-            messageC_opacity_out: [1, 0, { start: 0.8, end: 0.85 }]
+            messageC_opacity_out: [1, 0, { start: 0.6, end: 0.75 }]
         }
     },
         { 
@@ -466,7 +466,7 @@
                 break;
             case 2:
                 objs.colorChange.classList.add('change');
-                if (scrollRatio <= 0.5){
+                if (scrollRatio <= 0.3){
                     // in
                     objs.canvas.style.opacity = calcValues(values.canvas_opacity_in, currentYOffset);
                 } else {
@@ -482,7 +482,7 @@
 					objs.messageA.style.opacity = calcValues(values.messageA_opacity_out, currentYOffset);
 					objs.messageA.style.transform = `translate3d(0, ${calcValues(values.messageA_translateY_out, currentYOffset)}%, 0)`;
 				}
-				if (scrollRatio <= 0.55) {
+				if (scrollRatio <= 0.45) {
 					// in
 					objs.messageB.style.transform = `translate3d(0, ${calcValues(values.messageB_translateY_in, currentYOffset)}%, 0)`;
 					objs.messageB.style.opacity = calcValues(values.messageB_opacity_in, currentYOffset);
@@ -491,7 +491,7 @@
 					objs.messageB.style.transform = `translate3d(0, ${calcValues(values.messageB_translateY_out, currentYOffset)}%, 0)`;
 					objs.messageB.style.opacity = calcValues(values.messageB_opacity_out, currentYOffset);
 				}
-				if (scrollRatio <= 0.75) {
+				if (scrollRatio <= 0.55) {
 					// in
 					objs.messageC.style.transform = `translate3d(0, ${calcValues(values.messageC_translateY_in, currentYOffset)}%, 0)`;
 					objs.messageC.style.opacity = calcValues(values.messageC_opacity_in, currentYOffset);
