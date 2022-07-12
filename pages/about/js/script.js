@@ -308,7 +308,7 @@
                 txt.innerText = Math.round((cnt / total) * 100) + "%";
                 bar.style.width = Math.round((cnt / total) * 100) + "%";
 
-                console.log(cnt, total)
+                // console.log(cnt, total, Math.round((cnt / total) * 100))
                 if(cnt >= total-5 || Math.round((cnt / total) * 100) === 100 ){
                     setTimeout(() => { 
                         document.body.classList.remove('before-load');
