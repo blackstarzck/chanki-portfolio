@@ -308,7 +308,10 @@
                 txt.innerText = Math.round((cnt / total) * 100) + "%";
                 bar.style.width = Math.round((cnt / total) * 100) + "%";
 
-                // console.log(cnt, total, Math.round((cnt / total) * 100))
+                document.querySelector(".hidden-area").addEventListener("click", () => {
+                    alert(`${cnt}, ${total, Math.round((cnt / total) * 100)}`)
+                })
+
                 if(Math.round((cnt / total) * 100) === 100 || cnt >= total-5 ){
                     setTimeout(() => { 
                         document.body.classList.remove('before-load');

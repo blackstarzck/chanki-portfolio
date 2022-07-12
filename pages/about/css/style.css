@@ -1465,3 +1465,10 @@ body.before-load {
         width: 300px;
     }
 }
+.hidden-area {
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    width: 70px;
+    height: 70px;
+}
