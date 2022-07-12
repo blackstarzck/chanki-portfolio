@@ -312,7 +312,7 @@
                     alert(`${cnt}|${total}, ${total, Math.round((cnt / total) * 100)}`)
                 })
 
-                if(Math.round((cnt / total) * 100) === 100 || cnt >= total-5 ){
+                if(cnt >= total-5 ){
                     alert(1)
                     setTimeout(() => { 
                         alert(2)
