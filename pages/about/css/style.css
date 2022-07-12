@@ -493,6 +493,7 @@ a {
     display: -ms-flex;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 .counters .contain ul li {
     -webkit-flex: 0 0 25%;
@@ -510,6 +511,10 @@ a {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
+}
+.counters .contain li:nth-child(n+5){
+    margin-top: 45px;
 }
 .counters .contain li:nth-child(1) .icon {
     background-image: url(../images/icon/html5.png);
@@ -523,6 +528,15 @@ a {
 .counters .contain li:nth-child(4) .icon {
     background-image: url(../images/icon/jQuery.png);
 } 
+.counters .contain li:nth-child(5) .icon {
+    background-image: url(../images/icon/react-img.png);
+} 
+.counters .contain li:nth-child(6) .icon {
+    background-image: url(../images/icon/php.png);
+} 
+.counters .contain li:nth-child(7) .icon {
+    background-image: url(../images/icon/mysql.png);
+} 
 
 .counters .contain li .anim {
     margin-top: 15px;
@@ -532,14 +546,14 @@ a {
     justify-content: center;
     position: relative;
 }
-.counters .contain li .anim::after {
+/* .counters .contain li .anim::after {
     content: '';
     position: absolute;
     background-color: #999;
     width: 40%; height: 2px;
     margin: auto;
     bottom: -40px; left: 0; right: 0;
-}
+} */
 .counters .contain li .anim h3 {
     font-size: 4rem;
     line-height: 4rem;
