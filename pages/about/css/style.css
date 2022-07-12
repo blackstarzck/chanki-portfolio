@@ -891,10 +891,10 @@ body.before-load {
 }
 .before-load .main-container {
     visibility: none;
-    overflow: hidden;
 }
 .main-container {
     visibility: visible;
+    overflow: hidden;
 }
 .before-load .loading {
     opacity: 1;
