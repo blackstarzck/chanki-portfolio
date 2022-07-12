@@ -318,7 +318,7 @@
                         alert(2)
                         document.body.classList.remove('before-load');
                         handleTypeAnimation();
-                        setTimeout(() => { document.querySelector(".loading").remove(), 700});
+                        setTimeout(() => { document.querySelector(".loading").remove(), 1000});
                     }, 1600);
                 }
             }

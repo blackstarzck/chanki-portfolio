@@ -905,8 +905,8 @@ body.before-load {
     z-index: 999;
     background-color: #fff;
     opacity: 0;
-    -webkit-transition: 0.5s;
-    transition: 0.5s;
+    -webkit-transition: 2s;
+    transition: 2s;
     display: flex;
     justify-content: center;
     align-items: center;
