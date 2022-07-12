@@ -891,6 +891,7 @@ body.before-load {
 }
 .before-load .main-container {
     visibility: none;
+    overflow: hidden;
 }
 .main-container {
     visibility: visible;
