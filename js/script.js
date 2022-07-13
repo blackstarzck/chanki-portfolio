@@ -2252,7 +2252,7 @@ function kakaoInit(){
         content: {
         title: '팀플레이어 김찬기 포트폴리오',
         description: '2022.07.05 ~ ing',
-        imageUrl: 'https://img1.daumcdn.net/thumb/C428x428/?scode=mtistory2&fname=https%3A%2F%2Ftistory4.daumcdn.net%2Ftistory%2F4007905%2Fattach%2F7d95921c781e48beb4e0a1dcf829487b',
+        imageUrl: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbIylwM%2FbtrGWyBBxOh%2F1NiaNclDUtkD5Ebk6CD3kk%2Fimg.png',
         link: {
             mobileWebUrl: 'http://chanchan2.co.kr/',
             webUrl: 'http://chanchan2.co.kr/',
