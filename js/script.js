@@ -1,4 +1,4 @@
-
+Kakao?.init('7ad18fb056d47268f2c567afa7f80620');
 verifyLength({ source: "./img/def-img.jpg", target:  ".img-01"});
 
 const device = detectDevice();
@@ -1024,7 +1024,6 @@ function handleMainAction(obj){
                 container.classList.remove("show");
                 container.style.height = "";
                 container.children.forEach((item) => { item.style.opacity = ""; item.style.transform = "" });
-                Kakao?.init('7ad18fb056d47268f2c567afa7f80620');
             }
         });
     }
