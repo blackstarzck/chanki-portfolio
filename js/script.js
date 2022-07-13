@@ -10,6 +10,7 @@ window.onload = () => {
     function loadingAnimation(obj){
         const html = document.getElementsByTagName("html")[0];
         const loading = document.querySelector(".loading-container");
+        
         let timer = setTimeout(() => {
             if(html.classList.contains("fontawesome-i2svg-complete")){
                 loading.classList.add("hide");
@@ -2254,16 +2255,16 @@ function kakaoInit(){
         description: '2022.07.05 ~ ing',
         imageUrl: 'https://img1.daumcdn.net/thumb/C428x428/?scode=mtistory2&fname=https%3A%2F%2Ftistory4.daumcdn.net%2Ftistory%2F4007905%2Fattach%2F7d95921c781e48beb4e0a1dcf829487b',
         link: {
-            mobileWebUrl: 'https://blackstarzck.github.io/chanki-portfolio/',
-            webUrl: 'https://blackstarzck.github.io/chanki-portfolio/',
+            mobileWebUrl: 'http://chanchan2.co.kr/',
+            webUrl: 'http://chanchan2.co.kr/',
         },
         },
         buttons: [
         {
             title: '방문하기',
             link: {
-                mobileWebUrl: 'https://blackstarzck.github.io/chanki-portfolio/',
-                webUrl: 'https://blackstarzck.github.io/chanki-portfolio/',
+                mobileWebUrl: 'http://chanchan2.co.kr/',
+                webUrl: 'http://chanchan2.co.kr/',
             },
         },
         ],
