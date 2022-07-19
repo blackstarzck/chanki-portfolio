@@ -2244,6 +2244,13 @@ btn_share.addEventListener("click", () => {
     kakaoInit();
 });
 
+document.getElementById("btn-about").addEventListener("click", () => {
+    gtag('event', "About클릭");
+});
+document.querySelector(".btn-share").addEventListener("click", () => {
+    gtag('event', "공유클릭");
+});
+
 /* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ KAKAO ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
 
 function kakaoInit(){
