@@ -1,4 +1,4 @@
-http://chanchan2.co.kr/
+https://blackstarzck.github.io/chanki-portfolio
 
 <h1>[1] 이미지에서 물체 감지</h1>
 
